@@ -1,4 +1,4 @@
-﻿using System;
+/*﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -688,4 +688,4 @@ namespace WordProcessorTrial
             button7.Enabled = true;
         }
     }
-}
+}*/

@@ -1,4 +1,4 @@
-﻿namespace WordProcessorTrial
+/*﻿namespace WordProcessorTrial
 {
     partial class Form1
     {
@@ -866,4 +866,4 @@
         private System.Windows.Forms.Button button9;
     }
 }
-
+*/
