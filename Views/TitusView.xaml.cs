@@ -1,20 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.Interactivity;
 
 namespace Context_Processor.Views
 {
-    public class MainWindow : Window
+    public class TitusView : UserControl
     {
-        public MainWindow()
+        public TitusView()
         {
             InitializeComponent();
-        }
-
-        public void downloadButton_Click(object sender, RoutedEventArgs e) 
-        {
-            // Handle click here
         }
 
         private void InitializeComponent()

@@ -1,17 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:Context_Processor.ViewModels;assembly=Context_Processor"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:views="clr-namespace:Context_Processor.Views"
         x:Class="Context_Processor.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
+        Width="200" Height="300"
         Title="Context_Processor">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
-    <Button Click="downloadButton_Click" Content="{Binding DownloadButton}" Name="downloadButton"/>
-
+  <views:TitusView/>
 </Window>
+
