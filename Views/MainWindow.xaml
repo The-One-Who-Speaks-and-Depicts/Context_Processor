@@ -12,6 +12,6 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Button Click="downloadButton_Click" Content="{Binding DownloadButton}" Name="downloadButton"/>
 
 </Window>

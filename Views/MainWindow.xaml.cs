@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
 
 namespace Context_Processor.Views
 {
@@ -11,9 +12,15 @@ namespace Context_Processor.Views
             InitializeComponent();
         }
 
+        public void downloadButton_Click(object sender, RoutedEventArgs e) 
+        {
+            // Handle click here
+        }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            var downloadButton = this.FindControl<Button>("downloadButton");
         }
     }
 }
