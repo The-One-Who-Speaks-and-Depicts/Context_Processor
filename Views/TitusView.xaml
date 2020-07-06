@@ -2,22 +2,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="Context_Processor.Views.TitusView">
   <StackPanel Orientation="Vertical" Margin="10">
     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="50">
     	<Border Padding="15">
     		<TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Лексема</TextBlock>
     	</Border>
-    	<TextBox Width="450" Height="40" />
+    	<TextBox Width="470" Height="40" />
     	<Button Width="120" Height="40">Внести</Button>
+    </StackPanel>
+    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="50">
+      <Border Padding="15">
+        <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Семантика</TextBlock>
+      </Border>
+      <TextBox Width="470" Height="40" />
+      <Button Width="120" Height="40">Внести</Button>
     </StackPanel>
     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
       <Border Padding="15">
         <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Количество контекстов</TextBlock>
       </Border>
-      <NumericUpDown Width="80" Height="35" Value="0" Minimum="0"/>
+      <NumericUpDown Width="420" Height="35" Value="0" Minimum="0"/>
       <Button Width="120" Height="35">Внести</Button>
+    </StackPanel>
+    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
+      <StackPanel Width="600" HorizontalAlignment="Left" Orientation="Vertical">
+        <StackPanel HorizontalAlignment="Left">
+          <Border HorizontalAlignment="Left" Padding="15">
+             <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Left">Источник контекста</TextBlock>
+          </Border>
+          <TextBox Width="600" Height="40" HorizontalAlignment="Left" />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left">
+          <Border HorizontalAlignment="Left" Padding="15">
+             <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Left">Контекст</TextBlock>
+          </Border>
+          <TextBox Width="600" Height="40" HorizontalAlignment="Left" />
+        </StackPanel>
+      </StackPanel>
+      <StackPanel VerticalAlignment="Bottom">
+        <Border VerticalAlignment="Bottom">
+          <Button Width="120" Height="200" Margin="20" HorizontalAlignment="Right">Внести</Button>
+        </Border>
+      </StackPanel>
     </StackPanel>
   </StackPanel>
 
