@@ -3,7 +3,7 @@
         xmlns:views="clr-namespace:Context_Processor.Views"
         x:Class="Context_Processor.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Width="200" Height="300"
+        Width="800" Height="450"
         Title="Context_Processor">
   <views:TitusView/>
 </Window>

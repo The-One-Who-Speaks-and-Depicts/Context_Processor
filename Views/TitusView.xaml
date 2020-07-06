@@ -4,7 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Context_Processor.Views.TitusView">
-  <DockPanel>
-  	<Button>Загрузить текст</Button>
-  </DockPanel>
+  <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="70">
+  	<Border Padding="15">
+  		<TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Загрузка</TextBlock>
+  	</Border>
+  	<TextBox Width="450" Height="25" />
+  	<Button Width="120" Height="25">Загрузить текст</Button>
+  </StackPanel>
 </UserControl>
