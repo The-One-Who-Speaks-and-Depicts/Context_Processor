@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1050"
              x:Class="Context_Processor.Views.TitusView">
+    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
     <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
       <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="50">
@@ -72,7 +73,8 @@
           </Border>
           <Button Width="380" Height="40">Внести итоговое значение</Button>
       </StackPanel>  
-    </StackPanel>  
+    </StackPanel>
+    </ScrollViewer>  
   
   
 
