@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="880"
              x:Class="Context_Processor.Views.TitusView">
   
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="10">
@@ -36,15 +36,22 @@
         <TextBox Width="420" Height="40" />
         <Button Width="120" Height="40">Внести</Button>
       </StackPanel>
-      <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="300">
+      <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="140">
         <Border Padding="15">
           <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Анализ</TextBlock>
         </Border>
-        <TextBox Width="470" Height="300" />
-        <Button Width="120" Height="300">Внести</Button>
+        <TextBox Width="470" Height="125" />
+        <Button Width="120" Height="125">Внести</Button>
       </StackPanel>
-      <Button Width="725" Height="40">Перейти к итогам</Button>
-
+      <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="800" Height="270">
+        <Border Padding="5">
+          <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Итог</TextBlock>
+        </Border>
+        <Border Padding="15">
+          <TextBox Width="650" Height="180" />
+        </Border>
+        <Button Width="725" Height="40">Внести итоговое значение</Button>
+      </StackPanel>
 
     </StackPanel>    
   
