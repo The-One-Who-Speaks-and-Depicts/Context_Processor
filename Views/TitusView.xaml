@@ -7,7 +7,7 @@
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
       <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
         <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="50">
+          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="600" Height="50">
           	<Border Padding="15">
           		<TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Единица</TextBlock>
           	</Border>
@@ -64,22 +64,22 @@
             <TextBox Width="380" Height="40" />
             <Button Width="120" Height="40">Внести</Button>
           </StackPanel>
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="300">
+          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
             <Border Padding="25">
               <TextBlock Width="100" Height="20" HorizontalAlignment="Center">Анализ</TextBlock>
             </Border>
-            <TextBox Width="470" Height="250" />
-            <Button Width="120" Height="125">Внести</Button>
+            <TextBox Width="470" Height="150" />
+            <Button Width="120" Height="40">Внести</Button>
           </StackPanel>        
         </StackPanel>
-        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="400" Height="670">
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="300" Height="670">
             <Border Padding="5">
               <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Итог</TextBlock>
             </Border>
             <Border Padding="15">
-              <TextBox Width="380" Height="500" />
+              <TextBox Width="280" Height="620" />
             </Border>
-            <Button Width="380" Height="40">Внести итоговое значение</Button>
+            <Button Width="280" Height="40">Внести итоговое значение</Button>
         </StackPanel>  
       </StackPanel>
     </ScrollViewer>  
