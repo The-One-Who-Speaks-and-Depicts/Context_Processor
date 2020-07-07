@@ -16,7 +16,7 @@
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="100">
             <Border Padding="15">
-              <TextBlock Margin="10" Width="100" Height="60" HorizontalAlignment="Center">Семантика</TextBlock>
+              <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Семантика</TextBlock>
             </Border>
             <TextBox Width="470" Height="40" />
             <Button Width="120" Height="40">Внести</Button>
