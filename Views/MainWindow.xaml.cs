@@ -11,11 +11,7 @@ namespace Context_Processor.Views
         {
             InitializeComponent();
         }
-
-        public void downloadButton_Click(object sender, RoutedEventArgs e) 
-        {
-            // Handle click here
-        }
+        
 
         private void InitializeComponent()
         {

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
 
 namespace Context_Processor.Views
 {
@@ -15,5 +16,6 @@ namespace Context_Processor.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
+        
     }
 }
