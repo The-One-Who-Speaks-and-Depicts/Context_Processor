@@ -12,14 +12,14 @@
           		<TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Единица</TextBlock>
           	</Border>
           	<TextBox Width="470" Height="40" />
-          	<Button Width="120" Height="40">Внести</Button>
+          	<Button Name="UnitBtn" Width="120" Height="40" Click="UnitInsert">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="100">
             <Border Padding="15">
               <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Семантика</TextBlock>
             </Border>
             <TextBox Width="470" Height="40" />
-            <Button Width="120" Height="40">Внести</Button>
+            <Button Name="SemBtn" Width="120" Height="40">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
             <Border Padding="15">
