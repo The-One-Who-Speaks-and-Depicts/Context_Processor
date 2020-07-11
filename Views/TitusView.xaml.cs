@@ -27,7 +27,6 @@ namespace Context_Processor.Views
             AvaloniaXamlLoader.Load(this);
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             semanticInsertButton = this.FindControl<Button>("SemBtn");
-            semanticInsertButton.IsEnabled = false;
         }
         
     }

@@ -19,14 +19,14 @@
               <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Семантика</TextBlock>
             </Border>
             <TextBox Width="470" Height="40" />
-            <Button Name="SemBtn" Width="120" Height="40">Внести</Button>
+            <Button IsEnabled="false" Name="SemBtn" Width="120" Height="40">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
             <Border Padding="15">
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Количество контекстов</TextBlock>
             </Border>
             <NumericUpDown Width="420" Height="35" Value="0" Minimum="0"/>
-            <Button Width="120" Height="35">Внести</Button>
+            <Button IsEnabled="false" Width="120" Height="35">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" Orientation="Horizontal" Width="800" Height="152">
             <Border Padding="10">
@@ -52,7 +52,7 @@
             <Border Padding="25">
               <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
                 <Border VerticalAlignment="Top">
-                  <Button VerticalAlignment="Top" Width="135" Height="150">Добавить контекст</Button>
+                  <Button IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150">Добавить контекст</Button>
                 </Border>
               </StackPanel>
             </Border>         
@@ -62,14 +62,14 @@
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Основание для анализа</TextBlock>
             </Border>
             <TextBox Width="380" Height="40" />
-            <Button Width="120" Height="40">Внести</Button>
+            <Button IsEnabled="false" Width="120" Height="40">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
             <Border Padding="25">
               <TextBlock Width="100" Height="20" HorizontalAlignment="Center">Анализ</TextBlock>
             </Border>
             <TextBox Width="470" Height="150" />
-            <Button Width="120" Height="40">Внести</Button>
+            <Button IsEnabled="false" Width="120" Height="40">Внести</Button>
           </StackPanel>        
         </StackPanel>
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="300" Height="670">
@@ -79,7 +79,7 @@
             <Border Padding="15">
               <TextBox Width="280" Height="620" />
             </Border>
-            <Button Width="280" Height="40">Внести итоговое значение</Button>
+            <Button IsEnabled="false" Width="280" Height="40">Внести итоговое значение</Button>
         </StackPanel>  
       </StackPanel>
     </ScrollViewer>  
