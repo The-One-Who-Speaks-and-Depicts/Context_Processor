@@ -19,11 +19,8 @@ namespace Context_Processor.Views
         }
 
         public void UnitInsert(object sender, RoutedEventArgs e)
-        {          
-            /*String transferrable = "<b><i>" + label1.Text + "</i></b>: "; 
-            transferrable += "<i>" + richTextBox1.Text + "</i>";
-            transferrable += ".<br>\n";
-            richTextBox5.Text += transferrable;*/
+        {
+            finalField.Text += "Unit: " + unitField.Text + ";\n"; 
             unitField.IsReadOnly = true;
             semanticsField.IsReadOnly = false;
             unitInsertButton.IsEnabled = false;
