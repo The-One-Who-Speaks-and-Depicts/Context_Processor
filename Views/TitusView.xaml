@@ -25,7 +25,7 @@
             <Border Padding="15">
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Количество контекстов</TextBlock>
             </Border>
-            <NumericUpDown Width="420" Height="35" Value="0" Minimum="0"/>
+            <NumericUpDown Width="420" Height="35" Value="0" Minimum="0" IsReadOnly="true" />
             <Button IsEnabled="false" Width="120" Height="35">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" Orientation="Horizontal" Width="800" Height="152">
@@ -36,7 +36,7 @@
                     <Border Padding="15">
                       <TextBlock Margin="10" Width="170" Height="20" HorizontalAlignment="Left">Источник контекста</TextBlock>               
                     </Border>
-                    <TextBox Width="325" Height="40" />
+                    <TextBox Width="325" Height="40" IsReadOnly="true" />
                   </StackPanel>
                 </Border>
                 <Border Padding="15">
@@ -44,7 +44,7 @@
                     <Border Padding="15">
                       <TextBlock Margin="10" Width="157" Height="20" HorizontalAlignment="Left">Контекст</TextBlock>               
                     </Border>
-                    <TextBox Width="325" Height="80" />
+                    <TextBox Width="325" Height="80" IsReadOnly="true" />
                   </StackPanel>
                 </Border>
               </StackPanel>
@@ -61,14 +61,14 @@
             <Border Padding="10">
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Основание для анализа</TextBlock>
             </Border>
-            <TextBox Width="380" Height="40" />
+            <TextBox Width="380" Height="40" IsReadOnly="true" />
             <Button IsEnabled="false" Width="120" Height="40">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
             <Border Padding="25">
               <TextBlock Width="100" Height="20" HorizontalAlignment="Center">Анализ</TextBlock>
             </Border>
-            <TextBox Width="470" Height="150" />
+            <TextBox Width="470" Height="150" IsReadOnly="true" />
             <Button IsEnabled="false" Width="120" Height="40">Внести</Button>
           </StackPanel>        
         </StackPanel>
