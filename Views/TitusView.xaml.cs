@@ -7,8 +7,11 @@ namespace Context_Processor.Views
 {
     public class TitusView : UserControl
     {
+        //create variables for operating with buttons
         private Button unitInsertButton;
         private Button semanticInsertButton;
+
+        //create variables for operating with text boxes
         private TextBox unitField;
         private TextBox semanticsField;
         private TextBox finalField;
@@ -18,6 +21,7 @@ namespace Context_Processor.Views
             InitializeComponent();
         }
 
+        //add analyzed unit to the final field
         public void UnitInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "Unit: " + unitField.Text + ";\n"; 
@@ -30,8 +34,10 @@ namespace Context_Processor.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            //initialize buttons
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             semanticInsertButton = this.FindControl<Button>("SemBtn");
+            //initialize text box
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
             finalField = this.FindControl<TextBox>("FinalTextBox");
