@@ -16,8 +16,11 @@ namespace Context_Processor.Views
         }
 
         public void UnitInsert(object sender, RoutedEventArgs e)
-        {            
-            // do insertion
+        {          
+            /*String transferrable = "<b><i>" + label1.Text + "</i></b>: "; 
+            transferrable += "<i>" + richTextBox1.Text + "</i>";
+            transferrable += ".<br>\n";
+            richTextBox5.Text += transferrable;*/
             unitInsertButton.IsEnabled = false;
             semanticInsertButton.IsEnabled = true;
         }

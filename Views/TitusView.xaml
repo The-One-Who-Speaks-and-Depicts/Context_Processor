@@ -18,7 +18,7 @@
             <Border Padding="15">
               <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Семантика</TextBlock>
             </Border>
-            <TextBox Width="470" Height="40" />
+            <TextBox Width="470" Height="40" AcceptsReturn="True" TextWrapping="Wrap" />
             <Button IsEnabled="false" Name="SemBtn" Width="120" Height="40">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
@@ -77,7 +77,7 @@
               <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Итог</TextBlock>
             </Border>
             <Border Padding="15">
-              <TextBox Width="280" Height="620" />
+              <TextBox Width="280" Height="620" AcceptsReturn="True" TextWrapping="Wrap" />
             </Border>
             <Button IsEnabled="false" Width="280" Height="40">Внести итоговое значение</Button>
         </StackPanel>  
