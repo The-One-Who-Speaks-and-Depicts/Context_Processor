@@ -77,7 +77,7 @@
               <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Итог</TextBlock>
             </Border>
             <Border Padding="15">
-              <TextBox Width="280" Height="620" AcceptsReturn="True" TextWrapping="Wrap" />
+              <TextBox Width="280" Height="620" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
             </Border>
             <Button IsEnabled="false" Width="280" Height="40">Внести итоговое значение</Button>
         </StackPanel>  

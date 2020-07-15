@@ -9,6 +9,7 @@ namespace Context_Processor.Views
     {
         private Button unitInsertButton;
         private Button semanticInsertButton;
+        private TextBox finalField;
 
         public TitusView()
         {
@@ -30,6 +31,7 @@ namespace Context_Processor.Views
             AvaloniaXamlLoader.Load(this);
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             semanticInsertButton = this.FindControl<Button>("SemBtn");
+            finalField = this.FindControl<TextBox>("FinalTextBox");
         }
         
     }
