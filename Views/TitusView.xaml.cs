@@ -65,16 +65,20 @@ namespace Context_Processor.Views
         public async void ContextInsert(object sender, RoutedEventArgs e) 
         {
             var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                ButtonDefinitions = ButtonEnum.OkAbort,
+                ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Title",
                 ContentMessage = "Message",
                 Icon = Icon.Plus,
                 Style = Style.UbuntuLinux
             });
             ButtonResult result = await msBoxStandardWindow.Show();
-            if (result == ButtonResult.Ok) 
+            if (result == ButtonResult.Yes) 
             {
                 finalField.Text += "ASYNC ALL THE WAY";
+            }
+            else 
+            {
+                finalField.Text += "HIGHER!";
             }
         }
 
