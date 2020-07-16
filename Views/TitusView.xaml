@@ -26,7 +26,7 @@
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Количество контекстов</TextBlock>
             </Border>
             <NumericUpDown Name="NumeralBox" Width="420" Height="35" Value="0" Minimum="0" IsReadOnly="true" />
-            <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35">Внести</Button>
+            <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35" Click="ContextsAmountInsert">Внести</Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" Orientation="Horizontal" Width="800" Height="152">
             <Border Padding="10">
@@ -36,7 +36,7 @@
                     <Border Padding="15">
                       <TextBlock Margin="10" Width="170" Height="20" HorizontalAlignment="Left">Источник контекста</TextBlock>               
                     </Border>
-                    <TextBox Width="325" Height="40" IsReadOnly="true" />
+                    <TextBox Name="SourceTextBox" Width="325" Height="40" IsReadOnly="true" />
                   </StackPanel>
                 </Border>
                 <Border Padding="15">
@@ -44,7 +44,7 @@
                     <Border Padding="15">
                       <TextBlock Margin="10" Width="157" Height="20" HorizontalAlignment="Left">Контекст</TextBlock>               
                     </Border>
-                    <TextBox Width="325" Height="80" IsReadOnly="true" />
+                    <TextBox Name="ContextTextBox" Width="325" Height="80" IsReadOnly="true" />
                   </StackPanel>
                 </Border>
               </StackPanel>
@@ -52,7 +52,7 @@
             <Border Padding="25">
               <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
                 <Border VerticalAlignment="Top">
-                  <Button IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150">Добавить контекст</Button>
+                  <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150">Добавить контекст</Button>
                 </Border>
               </StackPanel>
             </Border>         
