@@ -64,6 +64,7 @@ namespace Context_Processor.Views
         //react to context addition
         public async void ContextInsert(object sender, RoutedEventArgs e) 
         {
+            // place async code to the separated function
             var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Title",
