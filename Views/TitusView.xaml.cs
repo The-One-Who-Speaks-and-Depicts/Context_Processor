@@ -62,9 +62,20 @@ namespace Context_Processor.Views
         }
 
         //react to context addition
-        public void ContextInsert(object sender, RoutedEventArgs e) 
+        public async void ContextInsert(object sender, RoutedEventArgs e) 
         {
-            
+            var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                ButtonDefinitions = ButtonEnum.OkAbort,
+                ContentTitle = "Title",
+                ContentMessage = "Message",
+                Icon = Icon.Plus,
+                Style = Style.UbuntuLinux
+            });
+            ButtonResult result = await msBoxStandardWindow.Show();
+            if (result == ButtonResult.Ok) 
+            {
+                finalField.Text += "ASYNC ALL THE WAY";
+            }
         }
 
 
