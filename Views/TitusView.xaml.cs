@@ -10,10 +10,12 @@ namespace Context_Processor.Views
         //create variables for operating with buttons
         private Button unitInsertButton;
         private Button semanticInsertButton;
+        private Button contextsAmountSearchButton;
 
         //create variables for operating with text boxes
         private TextBox unitField;
         private TextBox semanticsField;
+        private NumericUpDown contextsAmountField;
         private TextBox finalField;
 
         public TitusView()
@@ -31,15 +33,25 @@ namespace Context_Processor.Views
             semanticInsertButton.IsEnabled = true;
         }
 
+        public void SemanticsInsert(object sender, RoutedEventArgs e) {
+            finalField.Text += "Semantics: " + semanticsField.Text + ";\n";
+            semanticsField.IsReadOnly = true;
+            semanticInsertButton.IsEnabled = false;
+            contextsAmountField.IsReadOnly = false;
+            contextsAmountSearchButton.IsEnabled = true;            
+        }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
             //initialize buttons
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             semanticInsertButton = this.FindControl<Button>("SemBtn");
-            //initialize text box
+            contextsAmountSearchButton = this.FindControl<Button>("NumBtn");
+            //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
+            contextsAmountField = this.FindControl<NumericUpDown>("NumeralBox");
             finalField = this.FindControl<TextBox>("FinalTextBox");
         }
         
