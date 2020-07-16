@@ -52,7 +52,7 @@
             <Border Padding="25">
               <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
                 <Border VerticalAlignment="Top">
-                  <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150">Добавить контекст</Button>
+                  <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150" Click="ContextInsert">Добавить контекст</Button>
                 </Border>
               </StackPanel>
             </Border>         

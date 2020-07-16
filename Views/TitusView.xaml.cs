@@ -2,6 +2,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
+using MessageBox.Avalonia;
+using MessageBox.Avalonia.Enums;
+using MessageBox.Avalonia.DTO;
+using System.Threading.Tasks;
 
 namespace Context_Processor.Views
 {
@@ -55,6 +59,12 @@ namespace Context_Processor.Views
             sourceField.IsReadOnly = false;
             contextField.IsReadOnly = false;
             contextInsertionButton.IsEnabled = true;
+        }
+
+        //react to context addition
+        public void ContextInsert(object sender, RoutedEventArgs e) 
+        {
+            
         }
 
 
