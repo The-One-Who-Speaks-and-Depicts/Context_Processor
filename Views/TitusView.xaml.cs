@@ -71,9 +71,9 @@ namespace Context_Processor.Views
         {
             if (!isFirstContextInserted) 
             {
-                finalField.Text += "<contexts>\n    ";
+                finalField.Text += "<contexts>    ";
             }
-            //context insertion itself is happening here                        
+            finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";                        
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
