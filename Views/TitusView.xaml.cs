@@ -19,6 +19,7 @@ namespace Context_Processor.Views
         private Button contextInsertionButton;
         private Button analysisBasementInsertionButton;
         private Button analysisInsertionButton;
+        private Button databaseInsertionButton;
 
         //create variables for operating with text boxes
         private TextBox unitField;
@@ -119,9 +120,19 @@ namespace Context_Processor.Views
         {
             finalField.Text += "Analysis basement: " + analysisBasementField.Text + ";\n";
             analysisBasementField.IsReadOnly = true;
-            analysisInsertionButton.IsEnabled = false;
+            analysisBasementInsertionButton.IsEnabled = false;
             analysisField.IsReadOnly = false;
             analysisInsertionButton.IsEnabled = true;
+        }
+
+        //add analysis to the final field
+        public void AnalysisInsert(object sender, RoutedEventArgs e)
+        {
+            finalField.Text += "Analysis: " + analysisField.Text + ";\n";
+            analysisField.IsReadOnly = true;
+            analysisInsertionButton.IsEnabled = false;
+            finalField.IsReadOnly = false;
+            databaseInsertionButton.IsEnabled = true;
         }
 
 
@@ -135,6 +146,7 @@ namespace Context_Processor.Views
             contextInsertionButton = this.FindControl<Button>("ContextBtn");
             analysisBasementInsertionButton = this.FindControl<Button>("BasementBtn");
             analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
+            databaseInsertionButton = this.FindControl<Button>("FinalBtn");
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
