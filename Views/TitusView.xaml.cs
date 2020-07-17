@@ -74,6 +74,7 @@ namespace Context_Processor.Views
                 finalField.Text += "<contexts>    ";
             }
             finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";                        
+            contextField.Text = "";
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
@@ -94,11 +95,8 @@ namespace Context_Processor.Views
                 result = await sourceChangeWindow.Show();
                 if (result == ButtonResult.Yes)
                 {
-                    finalField.Text += "ASYNC ALL THE WAY";
-                }
-                else
-                {
-                    finalField.Text += "GO AHEAD FACE THE LEAD JOIN THE DEAD";
+                    sourceField.Text = "";
+
                 }
             }
             else 
