@@ -103,6 +103,7 @@ namespace Context_Processor.Views
             }
             else 
             {
+                //TBD: deactivate fields and button and activate analysis button
                 finalField.Text += "</contexts>\n";
             }
             isFirstContextInserted = true;
