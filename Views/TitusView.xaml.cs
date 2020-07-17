@@ -117,7 +117,11 @@ namespace Context_Processor.Views
         //add basement for analysis to the final field
         public void BasementInsert(object sender, RoutedEventArgs e) 
         {
-
+            finalField.Text += "Analysis basement: " + analysisBasementField.Text + ";\n";
+            analysisBasementField.IsReadOnly = true;
+            analysisInsertionButton.IsEnabled = false;
+            analysisField.IsReadOnly = false;
+            analysisInsertionButton.IsEnabled = true;
         }
 
 
