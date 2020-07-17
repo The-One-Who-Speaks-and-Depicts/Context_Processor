@@ -76,7 +76,6 @@ namespace Context_Processor.Views
                 finalField.Text += "<contexts>    ";
             }
             finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";                        
-            contextField.Text = "";
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
@@ -87,6 +86,7 @@ namespace Context_Processor.Views
             ButtonResult result = await contextsAdditionFinalizeWindow.Show();
             if (result == ButtonResult.Yes) 
             {
+                contextField.Text = "";            
                 var sourceChangeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
@@ -98,13 +98,16 @@ namespace Context_Processor.Views
                 if (result == ButtonResult.Yes)
                 {
                     sourceField.Text = "";
-
                 }
             }
             else 
             {
-                //TBD: deactivate fields and button and activate analysis button
                 finalField.Text += "</contexts>\n";
+                sourceField.IsReadOnly = true;
+                contextField.IsReadOnly = true;
+                contextInsertionButton.IsEnabled = false;                
+                analysisBasementField.IsReadOnly = false;
+                analysisBasementInsertionButton.IsEnabled = true;
             }
             isFirstContextInserted = true;
         }
