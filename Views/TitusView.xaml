@@ -79,7 +79,7 @@
             <Border Padding="15">
               <TextBox Width="280" Height="620" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
             </Border>
-            <Button Name="FinalBtn" IsEnabled="false" Width="280" Height="40">Внести итоговое значение</Button>
+            <Button Name="FinalBtn" IsEnabled="false" Width="280" Height="40" Click="DatabaseInsert">Внести итоговое значение</Button>
         </StackPanel>  
       </StackPanel>
     </ScrollViewer>  

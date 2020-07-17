@@ -132,7 +132,12 @@ namespace Context_Processor.Views
             analysisField.IsReadOnly = true;
             analysisInsertionButton.IsEnabled = false;
             finalField.IsReadOnly = false;
-            databaseInsertionButton.IsEnabled = true;
+            databaseInsertionButton.IsEnabled = true;            
+        }
+
+        public async void DatabaseInsert(object sender, RoutedEventArgs e)
+        {
+            new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
         }
 
 
