@@ -6,6 +6,7 @@ using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Context_Processor.Views
 {
@@ -135,10 +136,41 @@ namespace Context_Processor.Views
             databaseInsertionButton.IsEnabled = true;            
         }
 
+
+        public void SaveDocument(string filePath)
+        {
+            //do something
+        }
+
+        //insertion of a unit to the database
+        //currently, a user-chosen XML-file
         public async void DatabaseInsert(object sender, RoutedEventArgs e)
         {
             string filePath = await new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
-            
+            if (!File.Exists(filePath)) 
+            {
+                if (!filePath.EndsWith(".xml"))
+                {
+                    filePath += ".xml";
+                    SaveDocument(filePath);
+                }
+                SaveDocument(filePath);                
+            }
+            else 
+            {                
+                var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                ButtonDefinitions = ButtonEnum.YesNo,
+                ContentTitle = "Program message",
+                ContentMessage = "Do you want to write into existing file?",
+                Icon = Icon.Plus,
+                Style = Style.UbuntuLinux
+                });
+                var result = await fileFoundWindow.Show();
+                if (result == ButtonResult.Yes) 
+                {
+                    SaveDocument(filePath);
+                }
+            }
         }
 
 
