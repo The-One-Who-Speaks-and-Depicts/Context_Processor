@@ -137,7 +137,8 @@ namespace Context_Processor.Views
 
         public async void DatabaseInsert(object sender, RoutedEventArgs e)
         {
-            new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
+            string filePath = await new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
+            
         }
 
 
