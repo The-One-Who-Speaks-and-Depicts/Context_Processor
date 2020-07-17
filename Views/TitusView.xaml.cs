@@ -18,6 +18,7 @@ namespace Context_Processor.Views
         private Button contextsAmountInsertionButton;
         private Button contextInsertionButton;
         private Button analysisBasementInsertionButton;
+        private Button analysisInsertionButton;
 
         //create variables for operating with text boxes
         private TextBox unitField;
@@ -26,6 +27,7 @@ namespace Context_Processor.Views
         private TextBox sourceField;
         private TextBox contextField;
         private TextBox analysisBasementField;
+        private TextBox analysisField;
         private TextBox finalField;
 
         public TitusView()
@@ -112,6 +114,12 @@ namespace Context_Processor.Views
             isFirstContextInserted = true;
         }
 
+        //add basement for analysis to the final field
+        public void BasementInsert(object sender, RoutedEventArgs e) 
+        {
+
+        }
+
 
         private void InitializeComponent()
         {
@@ -122,6 +130,7 @@ namespace Context_Processor.Views
             contextsAmountInsertionButton = this.FindControl<Button>("NumBtn");
             contextInsertionButton = this.FindControl<Button>("ContextBtn");
             analysisBasementInsertionButton = this.FindControl<Button>("BasementBtn");
+            analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
@@ -129,6 +138,7 @@ namespace Context_Processor.Views
             sourceField = this.FindControl<TextBox>("SourceTextBox");
             contextField = this.FindControl<TextBox>("ContextTextBox");
             analysisBasementField = this.FindControl<TextBox>("BasementTextBox");
+            analysisField = this.FindControl<TextBox>("AnalysisTextBox");
             finalField = this.FindControl<TextBox>("FinalTextBox");
         }
         
