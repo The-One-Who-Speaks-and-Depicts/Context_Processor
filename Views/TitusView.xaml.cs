@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace Context_Processor.Views
 {
     public class TitusView : UserControl
-    {
+    {        
+
         //create variables for operating with buttons
         private Button unitInsertButton;
         private Button semanticInsertButton;
@@ -61,9 +62,17 @@ namespace Context_Processor.Views
             contextInsertionButton.IsEnabled = true;
         }
 
+        //user can add multiple contexts, so actually we have to understand this:
+        //is it the first addition or not?
+        private bool isFirstContextInserted = false;
+
         //react to context addition
         public async void ContextInsert(object sender, RoutedEventArgs e) 
-        {            
+        {
+            if (!isFirstContextInserted) 
+            {
+                finalField.Text += "<contexts>\n    ";
+            }                        
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
@@ -95,6 +104,7 @@ namespace Context_Processor.Views
             {
                 finalField.Text += "HIGHER!";
             }
+            isFirstContextInserted = true;
         }
 
 
