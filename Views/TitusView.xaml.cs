@@ -63,19 +63,33 @@ namespace Context_Processor.Views
 
         //react to context addition
         public async void ContextInsert(object sender, RoutedEventArgs e) 
-        {
-            // place async code to the separated function
-            var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+        {            
+            var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
-                ContentTitle = "Title",
-                ContentMessage = "Message",
+                ContentTitle = "Program message",
+                ContentMessage = "Do you want to insert more contexts?",
                 Icon = Icon.Plus,
                 Style = Style.UbuntuLinux
-            });
-            ButtonResult result = await msBoxStandardWindow.Show();
+                });
+            ButtonResult result = await contextsAdditionFinalizeWindow.Show();
             if (result == ButtonResult.Yes) 
             {
-                finalField.Text += "ASYNC ALL THE WAY";
+                var sourceChangeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                ButtonDefinitions = ButtonEnum.YesNo,
+                ContentTitle = "Program message",
+                ContentMessage = "Do you want to change context source?",
+                Icon = Icon.Plus,
+                Style = Style.UbuntuLinux
+                });
+                result = await sourceChangeWindow.Show();
+                if (result == ButtonResult.Yes)
+                {
+                    finalField.Text += "ASYNC ALL THE WAY";
+                }
+                else
+                {
+                    finalField.Text += "GO AHEAD FACE THE LEAD JOIN THE DEAD";
+                }
             }
             else 
             {
