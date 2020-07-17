@@ -7,6 +7,7 @@ using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 
 namespace Context_Processor.Views
 {
@@ -139,7 +140,13 @@ namespace Context_Processor.Views
 
         public void SaveDocument(string filePath)
         {
-            //do something
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(finalField.Text);
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            // Save the document to a file and auto-indent the output.
+            XmlWriter writer = XmlWriter.Create(filePath, settings);
+            doc.Save(writer);
         }
 
         //insertion of a unit to the database
