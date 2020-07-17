@@ -72,7 +72,8 @@ namespace Context_Processor.Views
             if (!isFirstContextInserted) 
             {
                 finalField.Text += "<contexts>\n    ";
-            }                        
+            }
+            //context insertion itself is happening here                        
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
@@ -102,7 +103,7 @@ namespace Context_Processor.Views
             }
             else 
             {
-                finalField.Text += "HIGHER!";
+                finalField.Text += "</contexts>\n";
             }
             isFirstContextInserted = true;
         }
