@@ -41,7 +41,8 @@ namespace Context_Processor.Views
         //add analyzed unit to the final field
         public void UnitInsert(object sender, RoutedEventArgs e)
         {
-            finalField.Text += "Unit: " + unitField.Text + ";\n"; 
+            finalField.Text += "<analyzedUnit>\n";
+            finalField.Text += "<unit>" + unitField.Text + "</unit>\n"; 
             unitField.IsReadOnly = true;
             semanticsField.IsReadOnly = false;
             unitInsertButton.IsEnabled = false;
@@ -51,7 +52,7 @@ namespace Context_Processor.Views
         //add analyzed unit sematics to the final field
         public void SemanticsInsert(object sender, RoutedEventArgs e) 
         {
-            finalField.Text += "Semantics: " + semanticsField.Text + ";\n";
+            finalField.Text += "<semantics>" + semanticsField.Text + "</semantics>\n";
             semanticsField.IsReadOnly = true;
             semanticInsertButton.IsEnabled = false;
             contextsAmountField.IsReadOnly = false;
@@ -61,7 +62,7 @@ namespace Context_Processor.Views
         //add analyzed unit amount of contexts to the final field
         public void ContextsAmountInsert(object sender, RoutedEventArgs e) 
         {
-            finalField.Text += "Contexts amount: " + contextsAmountField.Text + ";\n";
+            finalField.Text += "<contextsAmount>" + contextsAmountField.Text + "</contextsAmount>\n";
             contextsAmountField.IsReadOnly = true;
             contextsAmountInsertionButton.IsEnabled = false;
             sourceField.IsReadOnly = false;
@@ -120,7 +121,7 @@ namespace Context_Processor.Views
         //add basement for analysis to the final field
         public void BasementInsert(object sender, RoutedEventArgs e) 
         {
-            finalField.Text += "Analysis basement: " + analysisBasementField.Text + ";\n";
+            finalField.Text += "<basement>" + analysisBasementField.Text + "</basement>\n";
             analysisBasementField.IsReadOnly = true;
             analysisBasementInsertionButton.IsEnabled = false;
             analysisField.IsReadOnly = false;
@@ -130,7 +131,8 @@ namespace Context_Processor.Views
         //add analysis to the final field
         public void AnalysisInsert(object sender, RoutedEventArgs e)
         {
-            finalField.Text += "Analysis: " + analysisField.Text + ";\n";
+            finalField.Text += "<analysis>" + analysisField.Text + "</analysis>\n";
+            finalField.Text += "</analyzedUnit>";
             analysisField.IsReadOnly = true;
             analysisInsertionButton.IsEnabled = false;
             finalField.IsReadOnly = false;
@@ -178,6 +180,26 @@ namespace Context_Processor.Views
                     SaveDocument(filePath);
                 }
             }
+            // renewal of form
+            unitField.Text = "";
+            semanticsField.Text = "";
+            contextsAmountField.Text = "";
+            sourceField.Text = "";
+            contextField.Text = "";
+            analysisBasementField.Text = "";
+            analysisField.Text = "";
+            finalField.Text = "";
+            finalField.IsReadOnly = true;
+            databaseInsertionButton.IsEnabled = false;
+            unitField.IsReadOnly = false;
+            unitInsertButton.IsEnabled = true;
+            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                ButtonDefinitions = ButtonEnum.Ok,
+                ContentTitle = "Program message",
+                ContentMessage = "Unit is inserted",
+                Icon = Icon.Plus,
+                Style = Style.UbuntuLinux
+                });
         }
 
 
