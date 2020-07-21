@@ -43,6 +43,7 @@ namespace Context_Processor.Views
         //add analyzed unit to the final field
         public void UnitInsert(object sender, RoutedEventArgs e)
         {
+            finalField.Text += "<analyzedUnit>\n";
             finalField.Text += "<unit>" + unitField.Text + "</unit>\n"; 
             unitField.IsReadOnly = true;
             semanticsField.IsReadOnly = false;
@@ -80,7 +81,7 @@ namespace Context_Processor.Views
         {
             if (!isFirstContextInserted) 
             {
-                finalField.Text += "<contexts>    ";
+                finalField.Text += "<contexts>\n";
             }
             finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";                        
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
@@ -133,6 +134,7 @@ namespace Context_Processor.Views
         public void AnalysisInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "<analysis>" + analysisField.Text + "</analysis>\n";
+            finalField.Text += "</analyzedUnit>";
             analysisField.IsReadOnly = true;
             analysisInsertionButton.IsEnabled = false;
             finalField.IsReadOnly = false;
@@ -141,7 +143,10 @@ namespace Context_Processor.Views
 
 
         public void SaveDocument(string filePath)
-        {            
+        { 
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml("<dataBase>" + finalField.Text + "</dataBase>");
+            doc.Save(filePath);           
         }
 
         public void RewriteDocument(string filePath)
@@ -192,6 +197,7 @@ namespace Context_Processor.Views
                 databaseInsertionButton.IsEnabled = false;
                 unitField.IsReadOnly = false;
                 unitInsertButton.IsEnabled = true;
+                isFirstContextInserted = false;
                 var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = "Program message",
@@ -199,6 +205,7 @@ namespace Context_Processor.Views
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
+                await successWindow.Show();
             }
             
         }
