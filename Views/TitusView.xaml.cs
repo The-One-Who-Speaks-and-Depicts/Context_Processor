@@ -5,9 +5,11 @@ using Avalonia.Interactivity;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
+using System;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Context_Processor.Views
 {
@@ -41,7 +43,6 @@ namespace Context_Processor.Views
         //add analyzed unit to the final field
         public void UnitInsert(object sender, RoutedEventArgs e)
         {
-            finalField.Text += "<analyzedUnit>\n";
             finalField.Text += "<unit>" + unitField.Text + "</unit>\n"; 
             unitField.IsReadOnly = true;
             semanticsField.IsReadOnly = false;
@@ -132,7 +133,6 @@ namespace Context_Processor.Views
         public void AnalysisInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "<analysis>" + analysisField.Text + "</analysis>\n";
-            finalField.Text += "</analyzedUnit>";
             analysisField.IsReadOnly = true;
             analysisInsertionButton.IsEnabled = false;
             finalField.IsReadOnly = false;
@@ -141,14 +141,11 @@ namespace Context_Processor.Views
 
 
         public void SaveDocument(string filePath)
+        {            
+        }
+
+        public void RewriteDocument(string filePath)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(finalField.Text);
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            // Save the document to a file and auto-indent the output.
-            XmlWriter writer = XmlWriter.Create(filePath, settings);
-            doc.Save(writer);
         }
 
         //insertion of a unit to the database
@@ -156,50 +153,54 @@ namespace Context_Processor.Views
         public async void DatabaseInsert(object sender, RoutedEventArgs e)
         {
             string filePath = await new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
-            if (!File.Exists(filePath)) 
+            if (!String.IsNullOrEmpty(filePath))
             {
-                if (!filePath.EndsWith(".xml"))
+                if (!File.Exists(filePath)) 
                 {
-                    filePath += ".xml";
-                    SaveDocument(filePath);
+                    if (!filePath.EndsWith(".xml"))
+                    {
+                        filePath += ".xml";
+                        SaveDocument(filePath);
+                    }
+                    SaveDocument(filePath);                
                 }
-                SaveDocument(filePath);                
-            }
-            else 
-            {                
-                var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                ButtonDefinitions = ButtonEnum.YesNo,
-                ContentTitle = "Program message",
-                ContentMessage = "Do you want to write into existing file?",
-                Icon = Icon.Plus,
-                Style = Style.UbuntuLinux
-                });
-                var result = await fileFoundWindow.Show();
-                if (result == ButtonResult.Yes) 
-                {
-                    SaveDocument(filePath);
+                else 
+                {                
+                    var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.YesNo,
+                    ContentTitle = "Program message",
+                    ContentMessage = "Do you want to write into existing file?",
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+                    var result = await fileFoundWindow.Show();
+                    if (result == ButtonResult.Yes) 
+                    {
+                        RewriteDocument(filePath);
+                    }
                 }
+                // renewal of form
+                unitField.Text = "";
+                semanticsField.Text = "";
+                contextsAmountField.Text = "";
+                sourceField.Text = "";
+                contextField.Text = "";
+                analysisBasementField.Text = "";
+                analysisField.Text = "";
+                finalField.Text = "";
+                finalField.IsReadOnly = true;
+                databaseInsertionButton.IsEnabled = false;
+                unitField.IsReadOnly = false;
+                unitInsertButton.IsEnabled = true;
+                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = "Program message",
+                    ContentMessage = "Unit is inserted",
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
             }
-            // renewal of form
-            unitField.Text = "";
-            semanticsField.Text = "";
-            contextsAmountField.Text = "";
-            sourceField.Text = "";
-            contextField.Text = "";
-            analysisBasementField.Text = "";
-            analysisField.Text = "";
-            finalField.Text = "";
-            finalField.IsReadOnly = true;
-            databaseInsertionButton.IsEnabled = false;
-            unitField.IsReadOnly = false;
-            unitInsertButton.IsEnabled = true;
-            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                ButtonDefinitions = ButtonEnum.Ok,
-                ContentTitle = "Program message",
-                ContentMessage = "Unit is inserted",
-                Icon = Icon.Plus,
-                Style = Style.UbuntuLinux
-                });
+            
         }
 
 
