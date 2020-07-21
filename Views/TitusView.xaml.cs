@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using System.Linq;
+
 
 namespace Context_Processor.Views
 {
@@ -145,12 +147,18 @@ namespace Context_Processor.Views
         public void SaveDocument(string filePath)
         { 
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml("<dataBase>" + finalField.Text + "</dataBase>");
+            doc.LoadXml("<database>" + finalField.Text + "</database>");
             doc.Save(filePath);           
         }
 
         public void RewriteDocument(string filePath)
         {
+            XDocument doc = XDocument.Load(filePath);
+            XElement el = XElement.Parse(finalField.Text);
+            XElement parentElement = doc.Descendants("analyzedUnit").LastOrDefault();
+            if (parentElement != null) parentElement.AddAfterSelf(el);
+            doc.Save(filePath);
+
         }
 
         //insertion of a unit to the database
