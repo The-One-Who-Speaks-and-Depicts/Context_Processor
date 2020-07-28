@@ -25,7 +25,8 @@ namespace Context_Processor.Views
         private Button contextInsertionButton;
         private Button analysisBasementInsertionButton;
         private Button analysisInsertionButton;
-        private Button databaseInsertionButton;
+        private Button XMLInsertionButton;
+        private Button HTMLInsertionButton;
 
         //create variables for operating with text boxes
         private TextBox unitField;
@@ -140,7 +141,8 @@ namespace Context_Processor.Views
             analysisField.IsReadOnly = true;
             analysisInsertionButton.IsEnabled = false;
             finalField.IsReadOnly = false;
-            databaseInsertionButton.IsEnabled = true;            
+            XMLInsertionButton.IsEnabled = true;
+            HTMLInsertionButton.IsEnabled = true;            
         }
 
 
@@ -161,9 +163,27 @@ namespace Context_Processor.Views
 
         }
 
-        //insertion of a unit to the database
-        //currently, a user-chosen XML-file
-        public async void DatabaseInsert(object sender, RoutedEventArgs e)
+        public void RenewForm()
+        {
+            unitField.Text = "";
+            semanticsField.Text = "";
+            contextsAmountField.Text = "";
+            sourceField.Text = "";
+            contextField.Text = "";
+            analysisBasementField.Text = "";
+            analysisField.Text = "";
+            finalField.Text = "";
+            finalField.IsReadOnly = true;
+            XMLInsertionButton.IsEnabled = false;
+            HTMLInsertionButton.IsEnabled = false;
+            unitField.IsReadOnly = false;
+            unitInsertButton.IsEnabled = true;
+            isFirstContextInserted = false;
+        }
+
+        //insertion of a unit to the
+        //user-chosen XML-file
+        public async void XMLInsert(object sender, RoutedEventArgs e)
         {
             string filePath = await new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
             if (!String.IsNullOrEmpty(filePath))
@@ -192,20 +212,6 @@ namespace Context_Processor.Views
                         RewriteDocument(filePath);
                     }
                 }
-                // renewal of form
-                unitField.Text = "";
-                semanticsField.Text = "";
-                contextsAmountField.Text = "";
-                sourceField.Text = "";
-                contextField.Text = "";
-                analysisBasementField.Text = "";
-                analysisField.Text = "";
-                finalField.Text = "";
-                finalField.IsReadOnly = true;
-                databaseInsertionButton.IsEnabled = false;
-                unitField.IsReadOnly = false;
-                unitInsertButton.IsEnabled = true;
-                isFirstContextInserted = false;
                 var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = "Program message",
@@ -214,8 +220,24 @@ namespace Context_Processor.Views
                     Style = Style.UbuntuLinux
                     });
                 await successWindow.Show();
+                RenewForm();                
             }
             
+        }
+
+        //insertion of a unit to the
+        //user-chosen HTML-file
+        public async void HTMLInsert (object sender, RoutedEventArgs e)
+        {
+            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = "Program message",
+                    ContentMessage = "Unit is inserted",
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            await successWindow.Show();
+            RenewForm();
         }
 
 
@@ -229,7 +251,8 @@ namespace Context_Processor.Views
             contextInsertionButton = this.FindControl<Button>("ContextBtn");
             analysisBasementInsertionButton = this.FindControl<Button>("BasementBtn");
             analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
-            databaseInsertionButton = this.FindControl<Button>("FinalBtn");
+            XMLInsertionButton = this.FindControl<Button>("XmlBtn");
+            HTMLInsertionButton = this.FindControl<Button>("HtmlBtn");
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
