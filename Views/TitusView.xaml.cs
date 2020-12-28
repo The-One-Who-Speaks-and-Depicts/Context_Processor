@@ -187,7 +187,10 @@ namespace Context_Processor.Views
         //user-chosen XML-file
         public async void XMLInsert(object sender, RoutedEventArgs e)
         {
-            string filePath = await new SaveFileDialog().ShowAsync((Window)this.VisualRoot);
+            var saveDialog = new SaveFileDialog();
+            saveDialog.InitialFileName = "New_Unit.xml";
+            string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+            this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
                 if (!File.Exists(filePath)) 
@@ -224,6 +227,17 @@ namespace Context_Processor.Views
                 await successWindow.Show();
                 RenewForm();                
             }
+            else 
+            {
+                var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = "Program message",
+                    ContentMessage = "There is no file name, unit is not inserted",
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            }
+            this.IsEnabled = true;
             
         }
 
