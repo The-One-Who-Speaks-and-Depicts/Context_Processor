@@ -27,6 +27,7 @@ namespace Context_Processor.Views
         private Button analysisInsertionButton;
         private Button XMLInsertionButton;
         private Button HTMLInsertionButton;
+        private Button erasingButton;
 
         //create variables for operating with text boxes
         private TextBox unitField;
@@ -143,6 +144,7 @@ namespace Context_Processor.Views
             analysisField.IsReadOnly = true;
             analysisInsertionButton.IsEnabled = false;
             finalField.IsReadOnly = false;
+            erasingButton.IsEnabled = true;
             XMLInsertionButton.IsEnabled = true;
             HTMLInsertionButton.IsEnabled = true;            
         }
@@ -176,11 +178,17 @@ namespace Context_Processor.Views
             analysisField.Text = "";
             finalField.Text = "";
             finalField.IsReadOnly = true;
+            erasingButton.IsEnabled = false;
             XMLInsertionButton.IsEnabled = false;
             HTMLInsertionButton.IsEnabled = false;
             unitField.IsReadOnly = false;
             unitInsertButton.IsEnabled = true;
             isFirstContextInserted = false;
+        }
+
+        public void EraseAllFields(object sender, RoutedEventArgs e)
+        {
+            RenewForm();
         }
 
         //insertion of a unit to the
@@ -269,6 +277,7 @@ namespace Context_Processor.Views
             analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
             XMLInsertionButton = this.FindControl<Button>("XmlBtn");
             HTMLInsertionButton = this.FindControl<Button>("HtmlBtn");
+            erasingButton = this.FindControl<Button>("EraseBtn");
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
