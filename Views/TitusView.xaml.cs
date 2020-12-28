@@ -87,6 +87,7 @@ namespace Context_Processor.Views
                 finalField.Text += "<contexts>\n";
             }
             finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";                        
+            this.IsEnabled = false;
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = "Program message",
@@ -120,6 +121,7 @@ namespace Context_Processor.Views
                 analysisBasementField.IsReadOnly = false;
                 analysisBasementInsertionButton.IsEnabled = true;
             }
+            this.IsEnabled = true;
             isFirstContextInserted = true;
         }
 
