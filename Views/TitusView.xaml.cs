@@ -2,16 +2,19 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
+using Context_Processor.Models;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
-
+using Raven.Client;
+using Raven.Client.Documents;
 
 namespace Context_Processor.Views
 {
@@ -27,6 +30,7 @@ namespace Context_Processor.Views
         private Button analysisInsertionButton;
         private Button XMLInsertionButton;
         private Button HTMLInsertionButton;
+        private Button databaseInsertionButton;
         private Button erasingButton;
 
         //create variables for operating with text boxes
@@ -146,7 +150,8 @@ namespace Context_Processor.Views
             finalField.IsReadOnly = false;
             erasingButton.IsEnabled = true;
             XMLInsertionButton.IsEnabled = true;
-            HTMLInsertionButton.IsEnabled = true;            
+            HTMLInsertionButton.IsEnabled = true;
+            databaseInsertionButton.IsEnabled = true;            
         }
 
 
@@ -181,6 +186,7 @@ namespace Context_Processor.Views
             erasingButton.IsEnabled = false;
             XMLInsertionButton.IsEnabled = false;
             HTMLInsertionButton.IsEnabled = false;
+            databaseInsertionButton.IsEnabled = false;
             unitField.IsReadOnly = false;
             unitInsertButton.IsEnabled = true;
             isFirstContextInserted = false;
@@ -264,6 +270,49 @@ namespace Context_Processor.Views
             RenewForm();
         }
 
+        //insertion of a unit to the RavenDB
+        public async void RavenInsert(object sender, RoutedEventArgs e)
+        {
+            using (var store = new DocumentStore
+            {
+                Urls = new string[] {"http://localhost:8080"},
+                Database = "UnitsDB"
+            })
+            {
+                store.Initialize();
+                var contextList = new List<Context>();
+                var context = new Context 
+                {
+                    source = "",
+                    text = "",
+                };
+                contextList.Add(context);
+                using (var session = store.OpenSession())
+                {
+                    var unit = new Unit
+                      {
+                        name = "",
+                        semantics = "",
+                        contextsAmount = "",
+                        contexts = contextList,
+                        basement = "",
+                        analysis = "",
+                      };
+                      session.Store(unit);
+                      session.SaveChanges();
+                }
+            }
+            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = "Program message",
+                    ContentMessage = "Unit is inserted",
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            await successWindow.Show();
+            RenewForm();
+        }
+
 
         private void InitializeComponent()
         {
@@ -277,6 +326,8 @@ namespace Context_Processor.Views
             analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
             XMLInsertionButton = this.FindControl<Button>("XmlBtn");
             HTMLInsertionButton = this.FindControl<Button>("HtmlBtn");
+            databaseInsertionButton = this.FindControl<Button>("RavenBtn");
+
             erasingButton = this.FindControl<Button>("EraseBtn");
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");

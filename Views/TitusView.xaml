@@ -82,6 +82,7 @@
             <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="40" Click="EraseAllFields">Стереть все поля</Button>
             <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="40" Click="XMLInsert">Внести итоговое значение (XML)</Button>
             <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="40" Click="HTMLInsert">Внести итоговое значение(HTML)</Button>
+            <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="40" Click="RavenInsert">Внести итоговое значение (RavenDB)</Button>
         </StackPanel>  
       </StackPanel>
     </ScrollViewer>  
