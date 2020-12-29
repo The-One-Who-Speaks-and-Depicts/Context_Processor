@@ -77,12 +77,12 @@
               <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Итог</TextBlock>
             </Border>
             <Border Padding="15">
-              <TextBox Width="280" Height="620" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
+              <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
             </Border>
-            <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="40" Click="EraseAllFields">Стереть все поля</Button>
-            <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="40" Click="XMLInsert">Внести итоговое значение (XML)</Button>
-            <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="40" Click="HTMLInsert">Внести итоговое значение(HTML)</Button>
-            <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="40" Click="RavenInsert">Внести итоговое значение (RavenDB)</Button>
+            <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="30" Click="EraseAllFields">Стереть все поля</Button>
+            <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="30" Click="XMLInsert">Внести итоговое значение (XML)</Button>
+            <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="30" Click="HTMLInsert">Внести итоговое значение(HTML)</Button>
+            <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="30" Click="RavenInsert">Внести итоговое значение (RavenDB)</Button>
         </StackPanel>  
       </StackPanel>
     </ScrollViewer>  

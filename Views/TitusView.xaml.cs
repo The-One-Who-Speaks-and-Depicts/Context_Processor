@@ -280,6 +280,10 @@ namespace Context_Processor.Views
             })
             {
                 store.Initialize();
+                // TODO: via Regex get all this
+                var unitName = "";
+                var unitSemantics = "";
+                var contextsAmount = "";
                 var contextList = new List<Context>();
                 var context = new Context 
                 {
@@ -287,6 +291,8 @@ namespace Context_Processor.Views
                     text = "",
                 };
                 contextList.Add(context);
+                var basement = "";
+                var analysis = "";
                 using (var session = store.OpenSession())
                 {
                     var unit = new Unit
