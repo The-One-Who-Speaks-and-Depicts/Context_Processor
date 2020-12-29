@@ -283,7 +283,7 @@ namespace Context_Processor.Views
                 var contextList = new List<Context>();
                 var context = new Context 
                 {
-                    source = "",
+                    source = "[]",
                     text = "",
                 };
                 contextList.Add(context);
