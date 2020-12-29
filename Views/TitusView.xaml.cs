@@ -9,6 +9,7 @@ using MessageBox.Avalonia.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
@@ -273,6 +274,7 @@ namespace Context_Processor.Views
         //insertion of a unit to the RavenDB
         public async void RavenInsert(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             using (var store = new DocumentStore
             {
                 Urls = new string[] {"http://localhost:8080"},
@@ -281,28 +283,30 @@ namespace Context_Processor.Views
             {
                 store.Initialize();
                 // TODO: via Regex get all this
-                var unitName = "";
-                var unitSemantics = "";
-                var contextsAmount = "";
+                var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
+                var unitSemantics = Regex.Replace(Regex.Match(finalField.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
+                var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
+                // TODO: inserting contexts
+                var contexts = Regex.Replace(Regex.Match(finalField.Text, @"<link>.*<\/link>").Value, @"<\/{0,1}link>", "");
                 var contextList = new List<Context>();
                 var context = new Context 
                 {
                     source = "[]",
-                    text = "",
+                    text = contexts,
                 };
                 contextList.Add(context);
-                var basement = "";
-                var analysis = "";
+                var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
+                var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
                 using (var session = store.OpenSession())
                 {
                     var unit = new Unit
                       {
-                        name = "",
-                        semantics = "",
-                        contextsAmount = "",
+                        name = unitName,
+                        semantics = unitSemantics,
+                        contextsAmount = contextsAmount,
                         contexts = contextList,
-                        basement = "",
-                        analysis = "",
+                        basement = basement,
+                        analysis = analysis,
                       };
                       session.Store(unit);
                       session.SaveChanges();
@@ -317,6 +321,7 @@ namespace Context_Processor.Views
                     });
             await successWindow.Show();
             RenewForm();
+            this.IsEnabled = true;
         }
 
 
