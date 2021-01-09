@@ -288,13 +288,16 @@ namespace Context_Processor.Views
                 var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
                 // TODO: inserting contexts
                 var contexts = Regex.Replace(Regex.Match(finalField.Text, @"<link>.*<\/link>").Value, @"<\/{0,1}link>", "");
+                var separatedContexts = Regex.Matches(contexts, @"<context>.*<\/source>");
                 var contextList = new List<Context>();
-                var context = new Context 
+                foreach (Match separatedContext in separatedContexts)
                 {
-                    source = "[]",
-                    text = contexts,
-                };
-                contextList.Add(context);
+                    contextList.Add(new Context 
+                        {
+                            source = Regex.Replace(Regex.Match(separatedContext.Value, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
+                            text = Regex.Replace(Regex.Match(separatedContext.Value, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
+                        });
+                } 
                 var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
                 var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
                 using (var session = store.OpenSession())
