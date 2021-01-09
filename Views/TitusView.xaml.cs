@@ -282,22 +282,20 @@ namespace Context_Processor.Views
             })
             {
                 store.Initialize();
-                // TODO: via Regex get all this
                 var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
                 var unitSemantics = Regex.Replace(Regex.Match(finalField.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
                 var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
-                // TODO: inserting contexts
-                var contexts = Regex.Replace(Regex.Match(finalField.Text, @"<link>.*<\/link>").Value, @"<\/{0,1}link>", "");
-                var separatedContexts = Regex.Matches(contexts, @"<context>.*<\/source>");
+                var separatedContexts = Regex.Matches(finalField.Text, @"<link>.*<\/link>");
                 var contextList = new List<Context>();
                 foreach (Match separatedContext in separatedContexts)
                 {
+                    var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
                     contextList.Add(new Context 
                         {
-                            source = Regex.Replace(Regex.Match(separatedContext.Value, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
-                            text = Regex.Replace(Regex.Match(separatedContext.Value, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
+                            source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
+                            text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
                         });
-                } 
+                }
                 var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
                 var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
                 using (var session = store.OpenSession())
