@@ -96,8 +96,8 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
-                ContentTitle = "Program message",
-                ContentMessage = "Do you want to insert more contexts?",
+                ContentTitle = "Сообщение программы",
+                ContentMessage = "Хотите ли добавить другие контексты?",
                 Icon = Icon.Plus,
                 Style = Style.UbuntuLinux
                 });
@@ -107,8 +107,8 @@ namespace Context_Processor.Views
                 contextField.Text = "";            
                 var sourceChangeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
-                ContentTitle = "Program message",
-                ContentMessage = "Do you want to change context source?",
+                ContentTitle = "Сообщение программы",
+                ContentMessage = "Хотите ли изменить источник контекста?",
                 Icon = Icon.Plus,
                 Style = Style.UbuntuLinux
                 });
@@ -221,8 +221,8 @@ namespace Context_Processor.Views
                 {                
                     var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.YesNo,
-                    ContentTitle = "Program message",
-                    ContentMessage = "Do you want to write into existing file?",
+                    ContentTitle = "Сообщение программы",
+                    ContentMessage = "Хотите ли добавить единицу в существующий файл?",
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -234,8 +234,8 @@ namespace Context_Processor.Views
                 }
                 var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Program message",
-                    ContentMessage = "Unit is inserted",
+                    ContentTitle = "Сообщение программы",
+                    ContentMessage = "Единица добавлена",
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -246,8 +246,8 @@ namespace Context_Processor.Views
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Program message",
-                    ContentMessage = "There is no file name, unit is not inserted",
+                    ContentTitle = "Сообщение программы",
+                    ContentMessage = "Пустое имя файла, единица не может быть добавлена",
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -262,8 +262,8 @@ namespace Context_Processor.Views
         {
             var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Program message",
-                    ContentMessage = "Unit is inserted",
+                    ContentTitle = "Сообщение программы",
+                    ContentMessage = "Единица добавлена",
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -315,8 +315,8 @@ namespace Context_Processor.Views
             }
             var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Program message",
-                    ContentMessage = "Unit is inserted",
+                    ContentTitle = "Сообщение программы",
+                    ContentMessage = "Единица добавлена",
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });

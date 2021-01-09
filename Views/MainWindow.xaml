@@ -4,7 +4,7 @@
         x:Class="Context_Processor.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Width="1200" Height="1050"
-        Title="Context_Processor">
+        Title="Обработчик контекстов">
   <views:TitusView/>
 </Window>
 
