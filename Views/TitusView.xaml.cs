@@ -44,6 +44,28 @@ namespace Context_Processor.Views
         private TextBox analysisField;
         private TextBox finalField;
 
+        //create variables for operating with localizations
+        private string currentLocalization = "ru";
+        private string unitLocalized;
+        private string unitButtonLocalized;
+        private string semanticsLocalized;
+        private string semanticsButtonLocalized;
+        private string contextsAmountLocalized;
+        private string contextsAmountButtonLocalized;
+        private string sourceLocalized;
+        private string contextLocalized;
+        private string contextButtonLocalized;
+        private string basementLocalized;
+        private string basementButtonLocalized;
+        private string analysisLocalized;
+        private string analysisButtonLocalized;
+        private string finalLocalized;
+        private string XMLLocalized;
+        private string HTMLLocalized;
+        private string RavenLocalized;
+        private string erasingLocalized;
+        private string localizationLocalized;
+
         public TitusView()
         {
             InitializeComponent();
@@ -329,6 +351,7 @@ namespace Context_Processor.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            //TODO: initialize localization strings
             //initialize buttons
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             semanticInsertButton = this.FindControl<Button>("SemBtn");
