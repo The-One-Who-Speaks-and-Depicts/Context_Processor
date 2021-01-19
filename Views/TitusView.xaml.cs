@@ -22,6 +22,8 @@ namespace Context_Processor.Views
     public class TitusView : UserControl
     {        
 
+        //TODO: initialize textblocks
+
         //create variables for operating with buttons
         private Button unitInsertButton;
         private Button semanticInsertButton;
@@ -65,6 +67,13 @@ namespace Context_Processor.Views
         private string RavenLocalized;
         private string erasingLocalized;
         private string localizationLocalized;
+        private string messageLocalized;
+        private string addingContextsLocalized;
+        private string changingContextsLocalized;
+        private string fileChangeLocalized;
+        private string successLocalized;
+        private string failureLocalized;
+        private string insertionLocalized;
 
         public TitusView()
         {
@@ -350,8 +359,9 @@ namespace Context_Processor.Views
 
         private void InitializeComponent()
         {
-            AvaloniaXamlLoader.Load(this);
-            //TODO: initialize localization strings
+            AvaloniaXamlLoader.Load(this);            
+            
+
             //initialize buttons
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             semanticInsertButton = this.FindControl<Button>("SemBtn");
