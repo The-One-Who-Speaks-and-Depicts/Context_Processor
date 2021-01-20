@@ -23,6 +23,7 @@ namespace Context_Processor.Views
     {        
 
         //TODO: initialize textblocks
+        private TextBlock unitTextBlock;
 
         //create variables for operating with buttons
         private Button unitInsertButton;
@@ -48,32 +49,27 @@ namespace Context_Processor.Views
 
         //create variables for operating with localizations
         private string currentLocalization = "ru";
-        private string unitLocalized;
-        private string unitButtonLocalized;
-        private string semanticsLocalized;
-        private string semanticsButtonLocalized;
-        private string contextsAmountLocalized;
-        private string contextsAmountButtonLocalized;
-        private string sourceLocalized;
-        private string contextLocalized;
-        private string contextButtonLocalized;
-        private string basementLocalized;
-        private string basementButtonLocalized;
-        private string analysisLocalized;
-        private string analysisButtonLocalized;
-        private string finalLocalized;
-        private string XMLLocalized;
-        private string HTMLLocalized;
-        private string RavenLocalized;
-        private string erasingLocalized;
-        private string localizationLocalized;
-        private string messageLocalized;
-        private string addingContextsLocalized;
-        private string changingContextsLocalized;
-        private string fileChangeLocalized;
-        private string successLocalized;
-        private string failureLocalized;
-        private string insertionLocalized;
+        private string unitLocalized = "Единица";
+        private string insertionButtonLocalized = "Внести";
+        private string semanticsLocalized = "Семантика";
+        private string contextsAmountLocalized = "Количество контекстов";
+        private string sourceLocalized = "Источник контекста";
+        private string contextLocalized = "Контекст";
+        private string contextButtonLocalized = "Добавить контекст";
+        private string basementLocalized = "Предмет анализа";
+        private string analysisLocalized = "Анализ";
+        private string finalLocalized = "Итог";
+        private string XMLLocalized = "Внести итоговое значение (XML)";
+        private string HTMLLocalized = "Внести итоговое значение (HTML)";
+        private string RavenLocalized = "Внести итоговое значение (RavenDB)";
+        private string erasingLocalized = "Стереть все поля";
+        private string localizationLocalized = "en";
+        private string messageLocalized = "Сообщение программы";
+        private string addingContextsLocalized = "Хотите ли добавить другие контексты?";
+        private string changingContextsLocalized = "Хотите ли изменить источник контекста?";
+        private string fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
+        private string successLocalized = "Единица добавлена";
+        private string failureLocalized = "Пустое имя файла, единица не может быть добавлена";
 
         public TitusView()
         {
@@ -127,8 +123,8 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
-                ContentTitle = "Сообщение программы",
-                ContentMessage = "Хотите ли добавить другие контексты?",
+                ContentTitle = messageLocalized,
+                ContentMessage = addingContextsLocalized,
                 Icon = Icon.Plus,
                 Style = Style.UbuntuLinux
                 });
@@ -138,8 +134,8 @@ namespace Context_Processor.Views
                 contextField.Text = "";            
                 var sourceChangeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
-                ContentTitle = "Сообщение программы",
-                ContentMessage = "Хотите ли изменить источник контекста?",
+                ContentTitle = messageLocalized,
+                ContentMessage = changingContextsLocalized,
                 Icon = Icon.Plus,
                 Style = Style.UbuntuLinux
                 });
@@ -252,8 +248,8 @@ namespace Context_Processor.Views
                 {                
                     var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.YesNo,
-                    ContentTitle = "Сообщение программы",
-                    ContentMessage = "Хотите ли добавить единицу в существующий файл?",
+                    ContentTitle = messageLocalized,
+                    ContentMessage = fileChangeLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -265,8 +261,8 @@ namespace Context_Processor.Views
                 }
                 var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Сообщение программы",
-                    ContentMessage = "Единица добавлена",
+                    ContentTitle = messageLocalized,
+                    ContentMessage = successLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -277,8 +273,8 @@ namespace Context_Processor.Views
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Сообщение программы",
-                    ContentMessage = "Пустое имя файла, единица не может быть добавлена",
+                    ContentTitle = messageLocalized,
+                    ContentMessage = failureLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -293,8 +289,8 @@ namespace Context_Processor.Views
         {
             var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Сообщение программы",
-                    ContentMessage = "Единица добавлена",
+                    ContentTitle = messageLocalized,
+                    ContentMessage = successLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -346,8 +342,8 @@ namespace Context_Processor.Views
             }
             var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = "Сообщение программы",
-                    ContentMessage = "Единица добавлена",
+                    ContentTitle = messageLocalized,
+                    ContentMessage = successLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
@@ -359,11 +355,15 @@ namespace Context_Processor.Views
 
         private void InitializeComponent()
         {
-            AvaloniaXamlLoader.Load(this);            
-            
+            AvaloniaXamlLoader.Load(this); 
 
-            //initialize buttons
+            // TODO: initialize textblocks and inscriptions
+            unitTextBlock = this.FindControl<TextBlock>("UnitBlock");            
+            unitTextBlock.Text = unitLocalized;
+
+            //initialize buttons and inscriptions
             unitInsertButton = this.FindControl<Button>("UnitBtn");
+            unitInsertButton.Content = insertionButtonLocalized;
             semanticInsertButton = this.FindControl<Button>("SemBtn");
             contextsAmountInsertionButton = this.FindControl<Button>("NumBtn");
             contextInsertionButton = this.FindControl<Button>("ContextBtn");
@@ -372,8 +372,8 @@ namespace Context_Processor.Views
             XMLInsertionButton = this.FindControl<Button>("XmlBtn");
             HTMLInsertionButton = this.FindControl<Button>("HtmlBtn");
             databaseInsertionButton = this.FindControl<Button>("RavenBtn");
-
             erasingButton = this.FindControl<Button>("EraseBtn");
+
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
             semanticsField = this.FindControl<TextBox>("SemanticsTextBox");
