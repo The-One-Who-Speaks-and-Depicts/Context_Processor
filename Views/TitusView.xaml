@@ -5,85 +5,90 @@
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1050"
              x:Class="Context_Processor.Views.TitusView">
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="600" Height="50">
-          	<Border Padding="15">
-          		<TextBlock Name="UnitBlock" Margin="10" Width="100" Height="20" HorizontalAlignment="Center"></TextBlock>
-          	</Border>
-          	<TextBox Width="470" Height="40" Name="UnitTextBox" />
-          	<Button Name="UnitBtn" Width="120" Height="40" Click="UnitInsert"></Button>
-          </StackPanel>
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="100">
-            <Border Padding="15">
-              <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Name="SemanticsBlock"></TextBlock>
-            </Border>
-            <TextBox Width="470" Height="40" AcceptsReturn="True" TextWrapping="Wrap" Name="SemanticsTextBox" IsReadOnly="true" />
-            <Button IsEnabled="false" Name="SemBtn" Width="120" Height="40" Click="SemanticsInsert"></Button>
-          </StackPanel>
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
-            <Border Padding="15">
-              <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center" Name="AmountBlock"></TextBlock>
-            </Border>
-            <NumericUpDown Name="NumeralBox" Width="420" Height="35" Value="0" Minimum="0" IsReadOnly="true" />
-            <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35" Click="ContextsAmountInsert"></Button>
-          </StackPanel>
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" Orientation="Horizontal" Width="800" Height="152">
-            <Border Padding="10">
-              <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Width="550">
-                <Border Padding="15">
-                  <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="10" Width="500" Height="25">
-                    <Border Padding="15">
-                      <TextBlock Margin="10" Width="170" Height="20" HorizontalAlignment="Left" Name="SourceBlock"></TextBlock>               
-                    </Border>
-                    <TextBox Name="SourceTextBox" Width="325" Height="40" IsReadOnly="true" />
-                  </StackPanel>
-                </Border>
-                <Border Padding="15">
-                  <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="23" Width="500" Height="25">
-                    <Border Padding="15">
-                      <TextBlock Margin="10" Width="157" Height="20" HorizontalAlignment="Left" Name="ContextBlock"></TextBlock>               
-                    </Border>
-                    <TextBox Name="ContextTextBox" Width="325" Height="80" IsReadOnly="true" />
-                  </StackPanel>
-                </Border>
-              </StackPanel>
-            </Border>
-            <Border Padding="25">
-              <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
-                <Border VerticalAlignment="Top">
-                  <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150" Click="ContextInsert"></Button>
-                </Border>
-              </StackPanel>
-            </Border>         
-          </StackPanel>
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="60 60 60 0" Orientation="Horizontal" Width="800" Height="50">
-            <Border Padding="10">
-              <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center" Name="BasementBlock"></TextBlock>
-            </Border>
-            <TextBox Name="BasementTextBox" Width="380" Height="40" IsReadOnly="true" />
-            <Button Name="BasementBtn" IsEnabled="false" Width="120" Height="40" Click="BasementInsert"></Button>
-          </StackPanel>
-          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
-            <Border Padding="25">
-              <TextBlock Width="100" Height="20" HorizontalAlignment="Center" Name="AnalysisBlock"></TextBlock>
-            </Border>
-            <TextBox Name="AnalysisTextBox" Width="470" Height="150" IsReadOnly="true" />
-            <Button Name="AnalysisBtn" IsEnabled="false" Width="120" Height="40" Click="AnalysisInsert"></Button>
-          </StackPanel>        
+      <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <StackPanel HorizontalAlignment="Right">        
+          <Button Name="LocalizationBtn" Width="30" Height="30" Click="Localize"></Button>  
         </StackPanel>
-        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="300" Height="670">
-            <Border Padding="5">
-              <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center" Name="FinalBlock"></TextBlock>
-            </Border>
-            <Border Padding="15">
-              <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
-            </Border>
-            <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="30" Click="EraseAllFields"></Button>
-            <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="30" Click="XMLInsert"></Button>
-            <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="30" Click="HTMLInsert"></Button>
-            <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="30" Click="RavenInsert"></Button>
-        </StackPanel>  
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">        
+          <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="600" Height="50">
+            	<Border Padding="15">
+            		<TextBlock Name="UnitBlock" Margin="10" Width="100" Height="20" HorizontalAlignment="Center"></TextBlock>
+            	</Border>
+            	<TextBox Width="470" Height="40" Name="UnitTextBox" />
+            	<Button Name="UnitBtn" Width="120" Height="40" Click="UnitInsert"></Button>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="100">
+              <Border Padding="15">
+                <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Name="SemanticsBlock"></TextBlock>
+              </Border>
+              <TextBox Width="470" Height="40" AcceptsReturn="True" TextWrapping="Wrap" Name="SemanticsTextBox" IsReadOnly="true" />
+              <Button IsEnabled="false" Name="SemBtn" Width="120" Height="40" Click="SemanticsInsert"></Button>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
+              <Border Padding="15">
+                <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center" Name="AmountBlock"></TextBlock>
+              </Border>
+              <NumericUpDown Name="NumeralBox" Width="420" Height="35" Value="0" Minimum="0" IsReadOnly="true" />
+              <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35" Click="ContextsAmountInsert"></Button>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" Orientation="Horizontal" Width="800" Height="152">
+              <Border Padding="10">
+                <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Width="550">
+                  <Border Padding="15">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="10" Width="500" Height="25">
+                      <Border Padding="15">
+                        <TextBlock Margin="10" Width="170" Height="20" HorizontalAlignment="Left" Name="SourceBlock"></TextBlock>               
+                      </Border>
+                      <TextBox Name="SourceTextBox" Width="325" Height="40" IsReadOnly="true" />
+                    </StackPanel>
+                  </Border>
+                  <Border Padding="15">
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="23" Width="500" Height="25">
+                      <Border Padding="15">
+                        <TextBlock Margin="10" Width="157" Height="20" HorizontalAlignment="Left" Name="ContextBlock"></TextBlock>               
+                      </Border>
+                      <TextBox Name="ContextTextBox" Width="325" Height="80" IsReadOnly="true" />
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+              </Border>
+              <Border Padding="25">
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
+                  <Border VerticalAlignment="Top">
+                    <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150" Click="ContextInsert"></Button>
+                  </Border>
+                </StackPanel>
+              </Border>         
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="60 60 60 0" Orientation="Horizontal" Width="800" Height="50">
+              <Border Padding="10">
+                <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center" Name="BasementBlock"></TextBlock>
+              </Border>
+              <TextBox Name="BasementTextBox" Width="380" Height="40" IsReadOnly="true" />
+              <Button Name="BasementBtn" IsEnabled="false" Width="120" Height="40" Click="BasementInsert"></Button>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
+              <Border Padding="25">
+                <TextBlock Width="100" Height="20" HorizontalAlignment="Center" Name="AnalysisBlock"></TextBlock>
+              </Border>
+              <TextBox Name="AnalysisTextBox" Width="470" Height="150" IsReadOnly="true" />
+              <Button Name="AnalysisBtn" IsEnabled="false" Width="120" Height="40" Click="AnalysisInsert"></Button>
+            </StackPanel>        
+          </StackPanel>
+          <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="300" Height="670">
+              <Border Padding="5">
+                <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center" Name="FinalBlock"></TextBlock>
+              </Border>
+              <Border Padding="15">
+                <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
+              </Border>
+              <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="30" Click="EraseAllFields"></Button>
+              <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="30" Click="XMLInsert"></Button>
+              <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="30" Click="HTMLInsert"></Button>
+              <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="30" Click="RavenInsert"></Button>
+          </StackPanel>  
+        </StackPanel>
       </StackPanel>
     </ScrollViewer>  
   

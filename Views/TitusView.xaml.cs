@@ -44,6 +44,7 @@ namespace Context_Processor.Views
         private Button HTMLInsertionButton;
         private Button databaseInsertionButton;
         private Button erasingButton;
+        private Button localizationButton;
 
         //create variables for operating with text boxes
         private TextBox unitField;
@@ -360,6 +361,11 @@ namespace Context_Processor.Views
             this.IsEnabled = true;
         }
 
+        public void Localize(object sender, RoutedEventArgs e) 
+        {
+
+        }
+
 
         private void InitializeComponent()
         {
@@ -405,6 +411,8 @@ namespace Context_Processor.Views
             databaseInsertionButton.Content = RavenLocalized;
             erasingButton = this.FindControl<Button>("EraseBtn");
             erasingButton.Content = erasingLocalized;
+            localizationButton = this.FindControl<Button>("LocalizationBtn");
+            localizationButton.Content = localizationLocalized;
 
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
