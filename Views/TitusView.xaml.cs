@@ -362,6 +362,8 @@ namespace Context_Processor.Views
             // TODO: initialize textblocks and inscriptions
             unitTextBlock = this.FindControl<TextBlock>("UnitBlock");            
             unitTextBlock.Text = unitLocalized;
+            semanticsTextBlock = this.FindControl<TextBlock>("SemanticsBlock");
+            semanticsTextBlock.Text = semanticsLocalized;
 
             //initialize buttons and inscriptions
             unitInsertButton = this.FindControl<Button>("UnitBtn");
