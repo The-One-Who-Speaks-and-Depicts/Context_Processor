@@ -19,14 +19,14 @@
               <TextBlock Margin="10" Width="100" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">Семантика</TextBlock>
             </Border>
             <TextBox Width="470" Height="40" AcceptsReturn="True" TextWrapping="Wrap" Name="SemanticsTextBox" IsReadOnly="true" />
-            <Button IsEnabled="false" Name="SemBtn" Width="120" Height="40" Click="SemanticsInsert">Внести</Button>
+            <Button IsEnabled="false" Name="SemBtn" Width="120" Height="40" Click="SemanticsInsert"></Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
             <Border Padding="15">
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Количество контекстов</TextBlock>
             </Border>
             <NumericUpDown Name="NumeralBox" Width="420" Height="35" Value="0" Minimum="0" IsReadOnly="true" />
-            <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35" Click="ContextsAmountInsert">Внести</Button>
+            <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35" Click="ContextsAmountInsert"></Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20" Orientation="Horizontal" Width="800" Height="152">
             <Border Padding="10">
@@ -52,7 +52,7 @@
             <Border Padding="25">
               <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
                 <Border VerticalAlignment="Top">
-                  <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150" Click="ContextInsert">Добавить контекст</Button>
+                  <Button Name="ContextBtn" IsEnabled="false" VerticalAlignment="Top" Width="135" Height="150" Click="ContextInsert"></Button>
                 </Border>
               </StackPanel>
             </Border>         
@@ -62,14 +62,14 @@
               <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Основание для анализа</TextBlock>
             </Border>
             <TextBox Name="BasementTextBox" Width="380" Height="40" IsReadOnly="true" />
-            <Button Name="BasementBtn" IsEnabled="false" Width="120" Height="40" Click="BasementInsert">Внести</Button>
+            <Button Name="BasementBtn" IsEnabled="false" Width="120" Height="40" Click="BasementInsert"></Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
             <Border Padding="25">
               <TextBlock Width="100" Height="20" HorizontalAlignment="Center">Анализ</TextBlock>
             </Border>
             <TextBox Name="AnalysisTextBox" Width="470" Height="150" IsReadOnly="true" />
-            <Button Name="AnalysisBtn" IsEnabled="false" Width="120" Height="40" Click="AnalysisInsert">Внести</Button>
+            <Button Name="AnalysisBtn" IsEnabled="false" Width="120" Height="40" Click="AnalysisInsert"></Button>
           </StackPanel>        
         </StackPanel>
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="300" Height="670">
@@ -79,10 +79,10 @@
             <Border Padding="15">
               <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />
             </Border>
-            <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="30" Click="EraseAllFields">Стереть все поля</Button>
-            <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="30" Click="XMLInsert">Внести итоговое значение (XML)</Button>
-            <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="30" Click="HTMLInsert">Внести итоговое значение(HTML)</Button>
-            <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="30" Click="RavenInsert">Внести итоговое значение (RavenDB)</Button>
+            <Button Name="EraseBtn" IsEnabled="false" Width="280" Height="30" Click="EraseAllFields"></Button>
+            <Button Name="XmlBtn" IsEnabled="false" Width="280" Height="30" Click="XMLInsert"></Button>
+            <Button Name="HtmlBtn" IsEnabled="false" Width="280" Height="30" Click="HTMLInsert"></Button>
+            <Button Name="RavenBtn" IsEnabled="false" Width="280" Height="30" Click="RavenInsert"></Button>
         </StackPanel>  
       </StackPanel>
     </ScrollViewer>  

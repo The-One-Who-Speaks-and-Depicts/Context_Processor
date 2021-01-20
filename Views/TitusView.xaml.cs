@@ -24,6 +24,8 @@ namespace Context_Processor.Views
 
         //TODO: initialize textblocks
         private TextBlock unitTextBlock;
+        private TextBlock semanticsTextBlock;
+
 
         //create variables for operating with buttons
         private Button unitInsertButton;
@@ -365,14 +367,23 @@ namespace Context_Processor.Views
             unitInsertButton = this.FindControl<Button>("UnitBtn");
             unitInsertButton.Content = insertionButtonLocalized;
             semanticInsertButton = this.FindControl<Button>("SemBtn");
+            semanticInsertButton.Content = insertionButtonLocalized;
             contextsAmountInsertionButton = this.FindControl<Button>("NumBtn");
+            contextsAmountInsertionButton.Content = insertionButtonLocalized;
             contextInsertionButton = this.FindControl<Button>("ContextBtn");
+            contextInsertionButton.Content = contextButtonLocalized;
             analysisBasementInsertionButton = this.FindControl<Button>("BasementBtn");
+            analysisBasementInsertionButton.Content = insertionButtonLocalized;
             analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
+            analysisInsertionButton.Content = insertionButtonLocalized;
             XMLInsertionButton = this.FindControl<Button>("XmlBtn");
+            XMLInsertionButton.Content = XMLLocalized;
             HTMLInsertionButton = this.FindControl<Button>("HtmlBtn");
+            HTMLInsertionButton.Content = HTMLLocalized;
             databaseInsertionButton = this.FindControl<Button>("RavenBtn");
+            databaseInsertionButton.Content = RavenLocalized;
             erasingButton = this.FindControl<Button>("EraseBtn");
+            erasingButton.Content = erasingLocalized;
 
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
