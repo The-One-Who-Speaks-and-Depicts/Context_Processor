@@ -23,7 +23,7 @@
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="45">
             <Border Padding="15">
-              <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Количество контекстов</TextBlock>
+              <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center" Name="AmountBlock"></TextBlock>
             </Border>
             <NumericUpDown Name="NumeralBox" Width="420" Height="35" Value="0" Minimum="0" IsReadOnly="true" />
             <Button Name="NumBtn" IsEnabled="false" Width="120" Height="35" Click="ContextsAmountInsert"></Button>
@@ -34,7 +34,7 @@
                 <Border Padding="15">
                   <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="10" Width="500" Height="25">
                     <Border Padding="15">
-                      <TextBlock Margin="10" Width="170" Height="20" HorizontalAlignment="Left">Источник контекста</TextBlock>               
+                      <TextBlock Margin="10" Width="170" Height="20" HorizontalAlignment="Left" Name="SourceBlock"></TextBlock>               
                     </Border>
                     <TextBox Name="SourceTextBox" Width="325" Height="40" IsReadOnly="true" />
                   </StackPanel>
@@ -42,7 +42,7 @@
                 <Border Padding="15">
                   <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="23" Width="500" Height="25">
                     <Border Padding="15">
-                      <TextBlock Margin="10" Width="157" Height="20" HorizontalAlignment="Left">Контекст</TextBlock>               
+                      <TextBlock Margin="10" Width="157" Height="20" HorizontalAlignment="Left" Name="ContextBlock"></TextBlock>               
                     </Border>
                     <TextBox Name="ContextTextBox" Width="325" Height="80" IsReadOnly="true" />
                   </StackPanel>
@@ -59,14 +59,14 @@
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="60 60 60 0" Orientation="Horizontal" Width="800" Height="50">
             <Border Padding="10">
-              <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center">Основание для анализа</TextBlock>
+              <TextBlock Margin="10" Width="150" Height="20" HorizontalAlignment="Center" Name="BasementBlock"></TextBlock>
             </Border>
             <TextBox Name="BasementTextBox" Width="380" Height="40" IsReadOnly="true" />
             <Button Name="BasementBtn" IsEnabled="false" Width="120" Height="40" Click="BasementInsert"></Button>
           </StackPanel>
           <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Horizontal" Width="800" Height="200">
             <Border Padding="25">
-              <TextBlock Width="100" Height="20" HorizontalAlignment="Center">Анализ</TextBlock>
+              <TextBlock Width="100" Height="20" HorizontalAlignment="Center" Name="AnalysisBlock"></TextBlock>
             </Border>
             <TextBox Name="AnalysisTextBox" Width="470" Height="150" IsReadOnly="true" />
             <Button Name="AnalysisBtn" IsEnabled="false" Width="120" Height="40" Click="AnalysisInsert"></Button>
@@ -74,7 +74,7 @@
         </StackPanel>
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Orientation="Vertical" Width="300" Height="670">
             <Border Padding="5">
-              <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center">Итог</TextBlock>
+              <TextBlock Margin="10" Width="100" Height="20" HorizontalAlignment="Center" Name="FinalBlock"></TextBlock>
             </Border>
             <Border Padding="15">
               <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="FinalTextBox" IsReadOnly="true" />

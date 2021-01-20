@@ -22,9 +22,15 @@ namespace Context_Processor.Views
     public class TitusView : UserControl
     {        
 
-        //TODO: initialize textblocks
+        //create variables for operating with textblocks
         private TextBlock unitTextBlock;
         private TextBlock semanticsTextBlock;
+        private TextBlock contextsAmountTextBlock;
+        private TextBlock sourceTextBlock;
+        private TextBlock contextTextBlock;
+        private TextBlock analysisBasementTextBlock;
+        private TextBlock analysisTextBlock;
+        private TextBlock finalTextBlock;
 
 
         //create variables for operating with buttons
@@ -359,11 +365,24 @@ namespace Context_Processor.Views
         {
             AvaloniaXamlLoader.Load(this); 
 
-            // TODO: initialize textblocks and inscriptions
+            //initialize textblocks and default inscriptions
             unitTextBlock = this.FindControl<TextBlock>("UnitBlock");            
             unitTextBlock.Text = unitLocalized;
             semanticsTextBlock = this.FindControl<TextBlock>("SemanticsBlock");
             semanticsTextBlock.Text = semanticsLocalized;
+            contextsAmountTextBlock = this.FindControl<TextBlock>("AmountBlock");
+            contextsAmountTextBlock.Text = contextsAmountLocalized;
+            sourceTextBlock = this.FindControl<TextBlock>("SourceBlock");
+            sourceTextBlock.Text = sourceLocalized;
+            contextTextBlock = this.FindControl<TextBlock>("ContextBlock");
+            contextTextBlock.Text = contextLocalized;
+            analysisBasementTextBlock = this.FindControl<TextBlock>("BasementBlock");
+            analysisBasementTextBlock.Text = basementLocalized;
+            analysisTextBlock = this.FindControl<TextBlock>("AnalysisBlock");
+            analysisTextBlock.Text = analysisLocalized;
+            finalTextBlock = this.FindControl<TextBlock>("FinalBlock");
+            finalTextBlock.Text = finalLocalized;
+
 
             //initialize buttons and inscriptions
             unitInsertButton = this.FindControl<Button>("UnitBtn");
