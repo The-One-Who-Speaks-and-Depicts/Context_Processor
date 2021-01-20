@@ -363,7 +363,18 @@ namespace Context_Processor.Views
 
         public void Localize(object sender, RoutedEventArgs e) 
         {
-
+            if (currentLocalization == "ru")
+            {
+                currentLocalization = "en";
+                localizationLocalized = "ru";
+                localizationButton.Content = localizationLocalized;
+            }
+            else 
+            {
+                currentLocalization = "ru";
+                localizationLocalized = "en";
+                localizationButton.Content = localizationLocalized;
+            }
         }
 
 
