@@ -79,6 +79,7 @@ namespace Context_Processor.Views
         private string fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
         private string successLocalized = "Единица добавлена";
         private string failureLocalized = "Пустое имя файла, единица не может быть добавлена";
+        private string XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
 
         public TitusView()
         {
@@ -244,39 +245,56 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                if (!File.Exists(filePath)) 
+                try 
                 {
-                    if (!filePath.EndsWith(".xml"))
+                    if (!File.Exists(filePath)) 
                     {
-                        filePath += ".xml";
-                        SaveDocument(filePath);
+                        if (!filePath.EndsWith(".xml"))
+                        {
+                            filePath += ".xml";
+                            SaveDocument(filePath);
+                        }
+                        SaveDocument(filePath);                
                     }
-                    SaveDocument(filePath);                
-                }
-                else 
-                {                
-                    var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                    ButtonDefinitions = ButtonEnum.YesNo,
-                    ContentTitle = messageLocalized,
-                    ContentMessage = fileChangeLocalized,
-                    Icon = Icon.Plus,
-                    Style = Style.UbuntuLinux
-                    });
-                    var result = await fileFoundWindow.Show();
-                    if (result == ButtonResult.Yes) 
-                    {
-                        RewriteDocument(filePath);
+                    else 
+                    {                
+                        var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.YesNo,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = fileChangeLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        var result = await fileFoundWindow.Show();
+                        if (result == ButtonResult.Yes) 
+                        {
+                            RewriteDocument(filePath);
+                        }
                     }
+                    var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                    await successWindow.Show();
                 }
-                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                catch (XmlException)
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
-                    ContentMessage = successLocalized,
+                    ContentMessage = XMLErrorLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
-                await successWindow.Show();
-                RenewForm();                
+                    await errorWindow.Show();
+                }
+                finally 
+                {
+                    RenewForm();
+                }
             }
             else 
             {
@@ -388,6 +406,7 @@ namespace Context_Processor.Views
                 fileChangeLocalized = "Would you like to add unit into the existing file?";
                 successLocalized = "Unit inserted";
                 failureLocalized = "Void file name, unit may not be inserted";
+                XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
                 unitTextBlock.Text = unitLocalized;                
                 semanticsTextBlock.Text = semanticsLocalized;
                 contextsAmountTextBlock.Text = contextsAmountLocalized;
@@ -432,6 +451,7 @@ namespace Context_Processor.Views
                 fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
                 successLocalized = "Единица добавлена";
                 failureLocalized = "Пустое имя файла, единица не может быть добавлена";
+                XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
                 unitTextBlock.Text = unitLocalized;                
                 semanticsTextBlock.Text = semanticsLocalized;
                 contextsAmountTextBlock.Text = contextsAmountLocalized;
