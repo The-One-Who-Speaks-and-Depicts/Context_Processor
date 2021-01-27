@@ -7,14 +7,16 @@
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
       <DockPanel>
           <Menu DockPanel.Dock="Top">
-              <MenuItem Header="_File">
-                  <MenuItem Header="_Open..."/>
-                  <Separator/>
-                  <MenuItem Header="_Exit"/>
-              </MenuItem>
-              <MenuItem Header="_Edit">
-                  <MenuItem Header="Copy"/>
-                  <MenuItem Header="Paste"/>
+              <MenuItem Header="_Database editing" />
+              <MenuItem Header="_Convert">
+                  <MenuItem Header="RavenDB to XML"/>
+                  <MenuItem Header="RavenDB to HTML"/>
+                  <Separator />
+                  <MenuItem Header="XML to HTML"/>
+                  <MenuItem Header="XML to RavenDB"/>
+                  <Separator />
+                  <MenuItem Header="HTML to XML"/>
+                  <MenuItem Header="HTML to RavenDB"/>
               </MenuItem>
           </Menu>
       </DockPanel>
