@@ -6,6 +6,5 @@ namespace Context_Processor.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string DownloadButton => "Загрузить новую единицу";
     }
 }
