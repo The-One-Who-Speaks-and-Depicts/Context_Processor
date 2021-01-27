@@ -308,7 +308,7 @@ namespace Context_Processor.Views
             }
             this.IsEnabled = true;
             
-        }
+        }        
 
         //insertion of a unit to the
         //user-chosen HTML-file
@@ -377,6 +377,31 @@ namespace Context_Processor.Views
             await successWindow.Show();
             RenewForm();
             this.IsEnabled = true;
+        }
+
+        public async void RavenChange(object sender, RoutedEventArgs e)
+        {
+            var store = new DocumentStore 
+            {
+                Urls = new string[]{"http://localhost:8080"},
+                Database = "UnitsDB"
+            };
+            store.Initialize();
+            using (var session = store.OpenSession())
+            {
+              var units = session.Query<Unit>();
+              foreach (var unit in units) 
+              {
+                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = unit.id,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            await successWindow.Show();
+              }
+            }
         }
 
         public void Localize(object sender, RoutedEventArgs e) 
