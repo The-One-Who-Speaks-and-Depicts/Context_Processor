@@ -7,7 +7,7 @@
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
       <DockPanel>
           <Menu DockPanel.Dock="Top">
-              <MenuItem Header="_Database editing" />
+              <MenuItem Name="DatabaseEditingMenu" Click="RavenChange"/>
               <MenuItem Header="_Convert">
                   <MenuItem Header="RavenDB to XML"/>
                   <MenuItem Header="RavenDB to HTML"/>

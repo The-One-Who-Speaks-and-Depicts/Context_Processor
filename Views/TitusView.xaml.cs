@@ -20,7 +20,9 @@ using Raven.Client.Documents;
 namespace Context_Processor.Views
 {
     public class TitusView : UserControl
-    {        
+    {
+        //create variables for operating with menu items
+        private MenuItem databaseEditingMenu;        
 
         //create variables for operating with textblocks
         private TextBlock unitTextBlock;
@@ -80,6 +82,7 @@ namespace Context_Processor.Views
         private string successLocalized = "Единица добавлена";
         private string failureLocalized = "Пустое имя файла, единица не может быть добавлена";
         private string XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
+        private string databaseMenuLocalized = "Внести изменения в базу данных";
 
         public TitusView()
         {
@@ -432,6 +435,7 @@ namespace Context_Processor.Views
                 successLocalized = "Unit inserted";
                 failureLocalized = "Void file name, unit may not be inserted";
                 XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
+                databaseMenuLocalized = "Edit database";
                 unitTextBlock.Text = unitLocalized;                
                 semanticsTextBlock.Text = semanticsLocalized;
                 contextsAmountTextBlock.Text = contextsAmountLocalized;
@@ -450,6 +454,7 @@ namespace Context_Processor.Views
                 HTMLInsertionButton.Content = HTMLLocalized;
                 databaseInsertionButton.Content = RavenLocalized;
                 erasingButton.Content = erasingLocalized;
+                databaseEditingMenu.Header = databaseMenuLocalized;
             }
             else 
             {
@@ -477,6 +482,7 @@ namespace Context_Processor.Views
                 successLocalized = "Единица добавлена";
                 failureLocalized = "Пустое имя файла, единица не может быть добавлена";
                 XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
+                databaseMenuLocalized = "Внести изменения в базу данных";
                 unitTextBlock.Text = unitLocalized;                
                 semanticsTextBlock.Text = semanticsLocalized;
                 contextsAmountTextBlock.Text = contextsAmountLocalized;
@@ -495,6 +501,7 @@ namespace Context_Processor.Views
                 HTMLInsertionButton.Content = HTMLLocalized;
                 databaseInsertionButton.Content = RavenLocalized;
                 erasingButton.Content = erasingLocalized;
+                databaseEditingMenu.Header = databaseMenuLocalized;
             }
         }
 
@@ -555,6 +562,10 @@ namespace Context_Processor.Views
             analysisBasementField = this.FindControl<TextBox>("BasementTextBox");
             analysisField = this.FindControl<TextBox>("AnalysisTextBox");
             finalField = this.FindControl<TextBox>("FinalTextBox");
+
+            //Initializing menus
+            databaseEditingMenu = this.FindControl<MenuItem>("DatabaseEditingMenu");
+            databaseEditingMenu.Header = databaseMenuLocalized;
         }
         
     }
