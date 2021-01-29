@@ -382,29 +382,12 @@ namespace Context_Processor.Views
             this.IsEnabled = true;
         }
 
-        public async void RavenChange(object sender, RoutedEventArgs e)
+        public void RavenEdit(object sender, RoutedEventArgs e)
         {
-            var store = new DocumentStore 
-            {
-                Urls = new string[]{"http://localhost:8080"},
-                Database = "UnitsDB"
-            };
-            store.Initialize();
-            using (var session = store.OpenSession())
-            {
-              var units = session.Query<Unit>();
-              foreach (var unit in units) 
-              {
-                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                    ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = messageLocalized,
-                    ContentMessage = unit.id,
-                    Icon = Icon.Plus,
-                    Style = Style.UbuntuLinux
-                    });
-            await successWindow.Show();
-              }
-            }
+            //this.IsEnabled = false;
+            var ravenDepiction = new RavenDepiction();
+            ravenDepiction.Show();
+            //this.IsEnabled = true;
         }
 
         public void Localize(object sender, RoutedEventArgs e) 
