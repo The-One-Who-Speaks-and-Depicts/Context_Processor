@@ -3,6 +3,9 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
+using Context_Processor.ViewModels;
+using Context_Processor.Views;
+
 
 namespace Context_Processor
 {
@@ -20,5 +23,6 @@ namespace Context_Processor
                 .UsePlatformDetect()
                 .LogToDebug()
                 .UseReactiveUI();
+                
     }
 }
