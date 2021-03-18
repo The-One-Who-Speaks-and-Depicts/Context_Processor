@@ -34,9 +34,9 @@ namespace Context_Processor.Views
         private Button editButton;
 
         //creates strings for localization
-        private string deletionLocalized = "Удалить";
+        private string deletionLocalized;
         private string localizationLocalized = "ru";
-        private string editLocalized = "Редактировать";
+        private string editLocalized;
 
         public RavenDepiction()
         {            
@@ -55,7 +55,9 @@ namespace Context_Processor.Views
             localizationButton = this.FindControl<Button>("LocalizationBtn");
             localizationButton.Content = localizationLocalized;
             editButton = this.FindControl<Button>("EditBtn");
-            editButton.Content = editLocalized;            
+            editButton.Content = editLocalized;
+            // localize
+            Localize(new object(), new RoutedEventArgs());            
         }
 
         // gets units from RavenDB
@@ -100,16 +102,16 @@ namespace Context_Processor.Views
         //  localization changes
         public void Localize (object sender, RoutedEventArgs e)
         {
-            if (localizationLocalized == "ru")
+            if (localizationLocalized == "en")
             {
-                localizationLocalized = "en";                
+                localizationLocalized = "ru";                
                 deletionLocalized = "Delete";                
                 editLocalized = "Edit";
                 
             }
             else
             {
-                localizationLocalized = "ru";
+                localizationLocalized = "en";
                 deletionLocalized = "Удалить";
                 editLocalized = "Редактировать";
             }

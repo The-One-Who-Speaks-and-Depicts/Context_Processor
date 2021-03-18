@@ -59,30 +59,29 @@ namespace Context_Processor.Views
         private TextBox finalField;
 
         //create variables for operating with localizations
-        private string currentLocalization = "ru";
-        private string unitLocalized = "Единица";
-        private string insertionButtonLocalized = "Внести";
-        private string semanticsLocalized = "Семантика";
-        private string contextsAmountLocalized = "Количество контекстов";
-        private string sourceLocalized = "Источник контекста";
-        private string contextLocalized = "Контекст";
-        private string contextButtonLocalized = "Добавить контекст";
-        private string basementLocalized = "Предмет анализа";
-        private string analysisLocalized = "Анализ";
-        private string finalLocalized = "Итог";
-        private string XMLLocalized = "Внести итоговое значение (XML)";
-        private string HTMLLocalized = "Внести итоговое значение (HTML)";
-        private string RavenLocalized = "Внести итоговое значение (RavenDB)";
-        private string erasingLocalized = "Стереть все поля";
-        private string localizationLocalized = "en";
-        private string messageLocalized = "Сообщение программы";
-        private string addingContextsLocalized = "Хотите ли добавить другие контексты?";
-        private string changingContextsLocalized = "Хотите ли изменить источник контекста?";
-        private string fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
-        private string successLocalized = "Единица добавлена";
-        private string failureLocalized = "Пустое имя файла, единица не может быть добавлена";
-        private string XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
-        private string databaseMenuLocalized = "Внести изменения в базу данных";
+        private string localizationLocalized = "ru";
+        private string unitLocalized;
+        private string insertionButtonLocalized;
+        private string semanticsLocalized;
+        private string contextsAmountLocalized;
+        private string sourceLocalized;
+        private string contextLocalized;
+        private string contextButtonLocalized;
+        private string basementLocalized;
+        private string analysisLocalized;
+        private string finalLocalized;
+        private string XMLLocalized;
+        private string HTMLLocalized;
+        private string RavenLocalized;
+        private string erasingLocalized;        
+        private string messageLocalized;
+        private string addingContextsLocalized;
+        private string changingContextsLocalized;
+        private string fileChangeLocalized;
+        private string successLocalized;
+        private string failureLocalized;
+        private string XMLErrorLocalized;
+        private string databaseMenuLocalized;
 
         public TitusView()
         {
@@ -392,11 +391,9 @@ namespace Context_Processor.Views
 
         public void Localize(object sender, RoutedEventArgs e) 
         {
-            if (currentLocalization == "ru")
+            if (localizationLocalized == "en")
             {
-                currentLocalization = "en";
                 localizationLocalized = "ru";
-                localizationButton.Content = localizationLocalized;
                 unitLocalized = "Unit";
                 insertionButtonLocalized = "Insert";
                 semanticsLocalized = "Semantics";
@@ -419,31 +416,10 @@ namespace Context_Processor.Views
                 failureLocalized = "Void file name, unit may not be inserted";
                 XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
                 databaseMenuLocalized = "Edit database";
-                unitTextBlock.Text = unitLocalized;                
-                semanticsTextBlock.Text = semanticsLocalized;
-                contextsAmountTextBlock.Text = contextsAmountLocalized;
-                sourceTextBlock.Text = sourceLocalized;
-                contextTextBlock.Text = contextLocalized;
-                analysisBasementTextBlock.Text = basementLocalized;
-                analysisTextBlock.Text = analysisLocalized;
-                finalTextBlock.Text = finalLocalized;
-                unitInsertButton.Content = insertionButtonLocalized;
-                semanticInsertButton.Content = insertionButtonLocalized;
-                contextsAmountInsertionButton.Content = insertionButtonLocalized;
-                contextInsertionButton.Content = contextButtonLocalized;
-                analysisBasementInsertionButton.Content = insertionButtonLocalized;
-                analysisInsertionButton.Content = insertionButtonLocalized;
-                XMLInsertionButton.Content = XMLLocalized;
-                HTMLInsertionButton.Content = HTMLLocalized;
-                databaseInsertionButton.Content = RavenLocalized;
-                erasingButton.Content = erasingLocalized;
-                databaseEditingMenu.Header = databaseMenuLocalized;
             }
             else 
             {
-                currentLocalization = "ru";
                 localizationLocalized = "en";
-                localizationButton.Content = localizationLocalized;
                 unitLocalized = "Единица";
                 insertionButtonLocalized = "Внести";
                 semanticsLocalized = "Семантика";
@@ -465,7 +441,9 @@ namespace Context_Processor.Views
                 successLocalized = "Единица добавлена";
                 failureLocalized = "Пустое имя файла, единица не может быть добавлена";
                 XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
-                databaseMenuLocalized = "Внести изменения в базу данных";
+                databaseMenuLocalized = "Внести изменения в базу данных";                
+            }
+                localizationButton.Content = localizationLocalized;
                 unitTextBlock.Text = unitLocalized;                
                 semanticsTextBlock.Text = semanticsLocalized;
                 contextsAmountTextBlock.Text = contextsAmountLocalized;
@@ -484,8 +462,7 @@ namespace Context_Processor.Views
                 HTMLInsertionButton.Content = HTMLLocalized;
                 databaseInsertionButton.Content = RavenLocalized;
                 erasingButton.Content = erasingLocalized;
-                databaseEditingMenu.Header = databaseMenuLocalized;
-            }
+                databaseEditingMenu.Header = databaseMenuLocalized;    
         }
 
 
@@ -549,6 +526,9 @@ namespace Context_Processor.Views
             //Initializing menus
             databaseEditingMenu = this.FindControl<MenuItem>("DatabaseEditingMenu");
             databaseEditingMenu.Header = databaseMenuLocalized;
+
+            // set localization
+            Localize(new object(), new RoutedEventArgs());
         }
         
     }
