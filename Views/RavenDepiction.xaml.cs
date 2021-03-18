@@ -32,11 +32,15 @@ namespace Context_Processor.Views
         private Button deleteButton;
         private Button localizationButton;
         private Button editButton;
+        private Button XMLButton;
+        private Button HTMLButton;
 
         //creates strings for localization
         private string deletionLocalized;
         private string localizationLocalized = "ru";
         private string editLocalized;
+        private string XMLLocalized;
+        private string HTMLLocalized;
 
         public RavenDepiction()
         {            
@@ -51,11 +55,10 @@ namespace Context_Processor.Views
             unitsComboBox.Items = RavenGet().Select(unit => unit.name);
             // initialize buttons
             deleteButton = this.FindControl<Button>("DeleteBtn");
-            deleteButton.Content = deletionLocalized;
             localizationButton = this.FindControl<Button>("LocalizationBtn");
-            localizationButton.Content = localizationLocalized;
             editButton = this.FindControl<Button>("EditBtn");
-            editButton.Content = editLocalized;
+            XMLButton = this.FindControl<Button>("XMLBtn");
+            HTMLButton = this.FindControl<Button>("HTMLBtn");
             // localize
             Localize(new object(), new RoutedEventArgs());            
         }
@@ -94,7 +97,20 @@ namespace Context_Processor.Views
             unitsComboBox.Items = RavenGet().Select(unit => unit.name);
         }
 
+        // save edited unit in DB
         public void EditUnit(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        // save unit as XML
+        public void SaveToXML(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //save unit as HTML
+        public void SaveToHTML(object sender, RoutedEventArgs e)
         {
 
         }
@@ -107,17 +123,22 @@ namespace Context_Processor.Views
                 localizationLocalized = "ru";                
                 deletionLocalized = "Delete";                
                 editLocalized = "Edit";
-                
+                XMLLocalized = "Save as XML";
+                HTMLLocalized = "Save as HTML";                
             }
             else
             {
                 localizationLocalized = "en";
                 deletionLocalized = "Удалить";
                 editLocalized = "Редактировать";
+                XMLLocalized = "Сохранить как XML";
+                HTMLLocalized = "Сохранить как HTML";
             }
             localizationButton.Content = localizationLocalized;
             deleteButton.Content = deletionLocalized;
             editButton.Content = editLocalized;
+            XMLButton.Content = XMLLocalized;
+            HTMLButton.Content = HTMLLocalized;
         }
     }
 }
