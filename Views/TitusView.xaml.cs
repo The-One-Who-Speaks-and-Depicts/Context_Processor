@@ -59,21 +59,8 @@ namespace Context_Processor.Views
         private TextBox finalField;
 
         //create variables for operating with localizations
-        private string localizationLocalized = "ru";
-        private string unitLocalized;
+        private string localization = "ru";
         private string insertionButtonLocalized;
-        private string semanticsLocalized;
-        private string contextsAmountLocalized;
-        private string sourceLocalized;
-        private string contextLocalized;
-        private string contextButtonLocalized;
-        private string basementLocalized;
-        private string analysisLocalized;
-        private string finalLocalized;
-        private string XMLLocalized;
-        private string HTMLLocalized;
-        private string RavenLocalized;
-        private string erasingLocalized;        
         private string messageLocalized;
         private string addingContextsLocalized;
         private string changingContextsLocalized;
@@ -81,7 +68,7 @@ namespace Context_Processor.Views
         private string successLocalized;
         private string failureLocalized;
         private string XMLErrorLocalized;
-        private string databaseMenuLocalized;
+                
 
         public TitusView()
         {
@@ -391,23 +378,23 @@ namespace Context_Processor.Views
 
         public void Localize(object sender, RoutedEventArgs e) 
         {
-            if (localizationLocalized == "en")
+            if (localization == "en")
             {
-                localizationLocalized = "ru";
-                unitLocalized = "Unit";
+                localization = "ru";
+                unitTextBlock.Text = "Unit";
                 insertionButtonLocalized = "Insert";
-                semanticsLocalized = "Semantics";
-                contextsAmountLocalized = "Contexts amount";
-                sourceLocalized = "Context source";
-                contextLocalized = "Context";
-                contextButtonLocalized = "Add context";
-                basementLocalized = "Analysis ground";
-                analysisLocalized = "Analysis";
-                finalLocalized = "Result";
-                XMLLocalized = "Insert result (XML)";
-                HTMLLocalized = "Insert result (HTML)";
-                RavenLocalized = "Insert result (RavenDB)";
-                erasingLocalized = "Erase";
+                semanticsTextBlock.Text = "Semantics";
+                contextsAmountTextBlock.Text = "Contexts amount";
+                sourceTextBlock.Text= "Context source";
+                contextTextBlock.Text = "Context";
+                contextInsertionButton.Content = "Add context";
+                analysisBasementTextBlock.Text = "Analysis ground";
+                analysisTextBlock.Text = "Analysis";
+                finalTextBlock.Text = "Result";
+                XMLInsertionButton.Content = "Insert result (XML)";
+                HTMLInsertionButton.Content = "Insert result (HTML)";
+                databaseInsertionButton.Content = "Insert result (RavenDB)";
+                erasingButton.Content = "Erase";
                 messageLocalized = "Program message";
                 addingContextsLocalized = "Would you like to add more contexts?";
                 changingContextsLocalized = "Would you like to change the source of the contexts?";
@@ -415,25 +402,25 @@ namespace Context_Processor.Views
                 successLocalized = "Unit inserted";
                 failureLocalized = "Void file name, unit may not be inserted";
                 XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
-                databaseMenuLocalized = "Edit database";
+                databaseEditingMenu.Header = "Edit database";
             }
             else 
             {
-                localizationLocalized = "en";
-                unitLocalized = "Единица";
+                localization = "en";
+                unitTextBlock.Text = "Единица";
                 insertionButtonLocalized = "Внести";
-                semanticsLocalized = "Семантика";
-                contextsAmountLocalized = "Количество контекстов";
-                sourceLocalized = "Источник контекста";
-                contextLocalized = "Контекст";
-                contextButtonLocalized = "Добавить контекст";
-                basementLocalized = "Предмет анализа";
-                analysisLocalized = "Анализ";
-                finalLocalized = "Итог";
-                XMLLocalized = "Внести итоговое значение (XML)";
-                HTMLLocalized = "Внести итоговое значение (HTML)";
-                RavenLocalized = "Внести итоговое значение (RavenDB)";
-                erasingLocalized = "Стереть все поля";
+                semanticsTextBlock.Text = "Семантика";
+                contextsAmountTextBlock.Text = "Количество контекстов";
+                sourceTextBlock.Text = "Источник контекста";
+                contextTextBlock.Text = "Контекст";
+                contextInsertionButton.Content = "Добавить контекст";
+                analysisBasementTextBlock.Text = "Предмет анализа";
+                analysisTextBlock.Text = "Анализ";
+                finalTextBlock.Text = "Итог";
+                XMLInsertionButton.Content = "Внести итоговое значение (XML)";
+                HTMLInsertionButton.Content = "Внести итоговое значение (HTML)";
+                databaseInsertionButton.Content = "Внести итоговое значение (RavenDB)";
+                erasingButton.Content = "Стереть все поля";
                 messageLocalized = "Сообщение программы";
                 addingContextsLocalized = "Хотите ли добавить другие контексты?";
                 changingContextsLocalized = "Хотите ли изменить источник контекста?";
@@ -441,28 +428,14 @@ namespace Context_Processor.Views
                 successLocalized = "Единица добавлена";
                 failureLocalized = "Пустое имя файла, единица не может быть добавлена";
                 XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
-                databaseMenuLocalized = "Внести изменения в базу данных";                
+                databaseEditingMenu.Header = "Внести изменения в базу данных";                
             }
-                localizationButton.Content = localizationLocalized;
-                unitTextBlock.Text = unitLocalized;                
-                semanticsTextBlock.Text = semanticsLocalized;
-                contextsAmountTextBlock.Text = contextsAmountLocalized;
-                sourceTextBlock.Text = sourceLocalized;
-                contextTextBlock.Text = contextLocalized;
-                analysisBasementTextBlock.Text = basementLocalized;
-                analysisTextBlock.Text = analysisLocalized;
-                finalTextBlock.Text = finalLocalized;
+                localizationButton.Content = localization;                
                 unitInsertButton.Content = insertionButtonLocalized;
                 semanticInsertButton.Content = insertionButtonLocalized;
                 contextsAmountInsertionButton.Content = insertionButtonLocalized;
-                contextInsertionButton.Content = contextButtonLocalized;
                 analysisBasementInsertionButton.Content = insertionButtonLocalized;
-                analysisInsertionButton.Content = insertionButtonLocalized;
-                XMLInsertionButton.Content = XMLLocalized;
-                HTMLInsertionButton.Content = HTMLLocalized;
-                databaseInsertionButton.Content = RavenLocalized;
-                erasingButton.Content = erasingLocalized;
-                databaseEditingMenu.Header = databaseMenuLocalized;    
+                analysisInsertionButton.Content = insertionButtonLocalized;                
         }
 
 
@@ -471,47 +444,27 @@ namespace Context_Processor.Views
             AvaloniaXamlLoader.Load(this); 
 
             //initialize textblocks and default inscriptions
-            unitTextBlock = this.FindControl<TextBlock>("UnitBlock");            
-            unitTextBlock.Text = unitLocalized;
+            unitTextBlock = this.FindControl<TextBlock>("UnitBlock"); 
             semanticsTextBlock = this.FindControl<TextBlock>("SemanticsBlock");
-            semanticsTextBlock.Text = semanticsLocalized;
             contextsAmountTextBlock = this.FindControl<TextBlock>("AmountBlock");
-            contextsAmountTextBlock.Text = contextsAmountLocalized;
             sourceTextBlock = this.FindControl<TextBlock>("SourceBlock");
-            sourceTextBlock.Text = sourceLocalized;
             contextTextBlock = this.FindControl<TextBlock>("ContextBlock");
-            contextTextBlock.Text = contextLocalized;
             analysisBasementTextBlock = this.FindControl<TextBlock>("BasementBlock");
-            analysisBasementTextBlock.Text = basementLocalized;
             analysisTextBlock = this.FindControl<TextBlock>("AnalysisBlock");
-            analysisTextBlock.Text = analysisLocalized;
             finalTextBlock = this.FindControl<TextBlock>("FinalBlock");
-            finalTextBlock.Text = finalLocalized;
-
 
             //initialize buttons and inscriptions
             unitInsertButton = this.FindControl<Button>("UnitBtn");
-            unitInsertButton.Content = insertionButtonLocalized;
             semanticInsertButton = this.FindControl<Button>("SemBtn");
-            semanticInsertButton.Content = insertionButtonLocalized;
             contextsAmountInsertionButton = this.FindControl<Button>("NumBtn");
-            contextsAmountInsertionButton.Content = insertionButtonLocalized;
             contextInsertionButton = this.FindControl<Button>("ContextBtn");
-            contextInsertionButton.Content = contextButtonLocalized;
             analysisBasementInsertionButton = this.FindControl<Button>("BasementBtn");
-            analysisBasementInsertionButton.Content = insertionButtonLocalized;
             analysisInsertionButton = this.FindControl<Button>("AnalysisBtn");
-            analysisInsertionButton.Content = insertionButtonLocalized;
             XMLInsertionButton = this.FindControl<Button>("XmlBtn");
-            XMLInsertionButton.Content = XMLLocalized;
             HTMLInsertionButton = this.FindControl<Button>("HtmlBtn");
-            HTMLInsertionButton.Content = HTMLLocalized;
             databaseInsertionButton = this.FindControl<Button>("RavenBtn");
-            databaseInsertionButton.Content = RavenLocalized;
             erasingButton = this.FindControl<Button>("EraseBtn");
-            erasingButton.Content = erasingLocalized;
             localizationButton = this.FindControl<Button>("LocalizationBtn");
-            localizationButton.Content = localizationLocalized;
 
             //initialize text boxes
             unitField = this.FindControl<TextBox>("UnitTextBox");
@@ -525,7 +478,6 @@ namespace Context_Processor.Views
 
             //Initializing menus
             databaseEditingMenu = this.FindControl<MenuItem>("DatabaseEditingMenu");
-            databaseEditingMenu.Header = databaseMenuLocalized;
 
             // set localization
             Localize(new object(), new RoutedEventArgs());

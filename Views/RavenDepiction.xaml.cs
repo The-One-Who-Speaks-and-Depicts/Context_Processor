@@ -36,11 +36,7 @@ namespace Context_Processor.Views
         private Button HTMLButton;
 
         //creates strings for localization
-        private string deletionLocalized;
-        private string localizationLocalized = "ru";
-        private string editLocalized;
-        private string XMLLocalized;
-        private string HTMLLocalized;
+        private string localization = "ru";
 
         public RavenDepiction()
         {            
@@ -120,27 +116,23 @@ namespace Context_Processor.Views
         //  localization changes
         public void Localize (object sender, RoutedEventArgs e)
         {
-            if (localizationLocalized == "en")
+            if (localization == "en")
             {
-                localizationLocalized = "ru";                
-                deletionLocalized = "Delete";                
-                editLocalized = "Edit";
-                XMLLocalized = "Save as XML";
-                HTMLLocalized = "Save as HTML";                
+                localization = "ru";                
+                deleteButton.Content = "Delete";                
+                editButton.Content = "Edit";
+                XMLButton.Content = "Save as XML";
+                HTMLButton.Content = "Save as HTML";                
             }
             else
             {
-                localizationLocalized = "en";
-                deletionLocalized = "Удалить";
-                editLocalized = "Редактировать";
-                XMLLocalized = "Сохранить как XML";
-                HTMLLocalized = "Сохранить как HTML";
+                localization = "en";
+                deleteButton.Content = "Удалить";
+                editButton.Content = "Редактировать";
+                XMLButton.Content = "Сохранить как XML";
+                HTMLButton.Content = "Сохранить как HTML";
             }
-            localizationButton.Content = localizationLocalized;
-            deleteButton.Content = deletionLocalized;
-            editButton.Content = editLocalized;
-            XMLButton.Content = XMLLocalized;
-            HTMLButton.Content = HTMLLocalized;
+            localizationButton.Content = localization;
         }
     }
 }
