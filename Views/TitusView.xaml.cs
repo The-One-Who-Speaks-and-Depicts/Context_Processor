@@ -236,14 +236,15 @@ namespace Context_Processor.Views
             {
                 try 
                 {
-                    if (!File.Exists(filePath)) 
+                    bool success = false;
+                    if (!filePath.EndsWith(".xml"))
                     {
-                        if (!filePath.EndsWith(".xml"))
-                        {
-                            filePath += ".xml";
-                            SaveDocument(filePath);
-                        }
-                        SaveDocument(filePath);                
+                        filePath += ".xml";
+                    }
+                    if (!File.Exists(filePath)) 
+                    {                        
+                        SaveDocument(filePath);
+                        success = true;                
                     }
                     else 
                     {                
@@ -258,16 +259,21 @@ namespace Context_Processor.Views
                         if (result == ButtonResult.Yes) 
                         {
                             RewriteDocument(filePath);
+                            success = true;
                         }
                     }
-                    var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    if (success)
+                    {
+                        var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
                         ContentTitle = messageLocalized,
                         ContentMessage = successLocalized,
                         Icon = Icon.Plus,
                         Style = Style.UbuntuLinux
                         });
-                    await successWindow.Show();
+                        await successWindow.Show();
+                        RenewForm();
+                    }                    
                 }
                 catch (XmlException)
                 {
@@ -279,10 +285,6 @@ namespace Context_Processor.Views
                     Style = Style.UbuntuLinux
                     });
                     await errorWindow.Show();
-                }
-                finally 
-                {
-                    RenewForm();
                 }
             }
             else 
