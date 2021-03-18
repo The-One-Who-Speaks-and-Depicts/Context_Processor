@@ -72,9 +72,23 @@ namespace Context_Processor.Views
 
         }
 
+        //  localization changes
         public void Localize (object sender, RoutedEventArgs e)
         {
-
+            if (localizationLocalized == "ru")
+            {
+                localizationLocalized = "en";
+                localizationButton.Content = localizationLocalized;
+                deletionLocalized = "Delete";
+                deleteButton.Content = deletionLocalized;
+            }
+            else
+            {
+                localizationLocalized = "ru";
+                localizationButton.Content = localizationLocalized;
+                deletionLocalized = "Удалить";
+                deleteButton.Content = deletionLocalized;
+            }
         }
     }
 }
