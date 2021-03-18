@@ -6,8 +6,14 @@
         Width="800" Height="450"
         x:Class="Context_Processor.Views.RavenDepiction"
         Title="Context Processor">
-    <StackPanel>
-		<ComboBox Name="UnitsComboBox" />
-	</StackPanel>
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <StackPanel HorizontalAlignment="Right">        
+            <Button Name="LocalizationBtn" Width="30" Height="30" Click="Localize"></Button>  
+          </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+    		<ComboBox Name="UnitsComboBox" />
+            <Button Name="DeleteBtn" Width="90" Height="30" Click="DeleteUnit"/>
+    	</StackPanel>
+    </StackPanel>
 </Window>
 
