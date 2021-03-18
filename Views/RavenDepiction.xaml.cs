@@ -26,7 +26,7 @@ namespace Context_Processor.Views
         private ComboBox unitsComboBox;
 
         // create variable for unit depiction
-        private TextBox editComboBox;
+        private TextBox editTextBox;
 
         //create variables for buttons
         private Button deleteButton;
@@ -59,6 +59,8 @@ namespace Context_Processor.Views
             editButton = this.FindControl<Button>("EditBtn");
             XMLButton = this.FindControl<Button>("XMLBtn");
             HTMLButton = this.FindControl<Button>("HTMLBtn");
+            //initialize text box
+            editTextBox = this.FindControl<TextBox>("EditTextBox");
             // localize
             Localize(new object(), new RoutedEventArgs());            
         }
