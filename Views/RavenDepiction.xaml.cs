@@ -25,13 +25,18 @@ namespace Context_Processor.Views
         // create variable for selector of units
         private ComboBox unitsComboBox;
 
+        // create variable for unit depiction
+        private TextBox editComboBox;
+
         //create variables for buttons
         private Button deleteButton;
         private Button localizationButton;
+        private Button editButton;
 
         //creates strings for localization
         private string deletionLocalized = "Удалить";
         private string localizationLocalized = "ru";
+        private string editLocalized = "Редактировать";
 
         public RavenDepiction()
         {            
@@ -48,7 +53,9 @@ namespace Context_Processor.Views
             deleteButton = this.FindControl<Button>("DeleteBtn");
             deleteButton.Content = deletionLocalized;
             localizationButton = this.FindControl<Button>("LocalizationBtn");
-            localizationButton.Content = localizationLocalized;            
+            localizationButton.Content = localizationLocalized;
+            editButton = this.FindControl<Button>("EditBtn");
+            editButton.Content = editLocalized;            
         }
 
         // gets units from RavenDB
@@ -67,6 +74,7 @@ namespace Context_Processor.Views
             }            
         }
 
+        // deletes units from RavenDB
         public void DeleteUnit(object sender, RoutedEventArgs e)
         {
             var store = new DocumentStore 
@@ -84,23 +92,30 @@ namespace Context_Processor.Views
             unitsComboBox.Items = RavenGet().Select(unit => unit.name);
         }
 
+        public void EditUnit(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         //  localization changes
         public void Localize (object sender, RoutedEventArgs e)
         {
             if (localizationLocalized == "ru")
             {
-                localizationLocalized = "en";
-                localizationButton.Content = localizationLocalized;
-                deletionLocalized = "Delete";
-                deleteButton.Content = deletionLocalized;
+                localizationLocalized = "en";                
+                deletionLocalized = "Delete";                
+                editLocalized = "Edit";
+                
             }
             else
             {
                 localizationLocalized = "ru";
-                localizationButton.Content = localizationLocalized;
                 deletionLocalized = "Удалить";
-                deleteButton.Content = deletionLocalized;
+                editLocalized = "Редактировать";
             }
+            localizationButton.Content = localizationLocalized;
+            deleteButton.Content = deletionLocalized;
+            editButton.Content = editLocalized;
         }
     }
 }

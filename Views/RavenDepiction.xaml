@@ -2,18 +2,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"        
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        Width="800" Height="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+        Width="800" Height="700"
         x:Class="Context_Processor.Views.RavenDepiction"
         Title="Context Processor">
-    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-        <StackPanel HorizontalAlignment="Right">        
-            <Button Name="LocalizationBtn" Width="30" Height="30" Click="Localize"></Button>  
-          </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-    		<ComboBox Name="UnitsComboBox" />
-            <Button Name="DeleteBtn" Width="90" Height="30" Click="DeleteUnit"/>
-    	</StackPanel>
-    </StackPanel>
+    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+            <StackPanel HorizontalAlignment="Right">        
+                <Button Name="LocalizationBtn" Width="30" Height="30" Click="Localize"></Button>  
+              </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        		<ComboBox Name="UnitsComboBox" />
+                <Button Name="DeleteBtn" Width="90" Height="30" Click="DeleteUnit"/>
+        	</StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10" Orientation="Vertical" Width="300" Height="670">
+                    <Border Padding="15">
+                      <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="EditTextBox" IsReadOnly="true" />
+                    </Border>
+                    <Button Name="EditBtn" IsEnabled="false" Width="280" Height="30" Click="EditUnit"></Button>
+                </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Window>
-
