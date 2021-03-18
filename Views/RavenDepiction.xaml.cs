@@ -69,7 +69,19 @@ namespace Context_Processor.Views
 
         public void DeleteUnit(object sender, RoutedEventArgs e)
         {
-
+            var store = new DocumentStore 
+            {
+                Urls = new string[]{"http://localhost:8080"},
+                Database = "UnitsDB"
+            };
+            store.Initialize();
+            using (var session = store.OpenSession())
+            {                
+                Unit unitForDeletion = session.Advanced.RawQuery<Unit>("from Units where exact(name='" + unitsComboBox.SelectedItem + "')").ToList()[0];
+                session.Delete(unitForDeletion);
+                session.SaveChanges();
+            }
+            unitsComboBox.Items = RavenGet().Select(unit => unit.name);
         }
 
         //  localization changes
