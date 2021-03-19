@@ -68,6 +68,7 @@ namespace Context_Processor.Views
         private string successLocalized;
         private string failureLocalized;
         private string XMLErrorLocalized;
+        private string ravenFailureLocalized;
                 
 
         public TitusView()
@@ -370,12 +371,26 @@ namespace Context_Processor.Views
             this.IsEnabled = true;
         }
 
-        public void RavenEdit(object sender, RoutedEventArgs e)
+
+        // opening an additional window for deleting, editing, and converting units in RavenDB
+        public async void RavenEdit(object sender, RoutedEventArgs e)
         {
-            //this.IsEnabled = false;
             var ravenDepiction = new RavenDepiction();
-            ravenDepiction.Show();
-            //this.IsEnabled = true;
+            try
+            {
+                ravenDepiction.Show();
+            }
+            catch (InvalidOperationException)
+            {
+                var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = ravenFailureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+                await failureWindow.Show();
+            }                              
         }
 
         public void Localize(object sender, RoutedEventArgs e) 
@@ -405,6 +420,7 @@ namespace Context_Processor.Views
                 failureLocalized = "Void file name, unit may not be inserted";
                 XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
                 databaseEditingMenu.Header = "Edit database";
+                ravenFailureLocalized = "Impossible to connect to RavenDB";                
             }
             else 
             {
@@ -422,15 +438,15 @@ namespace Context_Processor.Views
                 XMLInsertionButton.Content = "Внести итоговое значение (XML)";
                 HTMLInsertionButton.Content = "Внести итоговое значение (HTML)";
                 databaseInsertionButton.Content = "Внести итоговое значение (RavenDB)";
-                erasingButton.Content = "Стереть все поля";
-                messageLocalized = "Сообщение программы";
+                erasingButton.Content = "Стереть все поля";                
                 addingContextsLocalized = "Хотите ли добавить другие контексты?";
                 changingContextsLocalized = "Хотите ли изменить источник контекста?";
                 fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
                 successLocalized = "Единица добавлена";
                 failureLocalized = "Пустое имя файла, единица не может быть добавлена";
                 XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
-                databaseEditingMenu.Header = "Внести изменения в базу данных";                
+                databaseEditingMenu.Header = "Внести изменения в базу данных";
+                ravenFailureLocalized = "Невозможно соединиться с RavenDB";                               
             }
                 localizationButton.Content = localization;                
                 unitInsertButton.Content = insertionButtonLocalized;

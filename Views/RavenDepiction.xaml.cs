@@ -48,7 +48,7 @@ namespace Context_Processor.Views
             AvaloniaXamlLoader.Load(this); 
             // get names for each unit           
             unitsComboBox = this.FindControl<ComboBox>("UnitsComboBox");
-            unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+            unitsComboBox.Items = RavenGet().Select(unit => unit.name);                  
             // initialize buttons
             deleteButton = this.FindControl<Button>("DeleteBtn");
             localizationButton = this.FindControl<Button>("LocalizationBtn");
@@ -64,16 +64,24 @@ namespace Context_Processor.Views
         // gets units from RavenDB
         public List<Unit> RavenGet()
         {
-            var store = new DocumentStore 
+            try 
             {
-                Urls = new string[]{"http://localhost:8080"},
-                Database = "UnitsDB"
-            };
-            store.Initialize();
-            using (var session = store.OpenSession())
-            {
-                List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();
-                return units;      
+                var store = new DocumentStore 
+                {
+                    Urls = new string[]{"http://localhost:8080"},
+                    Database = "UnitsDB"
+                };
+                store.Initialize();
+                using (var session = store.OpenSession())
+                {
+                    List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();
+                    return units;      
+                }
+            }            
+            catch (Raven.Client.Exceptions.RavenException)
+            {                
+                this.Close();
+                return new List<Unit>();
             }            
         }
 
@@ -122,7 +130,7 @@ namespace Context_Processor.Views
                 deleteButton.Content = "Delete";                
                 editButton.Content = "Edit";
                 XMLButton.Content = "Save as XML";
-                HTMLButton.Content = "Save as HTML";                
+                HTMLButton.Content = "Save as HTML";              
             }
             else
             {
