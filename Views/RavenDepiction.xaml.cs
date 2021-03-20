@@ -37,6 +37,8 @@ namespace Context_Processor.Views
 
         //creates strings for localization
         private string localization = "ru";
+        private string messageLocalized;
+        private string ravenDeletionLocalized;
 
         public RavenDepiction()
         {            
@@ -86,7 +88,7 @@ namespace Context_Processor.Views
         }
 
         // deletes units from RavenDB
-        public void DeleteUnit(object sender, RoutedEventArgs e)
+        public async void DeleteUnit(object sender, RoutedEventArgs e)
         {
             var store = new DocumentStore 
             {
@@ -101,6 +103,13 @@ namespace Context_Processor.Views
                 session.SaveChanges();
             }
             unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = ravenDeletionLocalized,
+                        Style = Style.UbuntuLinux
+                        });
+            await successWindow.Show();
         }
 
         // save edited unit in DB
@@ -130,7 +139,9 @@ namespace Context_Processor.Views
                 deleteButton.Content = "Delete";                
                 editButton.Content = "Edit";
                 XMLButton.Content = "Save as XML";
-                HTMLButton.Content = "Save as HTML";              
+                HTMLButton.Content = "Save as HTML";
+                messageLocalized = "Program message";
+                ravenDeletionLocalized = "Unit deleted";              
             }
             else
             {
@@ -139,6 +150,8 @@ namespace Context_Processor.Views
                 editButton.Content = "Редактировать";
                 XMLButton.Content = "Сохранить как XML";
                 HTMLButton.Content = "Сохранить как HTML";
+                messageLocalized = "Сообщение программы";
+                ravenDeletionLocalized = "Единица удалена";
             }
             localizationButton.Content = localization;
         }

@@ -439,6 +439,7 @@ namespace Context_Processor.Views
                 HTMLInsertionButton.Content = "Внести итоговое значение (HTML)";
                 databaseInsertionButton.Content = "Внести итоговое значение (RavenDB)";
                 erasingButton.Content = "Стереть все поля";                
+                messageLocalized = "Сообщение программы";
                 addingContextsLocalized = "Хотите ли добавить другие контексты?";
                 changingContextsLocalized = "Хотите ли изменить источник контекста?";
                 fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
