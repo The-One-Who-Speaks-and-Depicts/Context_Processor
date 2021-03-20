@@ -23,6 +23,9 @@ namespace Context_Processor.Views
 {
     public class RavenDepiction : Window
     {
+        // get unit list
+        private List<Unit> unitsDB;
+
         // create variable for selector of units
         private ComboBox unitsComboBox;
 
@@ -54,7 +57,8 @@ namespace Context_Processor.Views
             AvaloniaXamlLoader.Load(this); 
             // get names for each unit           
             unitsComboBox = this.FindControl<ComboBox>("UnitsComboBox");
-            unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+            unitsDB = RavenGet();
+            unitsComboBox.Items = unitsDB.Select(unit => unit.name);
             unitsComboBox.SelectionChanged += ChooseUnit;                  
             // initialize buttons
             deleteButton = this.FindControl<Button>("DeleteBtn");
@@ -107,7 +111,8 @@ namespace Context_Processor.Views
                 session.Delete(unitForDeletion);
                 session.SaveChanges();
             }
-            unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+            unitsDB = RavenGet();
+            unitsComboBox.Items = unitsDB.Select(unit => unit.name);
             var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
                         ContentTitle = messageLocalized,
@@ -130,7 +135,7 @@ namespace Context_Processor.Views
             store.Initialize();
             using (var session = store.OpenSession())
             {                
-                Unit unitForEditing = session.Advanced.RawQuery<Unit>("from Units where exact(name='" + unitsComboBox.SelectedItem + "')").ToList()[0];
+                Unit unitForEditing = unitsDB.Where(u => u.name == (string) unitsComboBox.SelectedItem).FirstOrDefault();
                 editTextBox.Text += "<unit>" + unitForEditing.name + "</unit>\n";
                 editTextBox.Text += "<semantics>" + unitForEditing.semantics + "</semantics>\n";
                 editTextBox.Text += "<contextsAmount>" + unitForEditing.contextsAmount + "</contextsAmount>\n";
@@ -193,7 +198,8 @@ namespace Context_Processor.Views
                     originalUnit.analysis = analysis;
                     session.SaveChanges();
                 }
-                unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+                unitsDB = RavenGet();
+                unitsComboBox.Items = unitsDB.Select(unit => unit.name);
                 editTextBox.Text = "";
                 var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                             ButtonDefinitions = ButtonEnum.Ok,
