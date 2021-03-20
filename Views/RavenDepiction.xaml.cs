@@ -41,6 +41,7 @@ namespace Context_Processor.Views
         private string messageLocalized;
         private string ravenDeletionLocalized;
         private string regexMatchFailureLocalized;
+        private string ravenEditingLocalized;
               
 
         public RavenDepiction()
@@ -147,7 +148,7 @@ namespace Context_Processor.Views
         // save edited unit in DB
         public async void EditUnit(object sender, RoutedEventArgs e)
         {
-            if (!Regex.IsMatch(editTextBox.Text, @"<unit>.*?<\/unit>\n<semantics>.*?<\/semantics>\n<contextsAmount>.*?<\/contextsAmount>\n<contexts>\n(<link><context>.*?<\/context><source>.*?<\/source><\/link>\n)?<\/contexts>\n<basement>.*?<\/basement>\n<analysis>.*?<\/analysis>"))
+            if (!Regex.IsMatch(editTextBox.Text, @"<unit>.*?<\/unit>\n<semantics>.*?<\/semantics>\n<contextsAmount>.*?<\/contextsAmount>\n<contexts>\n(<link><context>.*?<\/context><source>.*?<\/source><\/link>\n)*?<\/contexts>\n<basement>.*?<\/basement>\n<analysis>.*?<\/analysis>"))
             {
                 var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
@@ -159,7 +160,48 @@ namespace Context_Processor.Views
             }
             else
             {
-                
+                var store = new DocumentStore 
+                {
+                    Urls = new string[]{"http://localhost:8080"},
+                    Database = "UnitsDB"
+                };
+                store.Initialize();
+                var unitName = Regex.Replace(Regex.Match(editTextBox.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
+                var unitSemantics = Regex.Replace(Regex.Match(editTextBox.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
+                var contextsAmount = Regex.Replace(Regex.Match(editTextBox.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
+                var separatedContexts = Regex.Matches(editTextBox.Text, @"<link>.*<\/link>");
+                var contextList = new List<Context>();
+                foreach (Match separatedContext in separatedContexts)
+                {
+                    var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
+                    contextList.Add(new Context 
+                        {
+                            source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
+                            text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
+                        });
+                }
+                var basement = Regex.Replace(Regex.Match(editTextBox.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
+                var analysis = Regex.Replace(Regex.Match(editTextBox.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
+                using (var session = store.OpenSession())
+                {
+                    var originalUnit = session.Advanced.RawQuery<Unit>("from Units where exact(name='" + unitsComboBox.SelectedItem + "')").ToList()[0];
+                    originalUnit.name = unitName;
+                    originalUnit.semantics = unitSemantics;
+                    originalUnit.contextsAmount = contextsAmount;
+                    originalUnit.contexts = contextList;
+                    originalUnit.basement = basement;
+                    originalUnit.analysis = analysis;
+                    session.SaveChanges();
+                }
+                unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+                editTextBox.Text = "";
+                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                            ButtonDefinitions = ButtonEnum.Ok,
+                            ContentTitle = messageLocalized,
+                            ContentMessage = ravenEditingLocalized,
+                            Style = Style.UbuntuLinux
+                            });
+                await successWindow.Show();
             }
         }
 
@@ -187,7 +229,8 @@ namespace Context_Processor.Views
                 HTMLButton.Content = "Save as HTML";
                 messageLocalized = "Program message";
                 ravenDeletionLocalized = "Unit deleted";
-                regexMatchFailureLocalized = "No unit chosen, or schema of analysis is violated";              
+                regexMatchFailureLocalized = "No unit chosen, or schema of analysis is violated";
+                ravenEditingLocalized = "Unit is edited";              
             }
             else
             {
@@ -199,6 +242,7 @@ namespace Context_Processor.Views
                 messageLocalized = "Сообщение программы";
                 ravenDeletionLocalized = "Единица удалена";
                 regexMatchFailureLocalized = "Единица не выбрана, или схема нарушена";
+                ravenEditingLocalized = "Единица изменена";
             }
             localizationButton.Content = localization;
         }
