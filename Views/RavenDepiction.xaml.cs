@@ -118,7 +118,18 @@ namespace Context_Processor.Views
 
         public void ChooseUnit(object sender, SelectionChangedEventArgs args)
         {
-
+            editTextBox.Text = "";
+            var store = new DocumentStore 
+            {
+                Urls = new string[]{"http://localhost:8080"},
+                Database = "UnitsDB"
+            };
+            store.Initialize();
+            using (var session = store.OpenSession())
+            {                
+                Unit unitForEditing = session.Advanced.RawQuery<Unit>("from Units where exact(name='" + unitsComboBox.SelectedItem + "')").ToList()[0];
+                editTextBox.Text = unitForEditing.name;
+            }            
         }
 
         // save edited unit in DB
