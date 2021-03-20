@@ -128,7 +128,17 @@ namespace Context_Processor.Views
             using (var session = store.OpenSession())
             {                
                 Unit unitForEditing = session.Advanced.RawQuery<Unit>("from Units where exact(name='" + unitsComboBox.SelectedItem + "')").ToList()[0];
-                editTextBox.Text = unitForEditing.name;
+                editTextBox.Text += "<unit>" + unitForEditing.name + "</unit>\n";
+                editTextBox.Text += "<semantics>" + unitForEditing.semantics + "</semantics>\n";
+                editTextBox.Text += "<contextsAmount>" + unitForEditing.contextsAmount + "</contextsAmount>\n";
+                editTextBox.Text += "<contexts>\n";
+                foreach (Context context in unitForEditing.contexts)
+                {
+                    editTextBox.Text += "<link>" + "<context>" + context.text + "</context><source>" + context.source + "</source></link>\n";
+                }
+                editTextBox.Text += "</contexts>\n";
+                editTextBox.Text += "<basement>" + unitForEditing.basement + "</basement>\n";
+                editTextBox.Text += "<analysis>" + unitForEditing.analysis + "</analysis>\n"; 
             }            
         }
 
