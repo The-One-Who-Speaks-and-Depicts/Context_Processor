@@ -39,6 +39,7 @@ namespace Context_Processor.Views
         private string localization = "ru";
         private string messageLocalized;
         private string ravenDeletionLocalized;
+              
 
         public RavenDepiction()
         {            
@@ -50,7 +51,8 @@ namespace Context_Processor.Views
             AvaloniaXamlLoader.Load(this); 
             // get names for each unit           
             unitsComboBox = this.FindControl<ComboBox>("UnitsComboBox");
-            unitsComboBox.Items = RavenGet().Select(unit => unit.name);                  
+            unitsComboBox.Items = RavenGet().Select(unit => unit.name);
+            unitsComboBox.SelectionChanged += ChooseUnit;                  
             // initialize buttons
             deleteButton = this.FindControl<Button>("DeleteBtn");
             localizationButton = this.FindControl<Button>("LocalizationBtn");
@@ -110,6 +112,13 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
             await successWindow.Show();
+        }
+
+        // depict chosen unit
+
+        public void ChooseUnit(object sender, SelectionChangedEventArgs args)
+        {
+
         }
 
         // save edited unit in DB
