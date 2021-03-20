@@ -19,7 +19,7 @@
         	</StackPanel>
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10" Orientation="Vertical" Width="300" Height="670">
                     <Border Padding="15">
-                      <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="EditTextBox" IsReadOnly="true" />
+                      <TextBox Width="280" Height="500" AcceptsReturn="True" TextWrapping="Wrap" Name="EditTextBox" />
                     </Border>
                     <Button Name="EditBtn" Width="280" Height="30" Click="EditUnit"></Button>
                 </StackPanel>

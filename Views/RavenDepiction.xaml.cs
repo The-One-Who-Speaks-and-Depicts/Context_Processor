@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ReactiveUI;
@@ -39,6 +40,7 @@ namespace Context_Processor.Views
         private string localization = "ru";
         private string messageLocalized;
         private string ravenDeletionLocalized;
+        private string regexMatchFailureLocalized;
               
 
         public RavenDepiction()
@@ -143,9 +145,22 @@ namespace Context_Processor.Views
         }
 
         // save edited unit in DB
-        public void EditUnit(object sender, RoutedEventArgs e)
+        public async void EditUnit(object sender, RoutedEventArgs e)
         {
-
+            if (!Regex.IsMatch(editTextBox.Text, @"<unit>.*?<\/unit>\n<semantics>.*?<\/semantics>\n<contextsAmount>.*?<\/contextsAmount>\n<contexts>\n(<link><context>.*?<\/context><source>.*?<\/source><\/link>\n)?<\/contexts>\n<basement>.*?<\/basement>\n<analysis>.*?<\/analysis>"))
+            {
+                var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = regexMatchFailureLocalized,
+                        Style = Style.UbuntuLinux
+                        });
+                await failureWindow.Show();
+            }
+            else
+            {
+                
+            }
         }
 
         // save unit as XML
@@ -171,7 +186,8 @@ namespace Context_Processor.Views
                 XMLButton.Content = "Save as XML";
                 HTMLButton.Content = "Save as HTML";
                 messageLocalized = "Program message";
-                ravenDeletionLocalized = "Unit deleted";              
+                ravenDeletionLocalized = "Unit deleted";
+                regexMatchFailureLocalized = "No unit chosen, or schema of analysis is violated";              
             }
             else
             {
@@ -182,6 +198,7 @@ namespace Context_Processor.Views
                 HTMLButton.Content = "Сохранить как HTML";
                 messageLocalized = "Сообщение программы";
                 ravenDeletionLocalized = "Единица удалена";
+                regexMatchFailureLocalized = "Единица не выбрана, или схема нарушена";
             }
             localizationButton.Content = localization;
         }
