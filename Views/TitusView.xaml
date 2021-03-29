@@ -8,15 +8,15 @@
       <DockPanel>
           <Menu DockPanel.Dock="Top">
               <MenuItem Name="DatabaseEditingMenu" Click="RavenEdit"/>
-              <MenuItem Header="_Convert">
-                  <MenuItem Header="RavenDB to XML"/>
-                  <MenuItem Header="RavenDB to HTML"/>
+              <MenuItem Name="ConversionMenu">
+                  <MenuItem Header="RavenDB > XML"/>
+                  <MenuItem Header="RavenDB > HTML"/>
                   <Separator />
-                  <MenuItem Header="XML to HTML"/>
-                  <MenuItem Header="XML to RavenDB"/>
+                  <MenuItem Header="XML > HTML"/>
+                  <MenuItem Header="XML > RavenDB"/>
                   <Separator />
-                  <MenuItem Header="HTML to XML"/>
-                  <MenuItem Header="HTML to RavenDB"/>
+                  <MenuItem Header="HTML > XML"/>
+                  <MenuItem Header="HTML > RavenDB"/>
               </MenuItem>
           </Menu>
       </DockPanel>

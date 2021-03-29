@@ -22,7 +22,8 @@ namespace Context_Processor.Views
     public class TitusView : UserControl
     {
         //create variables for operating with menu items
-        private MenuItem databaseEditingMenu;        
+        private MenuItem databaseEditingMenu;
+        private MenuItem conversionMenu;        
 
         //create variables for operating with textblocks
         private TextBlock unitTextBlock;
@@ -419,7 +420,8 @@ namespace Context_Processor.Views
                 failureLocalized = "Void file name, unit may not be inserted";
                 XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
                 databaseEditingMenu.Header = "Edit database";
-                ravenFailureLocalized = "Impossible to connect to RavenDB";                
+                ravenFailureLocalized = "Impossible to connect to RavenDB";
+                conversionMenu.Header = "Convert";                
             }
             else 
             {
@@ -446,7 +448,8 @@ namespace Context_Processor.Views
                 failureLocalized = "Пустое имя файла, единица не может быть добавлена";
                 XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
                 databaseEditingMenu.Header = "Внести изменения в базу данных";
-                ravenFailureLocalized = "Невозможно соединиться с RavenDB";                               
+                ravenFailureLocalized = "Невозможно соединиться с RavenDB";
+                conversionMenu.Header = "Конвертировать";                               
             }
                 localizationButton.Content = localization;                
                 unitInsertButton.Content = insertionButtonLocalized;
@@ -496,6 +499,7 @@ namespace Context_Processor.Views
 
             //Initializing menus
             databaseEditingMenu = this.FindControl<MenuItem>("DatabaseEditingMenu");
+            conversionMenu = this.FindControl<MenuItem>("ConversionMenu");
 
             // set localization
             Localize(new object(), new RoutedEventArgs());
