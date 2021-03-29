@@ -4,6 +4,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using System.IO;
 using ReactiveUI;
 using Avalonia;
 using Avalonia.Controls;
@@ -45,6 +48,10 @@ namespace Context_Processor.Views
         private string ravenDeletionLocalized;
         private string regexMatchFailureLocalized;
         private string ravenEditingLocalized;
+        private string successLocalized;
+        private string fileChangeLocalized;
+        private string failureLocalized;
+        private string XMLErrorLocalized;
               
 
         public RavenDepiction()
@@ -211,10 +218,92 @@ namespace Context_Processor.Views
             }
         }
 
-        // save unit as XML
-        public void SaveToXML(object sender, RoutedEventArgs e)
-        {
+        public void SaveDocument(string filePath)
+        { 
+            XmlDocument doc = new XmlDocument();
+            string unit_for_database = "<analyzedUnit>" + editTextBox.Text + "</analyzedUnit>";
+            doc.LoadXml("<database>" + unit_for_database + "</database>");
+            doc.Save(filePath);           
+        }
 
+        public void RewriteDocument(string filePath)
+        {
+            XDocument doc = XDocument.Load(filePath);
+            XElement el = XElement.Parse("<analyzedUnit>" + editTextBox.Text + "</analyzedUnit>");
+            XElement parentElement = doc.Descendants("analyzedUnit").LastOrDefault();
+            if (parentElement != null) parentElement.AddAfterSelf(el);
+            doc.Save(filePath);
+
+        }
+
+        // save unit as XML
+        public async void SaveToXML(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.InitialFileName = "New_Unit.xml";
+            string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+            this.IsEnabled = false;
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                try 
+                {
+                    bool success = false;
+                    if (!filePath.EndsWith(".xml"))
+                    {
+                        filePath += ".xml";
+                    }
+                    if (!File.Exists(filePath)) 
+                    {                        
+                        SaveDocument(filePath);
+                        success = true;                
+                    }
+                    else 
+                    {                
+                        var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.YesNo,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = fileChangeLocalized,
+                        Style = Style.UbuntuLinux
+                        });
+                        var result = await fileFoundWindow.Show();
+                        if (result == ButtonResult.Yes) 
+                        {
+                            RewriteDocument(filePath);
+                            success = true;
+                        }
+                    }
+                    if (success)
+                    {
+                        var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Style = Style.UbuntuLinux
+                        });
+                        await successWindow.Show();
+                    }                    
+                }
+                catch (XmlException)
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = XMLErrorLocalized,
+                    Style = Style.UbuntuLinux
+                    });
+                    await errorWindow.Show();
+                }
+            }
+            else 
+            {
+                var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = failureLocalized,
+                    Style = Style.UbuntuLinux
+                    });
+            }
+            this.IsEnabled = true;      
         }
 
         //save unit as HTML
@@ -236,7 +325,11 @@ namespace Context_Processor.Views
                 messageLocalized = "Program message";
                 ravenDeletionLocalized = "Unit deleted";
                 regexMatchFailureLocalized = "No unit chosen, or schema of analysis is violated";
-                ravenEditingLocalized = "Unit is edited";              
+                ravenEditingLocalized = "Unit is edited";
+                fileChangeLocalized = "Would you like to add unit into the existing file?";
+                successLocalized = "Unit inserted";
+                failureLocalized = "Void file name, unit may not be inserted";
+                XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";              
             }
             else
             {
@@ -249,6 +342,10 @@ namespace Context_Processor.Views
                 ravenDeletionLocalized = "Единица удалена";
                 regexMatchFailureLocalized = "Единица не выбрана, или схема нарушена";
                 ravenEditingLocalized = "Единица изменена";
+                fileChangeLocalized = "Хотите ли добавить единицу в существующий файл?";
+                successLocalized = "Единица добавлена";
+                failureLocalized = "Пустое имя файла, единица не может быть добавлена";
+                XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
             }
             localizationButton.Content = localization;
         }

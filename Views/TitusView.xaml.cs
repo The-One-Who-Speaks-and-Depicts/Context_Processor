@@ -298,8 +298,7 @@ namespace Context_Processor.Views
                     Style = Style.UbuntuLinux
                     });
             }
-            this.IsEnabled = true;
-            
+            this.IsEnabled = true;            
         }        
 
         //insertion of a unit to the
