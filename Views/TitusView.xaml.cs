@@ -300,6 +300,140 @@ namespace Context_Processor.Views
                     });
             }
             this.IsEnabled = true;            
+        }
+
+        // copying units from RavenDB to the
+        // user-chosen XML-file
+
+        public async void RavenToXML (object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.InitialFileName = "New_Unit.xml";
+            string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+            this.IsEnabled = false;
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                try 
+                {
+                    bool success = false;
+                    if (!filePath.EndsWith(".xml"))
+                    {
+                        filePath += ".xml";
+                    }
+                    var store = new DocumentStore 
+                    {
+                        Urls = new string[]{"http://localhost:8080"},
+                        Database = "UnitsDB"
+                    };
+                    store.Initialize();
+                    List<string> units_from_db = new List<string>();
+                    using (var session = store.OpenSession())
+                    {
+                        List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();                        
+                        foreach (var unit in units)
+                        {
+                            string unit_to_add = "<analyzedUnit>";
+                            unit_to_add += "<unit>" + unit.name + "</unit>\n";
+                            unit_to_add += "<semantics>" + unit.semantics + "</semantics>\n";
+                            unit_to_add += "<contextsAmount>" + unit.contextsAmount + "</contextsAmount>\n";
+                            unit_to_add += "<contexts>\n";
+                            foreach (Context context in unit.contexts)
+                            {
+                                unit_to_add += "<link>" + "<context>" + context.text + "</context><source>" + context.source + "</source></link>\n";
+                            }
+                            unit_to_add += "</contexts>\n";
+                            unit_to_add += "<basement>" + unit.basement + "</basement>\n";
+                            unit_to_add += "<analysis>" + unit.analysis + "</analysis>\n";
+                            unit_to_add += "</analyzedUnit>";
+                            units_from_db.Add(unit_to_add);
+                        }  
+                    }    
+                    if (!File.Exists(filePath)) 
+                    {                        
+                        XmlDocument doc = new XmlDocument();
+                        string units_to_parse = "";
+                        foreach (var unit in units_from_db)
+                        {
+                            units_to_parse += unit;
+                        }
+                        doc.LoadXml("<database>" + units_to_parse + "</database>");
+                        doc.Save(filePath); 
+                        success = true;                
+                    }
+                    else 
+                    {                
+                        var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.YesNo,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = fileChangeLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        var result = await fileFoundWindow.Show();
+                        if (result == ButtonResult.Yes) 
+                        {
+                            XDocument doc = XDocument.Load(filePath);
+                            List<XElement> els = new List<XElement>();
+                            foreach (var unit in units_from_db)
+                            {
+                                els.Add(XElement.Parse(unit));
+                            }
+                            XElement parentElement = doc.Descendants("analyzedUnit").LastOrDefault();
+                            foreach (var element in els)
+                            {
+                                if (parentElement != null) parentElement.AddAfterSelf(element);
+                            }                            
+                            doc.Save(filePath);
+                            success = true;
+                        }
+                    }
+                    if (success)
+                    {
+                        var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        await successWindow.Show();
+                        RenewForm();
+                    }                    
+                }
+                catch (XmlException)
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = XMLErrorLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+                    await errorWindow.Show();
+                }
+                catch (Raven.Client.Exceptions.RavenException)
+                {                
+                    var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = ravenFailureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+                    await failureWindow.Show();
+                }
+            }
+            else 
+            {
+                var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = failureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            }
+            this.IsEnabled = true;
         }        
 
         //insertion of a unit to the
