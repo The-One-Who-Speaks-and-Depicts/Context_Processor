@@ -455,54 +455,68 @@ namespace Context_Processor.Views
         public async void RavenInsert(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
-            using (var store = new DocumentStore
-            {
-                Urls = new string[] {"http://localhost:8080"},
-                Database = "UnitsDB"
-            })
-            {
-                store.Initialize();
-                var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
-                var unitSemantics = Regex.Replace(Regex.Match(finalField.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
-                var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
-                var separatedContexts = Regex.Matches(finalField.Text, @"<link>.*<\/link>");
-                var contextList = new List<Context>();
-                foreach (Match separatedContext in separatedContexts)
+            try 
+            {                
+                using (var store = new DocumentStore
                 {
-                    var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
-                    contextList.Add(new Context 
-                        {
-                            source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
-                            text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
+                    Urls = new string[] {"http://localhost:8080"},
+                    Database = "UnitsDB"
+                })
+                {
+                    store.Initialize();
+                    var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
+                    var unitSemantics = Regex.Replace(Regex.Match(finalField.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
+                    var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
+                    var separatedContexts = Regex.Matches(finalField.Text, @"<link>.*<\/link>");
+                    var contextList = new List<Context>();
+                    foreach (Match separatedContext in separatedContexts)
+                    {
+                        var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
+                        contextList.Add(new Context 
+                            {
+                                source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
+                                text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
+                            });
+                    }
+                    var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
+                    var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
+                    using (var session = store.OpenSession())
+                    {
+                        var unit = new Unit
+                          {
+                            name = unitName,
+                            semantics = unitSemantics,
+                            contextsAmount = contextsAmount,
+                            contexts = contextList,
+                            basement = basement,
+                            analysis = analysis,
+                          };
+                          session.Store(unit);
+                          session.SaveChanges();
+                    }
+                }
+                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
                         });
-                }
-                var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
-                var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
-                using (var session = store.OpenSession())
-                {
-                    var unit = new Unit
-                      {
-                        name = unitName,
-                        semantics = unitSemantics,
-                        contextsAmount = contextsAmount,
-                        contexts = contextList,
-                        basement = basement,
-                        analysis = analysis,
-                      };
-                      session.Store(unit);
-                      session.SaveChanges();
-                }
+                await successWindow.Show();
+                RenewForm();
             }
-            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+            catch (Raven.Client.Exceptions.RavenException)
+            {                
+                var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
-                    ContentMessage = successLocalized,
+                    ContentMessage = ravenFailureLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
-                    });
-            await successWindow.Show();
-            RenewForm();
-            this.IsEnabled = true;
+                });
+                await failureWindow.Show();
+            }
+            this.IsEnabled = true;                    
         }
 
 
