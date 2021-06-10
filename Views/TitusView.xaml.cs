@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
 using Context_Processor.Models;
+using Context_Processor.ServiceFunctions;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
@@ -71,6 +72,9 @@ namespace Context_Processor.Views
         private string failureLocalized;
         private string XMLErrorLocalized;
         private string ravenFailureLocalized;
+
+        //create database
+        private static IDocumentStore store;
                 
 
         public TitusView()
@@ -456,45 +460,45 @@ namespace Context_Processor.Views
         public async void RavenInsert(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
+            var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = ravenFailureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                });
             try 
-            {                
-                using (var store = new DocumentStore
+            {
+                store.Initialize();
+                var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
+                var unitSemantics = Regex.Replace(Regex.Match(finalField.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
+                var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
+                var separatedContexts = Regex.Matches(finalField.Text, @"<link>.*<\/link>");
+                var contextList = new List<Context>();
+                foreach (Match separatedContext in separatedContexts)
                 {
-                    Urls = new string[] {"http://localhost:8080"},
-                    Database = "UnitsDB"
-                })
+                    var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
+                    contextList.Add(new Context 
+                        {
+                            source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
+                            text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
+                        });
+                }
+                var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
+                var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
+                using (var session = store.OpenSession())
                 {
-                    store.Initialize();
-                    var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
-                    var unitSemantics = Regex.Replace(Regex.Match(finalField.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
-                    var contextsAmount = Regex.Replace(Regex.Match(finalField.Text, @"<contextsAmount>.*<\/contextsAmount>").Value, @"<\/{0,1}contextsAmount>", "");
-                    var separatedContexts = Regex.Matches(finalField.Text, @"<link>.*<\/link>");
-                    var contextList = new List<Context>();
-                    foreach (Match separatedContext in separatedContexts)
-                    {
-                        var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
-                        contextList.Add(new Context 
-                            {
-                                source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
-                                text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
-                            });
-                    }
-                    var basement = Regex.Replace(Regex.Match(finalField.Text, @"<basement>.*<\/basement>").Value, @"<\/{0,1}basement>", "");
-                    var analysis = Regex.Replace(Regex.Match(finalField.Text, @"<analysis>.*<\/analysis>").Value, @"<\/{0,1}analysis>", "");
-                    using (var session = store.OpenSession())
-                    {
-                        var unit = new Unit
-                          {
+                    var unit = new Unit
+                       {
                             name = unitName,
                             semantics = unitSemantics,
                             contextsAmount = contextsAmount,
                             contexts = contextList,
                             basement = basement,
                             analysis = analysis,
-                          };
-                          session.Store(unit);
-                          session.SaveChanges();
-                    }
+                        };
+                    session.Store(unit);
+                    session.SaveChanges();
                 }
                 var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
@@ -507,14 +511,19 @@ namespace Context_Processor.Views
                 RenewForm();
             }
             catch (Raven.Client.Exceptions.RavenException)
-            {                
-                var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                    ButtonDefinitions = ButtonEnum.Ok,
-                    ContentTitle = messageLocalized,
-                    ContentMessage = ravenFailureLocalized,
-                    Icon = Icon.Plus,
-                    Style = Style.UbuntuLinux
-                });
+            {         
+                await failureWindow.Show();
+            }
+            catch (NullReferenceException)
+            {
+                await failureWindow.Show();
+            }
+            catch (HttpRequestException)
+            {
+                await failureWindow.Show();
+            }
+            catch (InvalidOperationException)
+            {
                 await failureWindow.Show();
             }
             this.IsEnabled = true;                    
@@ -541,6 +550,10 @@ namespace Context_Processor.Views
                 await failureWindow.Show();
             }
             catch(HttpRequestException)
+            {
+                await failureWindow.Show();
+            }
+            catch (Raven.Client.Exceptions.RavenException)
             {
                 await failureWindow.Show();
             }                             
@@ -656,6 +669,25 @@ namespace Context_Processor.Views
 
             // set localization
             Localize(new object(), new RoutedEventArgs());
+
+            // Initializing RavenDB store
+            try
+            {
+                store = RavenHelper.EnsureUnitsDBExists();
+            }
+            catch (InvalidOperationException)
+            {
+
+            }
+            catch (HttpRequestException)
+            {
+
+            }
+            catch (Raven.Client.Exceptions.RavenException)
+            {
+
+            }
+            
         }
         
     }
