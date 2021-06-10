@@ -4,7 +4,7 @@ namespace Context_Processor.Models
 {
 	public class Unit 
 	{
-		public string id;
+		public string Id;
 		public string name;
 		public string semantics;
 		public string contextsAmount;
