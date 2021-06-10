@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
+using System.Net.Http;
 using Raven.Client;
 using Raven.Client.Documents;
 
@@ -522,21 +523,25 @@ namespace Context_Processor.Views
 
         // opening an additional window for deleting, editing, and converting units in RavenDB
         public async void RavenEdit(object sender, RoutedEventArgs e)
-        {
-            var ravenDepiction = new RavenDepiction();
-            try
-            {
-                ravenDepiction.Show();
-            }
-            catch (InvalidOperationException)
-            {
-                var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+        {            
+            var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
                     ContentMessage = ravenFailureLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
+            try
+            {
+                var ravenDepiction = new RavenDepiction();
+                ravenDepiction.Show();
+            }
+            catch (InvalidOperationException)
+            {                
+                await failureWindow.Show();
+            }
+            catch(HttpRequestException)
+            {
                 await failureWindow.Show();
             }                              
         }
