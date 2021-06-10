@@ -130,21 +130,28 @@ namespace Context_Processor.Views
         {
             editTextBox.Text = "";
             store.Initialize();
-            using (var session = store.OpenSession())
-            {                
-                Unit unitForEditing = unitsDB.Where(u => u.name == (string) unitsComboBox.SelectedItem).FirstOrDefault();
-                editTextBox.Text += "<unit>" + unitForEditing.name + "</unit>\n";
-                editTextBox.Text += "<semantics>" + unitForEditing.semantics + "</semantics>\n";
-                editTextBox.Text += "<contextsAmount>" + unitForEditing.contextsAmount + "</contextsAmount>\n";
-                editTextBox.Text += "<contexts>\n";
-                foreach (Context context in unitForEditing.contexts)
-                {
-                    editTextBox.Text += "<link>" + "<context>" + context.text + "</context><source>" + context.source + "</source></link>\n";
+            try 
+            {
+                using (var session = store.OpenSession())
+                {                
+                    Unit unitForEditing = unitsDB.Where(u => u.name == (string) unitsComboBox.SelectedItem).FirstOrDefault();
+                    editTextBox.Text += "<unit>" + unitForEditing.name + "</unit>\n";
+                    editTextBox.Text += "<semantics>" + unitForEditing.semantics + "</semantics>\n";
+                    editTextBox.Text += "<contextsAmount>" + unitForEditing.contextsAmount + "</contextsAmount>\n";
+                    editTextBox.Text += "<contexts>\n";
+                    foreach (Context context in unitForEditing.contexts)
+                    {
+                        editTextBox.Text += "<link>" + "<context>" + context.text + "</context><source>" + context.source + "</source></link>\n";
+                    }
+                    editTextBox.Text += "</contexts>\n";
+                    editTextBox.Text += "<basement>" + unitForEditing.basement + "</basement>\n";
+                    editTextBox.Text += "<analysis>" + unitForEditing.analysis + "</analysis>\n"; 
                 }
-                editTextBox.Text += "</contexts>\n";
-                editTextBox.Text += "<basement>" + unitForEditing.basement + "</basement>\n";
-                editTextBox.Text += "<analysis>" + unitForEditing.analysis + "</analysis>\n"; 
-            }            
+            }
+            catch (NullReferenceException)
+            {
+
+            }                        
         }
 
         // save edited unit in DB
