@@ -543,7 +543,7 @@ namespace Context_Processor.Views
             catch(HttpRequestException)
             {
                 await failureWindow.Show();
-            }                              
+            }                             
         }
 
         public void Localize(object sender, RoutedEventArgs e) 

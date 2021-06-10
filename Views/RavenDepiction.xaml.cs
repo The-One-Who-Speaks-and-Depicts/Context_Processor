@@ -16,6 +16,7 @@ using Avalonia.ReactiveUI;
 using Raven.Client;
 using Raven.Client.Documents;
 using Context_Processor.Models;
+using Context_Processor.ServiceFunctions;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
@@ -52,6 +53,9 @@ namespace Context_Processor.Views
         private string fileChangeLocalized;
         private string failureLocalized;
         private string XMLErrorLocalized;
+
+        //create database
+        private static IDocumentStore store;
               
 
         public RavenDepiction()
@@ -61,7 +65,8 @@ namespace Context_Processor.Views
 
         private void InitializeComponent()
         {
-            AvaloniaXamlLoader.Load(this); 
+            AvaloniaXamlLoader.Load(this);
+            store = RavenHelper.EnsureUnitsDBExists(); 
             // get names for each unit           
             unitsComboBox = this.FindControl<ComboBox>("UnitsComboBox");
             unitsDB = RavenGet();
@@ -84,11 +89,6 @@ namespace Context_Processor.Views
         {
             try 
             {
-                var store = new DocumentStore 
-                {
-                    Urls = new string[]{"http://localhost:8080"},
-                    Database = "UnitsDB"
-                };
                 store.Initialize();
                 using (var session = store.OpenSession())
                 {
@@ -106,11 +106,6 @@ namespace Context_Processor.Views
         // deletes units from RavenDB
         public async void DeleteUnit(object sender, RoutedEventArgs e)
         {
-            var store = new DocumentStore 
-            {
-                Urls = new string[]{"http://localhost:8080"},
-                Database = "UnitsDB"
-            };
             store.Initialize();
             using (var session = store.OpenSession())
             {                
@@ -134,11 +129,6 @@ namespace Context_Processor.Views
         public void ChooseUnit(object sender, SelectionChangedEventArgs args)
         {
             editTextBox.Text = "";
-            var store = new DocumentStore 
-            {
-                Urls = new string[]{"http://localhost:8080"},
-                Database = "UnitsDB"
-            };
             store.Initialize();
             using (var session = store.OpenSession())
             {                
@@ -172,11 +162,6 @@ namespace Context_Processor.Views
             }
             else
             {
-                var store = new DocumentStore 
-                {
-                    Urls = new string[]{"http://localhost:8080"},
-                    Database = "UnitsDB"
-                };
                 store.Initialize();
                 var unitName = Regex.Replace(Regex.Match(editTextBox.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
                 var unitSemantics = Regex.Replace(Regex.Match(editTextBox.Text, @"<semantics>.*<\/semantics>").Value, @"<\/{0,1}semantics>", "");
