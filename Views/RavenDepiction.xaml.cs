@@ -262,7 +262,7 @@ namespace Context_Processor.Views
         public void SaveHTMLDocument(string filePath)
         {
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml("<div class=\"database\">" + XMLToHTML(editTextBox.Text) + "</div>");
+            doc.LoadXml("<div class=\"database\"><div class=\"analyzedUnit\">" + XMLToHTML(editTextBox.Text) + "</div></div>");
             doc.Save(filePath); 
             
         }
@@ -270,7 +270,7 @@ namespace Context_Processor.Views
         public void RewriteHTMLDocument(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
-            XElement el = XElement.Parse(XMLToHTML(editTextBox.Text));
+            XElement el = XElement.Parse("<div class=\"analyzedUnit\">" + XMLToHTML(editTextBox.Text) + "</div>");
             XElement parentElement = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit").LastOrDefault();
             if (parentElement != null) parentElement.AddAfterSelf(el);
             doc.Save(filePath);
@@ -350,7 +350,7 @@ namespace Context_Processor.Views
         public async void SaveToHTML(object sender, RoutedEventArgs e)
         {
             var saveDialog = new SaveFileDialog();
-            saveDialog.InitialFileName = "New_Unit.xml";
+            saveDialog.InitialFileName = "New_Unit.html";
             string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
@@ -393,7 +393,7 @@ namespace Context_Processor.Views
                         await successWindow.Show();
                     }                    
                 }
-                catch (XmlException)
+                catch (XmlException x)
                 {
                     var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
