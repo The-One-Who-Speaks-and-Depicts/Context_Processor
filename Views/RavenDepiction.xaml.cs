@@ -228,6 +228,54 @@ namespace Context_Processor.Views
 
         }
 
+        public string XMLToHTML(string XML)
+        {
+            string unitText = localization == "ru" ? "Единица" : "Unit";
+            XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">");
+            XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div>");
+            XML = Regex.Replace(XML, @"<unit>", "<div class=\"unit\">" + unitText + ": ");
+            XML = Regex.Replace(XML, @"<\/unit>", "</div>");
+            string semanticsText = localization == "ru" ? "Значение" : "Semantics";
+            XML = Regex.Replace(XML, @"<semantics>", "<div class=\"semantics\">" + semanticsText + ": ");
+            XML = Regex.Replace(XML, @"<\/semantics>", "</div>");
+            string contextsAmountText = localization == "ru" ? "Количество контекстов" : "Contexts amount";
+            XML = Regex.Replace(XML, @"<contextsAmount>", "<div class=\"contextsAmount\">" + contextsAmountText + ": ");
+            XML = Regex.Replace(XML, @"<\/contextsAmount>", "</div>");
+            string contextsText = localization == "ru" ? "Контексты" : "Contexts";
+            XML = Regex.Replace(XML, @"<contexts>", "<div class=\"contexts\">" + contextsText);
+            XML = Regex.Replace(XML, @"<\/contexts>", "</div>");
+            XML = Regex.Replace(XML, @"<link>", "<div class=\"link\">");
+            XML = Regex.Replace(XML, @"<\/link>", "</div>");
+            XML = Regex.Replace(XML, @"<context>", "<div class=\"context\">");
+            XML = Regex.Replace(XML, @"<\/context>", "</div>");
+            XML = Regex.Replace(XML, @"<source>", "<div class=\"source\">[");
+            XML = Regex.Replace(XML, @"<\/source>", "]</div>");
+            string analysisBasementText = localization == "ru" ? "Основание для анализа" : "Analysis ground";
+            XML = Regex.Replace(XML, @"<basement>", "<div class=\"basement\">" + analysisBasementText);
+            XML = Regex.Replace(XML, @"<\/basement>", "</div>");
+            string analysisText = localization == "ru" ? "Анализ" : "Analysis";
+            XML = Regex.Replace(XML, @"<analysis>", "<div class=\"analysis\">" + analysisText);
+            XML = Regex.Replace(XML, @"<\/analysis>", "</div>");
+            return XML;
+        }
+
+        public void SaveHTMLDocument(string filePath)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml("<div class=\"database\">" + XMLToHTML(editTextBox.Text) + "</div>");
+            doc.Save(filePath); 
+            
+        }
+
+        public void RewriteHTMLDocument(string filePath)
+        {
+            XDocument doc = XDocument.Load(filePath);
+            XElement el = XElement.Parse(XMLToHTML(editTextBox.Text));
+            XElement parentElement = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit").LastOrDefault();
+            if (parentElement != null) parentElement.AddAfterSelf(el);
+            doc.Save(filePath);
+        }
+
         // save unit as XML
         public async void SaveToXML(object sender, RoutedEventArgs e)
         {
@@ -299,9 +347,73 @@ namespace Context_Processor.Views
         }
 
         //save unit as HTML
-        public void SaveToHTML(object sender, RoutedEventArgs e)
+        public async void SaveToHTML(object sender, RoutedEventArgs e)
         {
-
+            var saveDialog = new SaveFileDialog();
+            saveDialog.InitialFileName = "New_Unit.xml";
+            string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+            this.IsEnabled = false;
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                try 
+                {
+                    bool success = false;
+                    if (!filePath.EndsWith(".html"))
+                    {
+                        filePath += ".html";
+                    }
+                    if (!File.Exists(filePath)) 
+                    {                        
+                        SaveHTMLDocument(filePath);
+                        success = true;                
+                    }
+                    else 
+                    {                
+                        var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.YesNo,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = fileChangeLocalized,
+                        Style = Style.UbuntuLinux
+                        });
+                        var result = await fileFoundWindow.Show();
+                        if (result == ButtonResult.Yes) 
+                        {
+                            RewriteHTMLDocument(filePath);
+                            success = true;
+                        }
+                    }
+                    if (success)
+                    {
+                        var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Style = Style.UbuntuLinux
+                        });
+                        await successWindow.Show();
+                    }                    
+                }
+                catch (XmlException)
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = XMLErrorLocalized,
+                    Style = Style.UbuntuLinux
+                    });
+                    await errorWindow.Show();
+                }
+            }
+            else 
+            {
+                var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = failureLocalized,
+                    Style = Style.UbuntuLinux
+                    });
+            }
+            this.IsEnabled = true;
         }
 
         //  localization changes
