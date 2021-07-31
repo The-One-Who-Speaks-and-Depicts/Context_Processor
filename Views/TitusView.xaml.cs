@@ -189,9 +189,11 @@ namespace Context_Processor.Views
         }
 
         public string XMLToHTML(string XML)
-        {
-            XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">" + unitTextBlock.Text + ": ");
+        {            
+            XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">");
             XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div>");
+            XML = Regex.Replace(XML, @"<unit>", "<div class=\"unit\">" + unitTextBlock.Text + ": ");
+            XML = Regex.Replace(XML, @"<\/unit>", "</div>");
             XML = Regex.Replace(XML, @"<semantics>", "<div class=\"semantics\">" + semanticsTextBlock.Text + ": ");
             XML = Regex.Replace(XML, @"<\/semantics>", "</div>");
             XML = Regex.Replace(XML, @"<contextsAmount>", "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": ");
