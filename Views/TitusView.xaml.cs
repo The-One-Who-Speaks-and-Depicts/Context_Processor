@@ -188,6 +188,29 @@ namespace Context_Processor.Views
             databaseInsertionButton.IsEnabled = true;            
         }
 
+        public string XMLToHTML(string XML)
+        {
+            XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">" + unitTextBlock.Text + ": ");
+            XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div>");
+            XML = Regex.Replace(XML, @"<semantics>", "<div class=\"semantics\">" + semanticsTextBlock.Text + ": ");
+            XML = Regex.Replace(XML, @"<\/semantics>", "</div>");
+            XML = Regex.Replace(XML, @"<contextsAmount>", "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": ");
+            XML = Regex.Replace(XML, @"<\/contextsAmount>", "</div>");
+            XML = Regex.Replace(XML, @"<contexts>", "<div class=\"contexts\">" + contextTextBlock.Text);
+            XML = Regex.Replace(XML, @"<\/contexts>", "</div>");
+            XML = Regex.Replace(XML, @"<link>", "<div class=\"link\">");
+            XML = Regex.Replace(XML, @"<\/link>", "</div>");
+            XML = Regex.Replace(XML, @"<context>", "<div class=\"context\">");
+            XML = Regex.Replace(XML, @"<\/context>", "</div>");
+            XML = Regex.Replace(XML, @"<source>", "<div class=\"source\">[");
+            XML = Regex.Replace(XML, @"<\/source>", "]</div>");
+            XML = Regex.Replace(XML, @"<basement>", "<div class=\"basement\">" + analysisBasementTextBlock.Text);
+            XML = Regex.Replace(XML, @"<\/basement>", "</div>");
+            XML = Regex.Replace(XML, @"<analysis>", "<div class=\"analysis\">" + analysisTextBlock.Text);
+            XML = Regex.Replace(XML, @"<\/analysis>", "</div>");
+            return XML;
+        }
+
 
         public void SaveDocument(string filePath)
         { 
@@ -198,7 +221,10 @@ namespace Context_Processor.Views
 
         public void SaveHTMLDocument(string filePath)
         {
-
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml("<div class=\"database\">" + XMLToHTML(finalField.Text) + "</div>");
+            doc.Save(filePath); 
+            
         }
 
         public void RewriteDocument(string filePath)
@@ -464,9 +490,9 @@ namespace Context_Processor.Views
                 try 
                 {
                     bool success = false;
-                    if (!filePath.EndsWith(".xml"))
+                    if (!filePath.EndsWith(".html"))
                     {
-                        filePath += ".xml";
+                        filePath += ".html";
                     }
                     if (!File.Exists(filePath)) 
                     {                        
