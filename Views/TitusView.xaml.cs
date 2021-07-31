@@ -196,6 +196,11 @@ namespace Context_Processor.Views
             doc.Save(filePath);           
         }
 
+        public void SaveHTMLDocument(string filePath)
+        {
+
+        }
+
         public void RewriteDocument(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
@@ -204,6 +209,11 @@ namespace Context_Processor.Views
             if (parentElement != null) parentElement.AddAfterSelf(el);
             doc.Save(filePath);
 
+        }
+
+        public void RewriteHTMLDocument(string filePath)
+        {
+            
         }
 
         public void RenewForm()
@@ -445,15 +455,76 @@ namespace Context_Processor.Views
         //user-chosen HTML-file
         public async void HTMLInsert (object sender, RoutedEventArgs e)
         {
-            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+            var saveDialog = new SaveFileDialog();
+            saveDialog.InitialFileName = "New_Unit.html";
+            string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+            this.IsEnabled = false;
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                try 
+                {
+                    bool success = false;
+                    if (!filePath.EndsWith(".xml"))
+                    {
+                        filePath += ".xml";
+                    }
+                    if (!File.Exists(filePath)) 
+                    {                        
+                        SaveHTMLDocument(filePath);
+                        success = true;                
+                    }
+                    else 
+                    {                
+                        var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.YesNo,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = fileChangeLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        var result = await fileFoundWindow.Show();
+                        if (result == ButtonResult.Yes) 
+                        {
+                            RewriteHTMLDocument(filePath);
+                            success = true;
+                        }
+                    }
+                    if (success)
+                    {
+                        var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        await successWindow.Show();
+                        RenewForm();
+                    }                    
+                }
+                catch (XmlException)
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
-                    ContentMessage = successLocalized,
+                    ContentMessage = XMLErrorLocalized,
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
-            await successWindow.Show();
-            RenewForm();
+                    await errorWindow.Show();
+                }
+            }
+            else 
+            {
+                var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = failureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            }
+            this.IsEnabled = true;
         }
 
         //insertion of a unit to the RavenDB
