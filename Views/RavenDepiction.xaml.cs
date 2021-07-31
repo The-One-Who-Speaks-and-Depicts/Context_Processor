@@ -393,7 +393,7 @@ namespace Context_Processor.Views
                         await successWindow.Show();
                     }                    
                 }
-                catch (XmlException x)
+                catch (XmlException)
                 {
                     var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
