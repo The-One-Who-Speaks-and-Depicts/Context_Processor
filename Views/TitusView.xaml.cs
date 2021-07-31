@@ -241,7 +241,6 @@ namespace Context_Processor.Views
         {
             XDocument doc = XDocument.Load(filePath);
             XElement el = XElement.Parse(XMLToHTML(finalField.Text));
-            Console.WriteLine(doc.Descendants());
             XElement parentElement = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit").LastOrDefault();
             if (parentElement != null) parentElement.AddAfterSelf(el);
             doc.Save(filePath);
