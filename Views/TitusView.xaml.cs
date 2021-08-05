@@ -483,6 +483,9 @@ namespace Context_Processor.Views
             this.IsEnabled = true;
         }
 
+        // copying units from RavenDB to the
+        // user-chosen HTML-file
+
         public async void RavenToHTML(object sender, RoutedEventArgs e)
         {
             var saveDialog = new SaveFileDialog();
