@@ -10,7 +10,7 @@
               <MenuItem Name="DatabaseEditingMenu" Click="RavenEdit"/>
               <MenuItem Name="ConversionMenu">
                   <MenuItem Header="RavenDB > XML" Click="RavenToXML"/>
-                  <MenuItem Header="RavenDB > HTML"/>
+                  <MenuItem Header="RavenDB > HTML" Click="RavenToHTML"/>
                   <Separator />
                   <MenuItem Header="XML > HTML"/>
                   <MenuItem Header="XML > RavenDB"/>

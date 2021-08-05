@@ -191,25 +191,25 @@ namespace Context_Processor.Views
         public string XMLToHTML(string XML)
         {            
             XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">");
-            XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div>");
+            XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div> <br />");
             XML = Regex.Replace(XML, @"<unit>", "<div class=\"unit\">" + unitTextBlock.Text + ": ");
-            XML = Regex.Replace(XML, @"<\/unit>", "</div>");
+            XML = Regex.Replace(XML, @"<\/unit>", "</div> <br />");
             XML = Regex.Replace(XML, @"<semantics>", "<div class=\"semantics\">" + semanticsTextBlock.Text + ": ");
-            XML = Regex.Replace(XML, @"<\/semantics>", "</div>");
+            XML = Regex.Replace(XML, @"<\/semantics>", "</div> <br />");
             XML = Regex.Replace(XML, @"<contextsAmount>", "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": ");
-            XML = Regex.Replace(XML, @"<\/contextsAmount>", "</div>");
-            XML = Regex.Replace(XML, @"<contexts>", "<div class=\"contexts\">" + contextTextBlock.Text);
-            XML = Regex.Replace(XML, @"<\/contexts>", "</div>");
+            XML = Regex.Replace(XML, @"<\/contextsAmount>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<contexts>", "<div class=\"contexts\">" + contextTextBlock.Text + ": <br />");
+            XML = Regex.Replace(XML, @"<\/contexts>", "</div> <br />");
             XML = Regex.Replace(XML, @"<link>", "<div class=\"link\">");
-            XML = Regex.Replace(XML, @"<\/link>", "</div>");
+            XML = Regex.Replace(XML, @"<\/link>", "</div> <br />");
             XML = Regex.Replace(XML, @"<context>", "<div class=\"context\">");
             XML = Regex.Replace(XML, @"<\/context>", "</div>");
             XML = Regex.Replace(XML, @"<source>", "<div class=\"source\">[");
             XML = Regex.Replace(XML, @"<\/source>", "]</div>");
             XML = Regex.Replace(XML, @"<basement>", "<div class=\"basement\">" + analysisBasementTextBlock.Text);
-            XML = Regex.Replace(XML, @"<\/basement>", "</div>");
+            XML = Regex.Replace(XML, @"<\/basement>", "</div> <br />");
             XML = Regex.Replace(XML, @"<analysis>", "<div class=\"analysis\">" + analysisTextBlock.Text);
-            XML = Regex.Replace(XML, @"<\/analysis>", "</div>");
+            XML = Regex.Replace(XML, @"<\/analysis>", "</div> <br />");
             return XML;
         }
 
@@ -426,6 +426,137 @@ namespace Context_Processor.Views
                                 els.Add(XElement.Parse(unit));
                             }
                             XElement parentElement = doc.Descendants("analyzedUnit").LastOrDefault();
+                            foreach (var element in els)
+                            {
+                                if (parentElement != null) parentElement.AddAfterSelf(element);
+                            }                            
+                            doc.Save(filePath);
+                            success = true;
+                        }
+                    }
+                    if (success)
+                    {
+                        var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        await successWindow.Show();
+                        RenewForm();
+                    }                    
+                }
+                catch (XmlException)
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = XMLErrorLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+                    await errorWindow.Show();
+                }
+                catch (Raven.Client.Exceptions.RavenException)
+                {                
+                    var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = ravenFailureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+                    await failureWindow.Show();
+                }
+            }
+            else 
+            {
+                var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = failureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                    });
+            }
+            this.IsEnabled = true;
+        }
+
+        public async void RavenToHTML(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.InitialFileName = "New_Unit.html";
+            string filePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+            this.IsEnabled = false;
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                try 
+                {
+                    bool success = false;
+                    if (!filePath.EndsWith(".html"))
+                    {
+                        filePath += ".html";
+                    }
+                    var store = new DocumentStore 
+                    {
+                        Urls = new string[]{"http://localhost:8080"},
+                        Database = "UnitsDB"
+                    };
+                    store.Initialize();
+                    List<string> units_from_db = new List<string>();
+                    using (var session = store.OpenSession())
+                    {
+                        List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();                        
+                        foreach (var unit in units)
+                        {
+                            string unit_to_add = "<div class=\"analyzedUnit\">";
+                            unit_to_add += "<div class=\"unit\">" + unitTextBlock.Text + ": " + unit.name + "</div> <br />";
+                            unit_to_add += "<div class=\"semantics\">" + semanticsTextBlock.Text + ": " + unit.semantics + "</div> <br />";
+                            unit_to_add += "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": " + unit.contextsAmount + "</div> <br />";
+                            unit_to_add += "<div class=\"contexts\">" + contextTextBlock.Text + ":" +  "<br />";
+                            foreach (Context context in unit.contexts)
+                            {
+                                unit_to_add += "<div class=\"link\">" + "<div class=\"context\">" + context.text + "</div><div class=\"source\">[" + context.source + "]</div></div> <br />";
+                            }
+                            unit_to_add += "</div>";
+                            unit_to_add += "<div class=\"basement\">" + analysisBasementTextBlock.Text + ": " + unit.basement + "</div> <br />";
+                            unit_to_add += "<div class=\"analysis\">" + analysisTextBlock.Text + ": " + unit.analysis + "</div> <br />";
+                            unit_to_add += "</div> <br />";
+                            units_from_db.Add(unit_to_add);
+                        }  
+                    }    
+                    if (!File.Exists(filePath)) 
+                    {                        
+                        XmlDocument doc = new XmlDocument();
+                        string units_to_parse = "";
+                        foreach (var unit in units_from_db)
+                        {
+                            units_to_parse += unit;
+                        }
+                        doc.LoadXml("<div class=\"database\">" + units_to_parse + "</div>");
+                        doc.Save(filePath); 
+                        success = true;                
+                    }
+                    else 
+                    {                
+                        var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.YesNo,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = fileChangeLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        var result = await fileFoundWindow.Show();
+                        if (result == ButtonResult.Yes) 
+                        {
+                            XDocument doc = XDocument.Load(filePath);
+                            List<XElement> els = new List<XElement>();
+                            foreach (var unit in units_from_db)
+                            {
+                                els.Add(XElement.Parse(unit));
+                            }
+                            XElement parentElement = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit").LastOrDefault();
                             foreach (var element in els)
                             {
                                 if (parentElement != null) parentElement.AddAfterSelf(element);
