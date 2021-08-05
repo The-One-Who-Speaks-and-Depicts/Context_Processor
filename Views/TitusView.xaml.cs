@@ -191,25 +191,25 @@ namespace Context_Processor.Views
         public string XMLToHTML(string XML)
         {            
             XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">");
-            XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div>");
             XML = Regex.Replace(XML, @"<unit>", "<div class=\"unit\">" + unitTextBlock.Text + ": ");
-            XML = Regex.Replace(XML, @"<\/unit>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/unit>", "</div>");
             XML = Regex.Replace(XML, @"<semantics>", "<div class=\"semantics\">" + semanticsTextBlock.Text + ": ");
-            XML = Regex.Replace(XML, @"<\/semantics>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/semantics>", "</div>");
             XML = Regex.Replace(XML, @"<contextsAmount>", "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": ");
-            XML = Regex.Replace(XML, @"<\/contextsAmount>", "</div> <br />");
-            XML = Regex.Replace(XML, @"<contexts>", "<div class=\"contexts\">" + contextTextBlock.Text + ": <br />");
-            XML = Regex.Replace(XML, @"<\/contexts>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/contextsAmount>", "</div>");
+            XML = Regex.Replace(XML, @"<contexts>", "<div class=\"contexts\">" + contextTextBlock.Text + ": ");
+            XML = Regex.Replace(XML, @"<\/contexts>", "</div> ");
             XML = Regex.Replace(XML, @"<link>", "<div class=\"link\">");
-            XML = Regex.Replace(XML, @"<\/link>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/link>", "</div> ");
             XML = Regex.Replace(XML, @"<context>", "<div class=\"context\">");
             XML = Regex.Replace(XML, @"<\/context>", "</div>");
             XML = Regex.Replace(XML, @"<source>", "<div class=\"source\">[");
             XML = Regex.Replace(XML, @"<\/source>", "]</div>");
             XML = Regex.Replace(XML, @"<basement>", "<div class=\"basement\">" + analysisBasementTextBlock.Text);
-            XML = Regex.Replace(XML, @"<\/basement>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/basement>", "</div> ");
             XML = Regex.Replace(XML, @"<analysis>", "<div class=\"analysis\">" + analysisTextBlock.Text);
-            XML = Regex.Replace(XML, @"<\/analysis>", "</div> <br />");
+            XML = Regex.Replace(XML, @"<\/analysis>", "</div>");
             return XML;
         }
 
@@ -511,18 +511,18 @@ namespace Context_Processor.Views
                         foreach (var unit in units)
                         {
                             string unit_to_add = "<div class=\"analyzedUnit\">";
-                            unit_to_add += "<div class=\"unit\">" + unitTextBlock.Text + ": " + unit.name + "</div> <br />";
-                            unit_to_add += "<div class=\"semantics\">" + semanticsTextBlock.Text + ": " + unit.semantics + "</div> <br />";
-                            unit_to_add += "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": " + unit.contextsAmount + "</div> <br />";
-                            unit_to_add += "<div class=\"contexts\">" + contextTextBlock.Text + ":" +  "<br />";
+                            unit_to_add += "<div class=\"unit\">" + unitTextBlock.Text + ": " + unit.name + "</div>";
+                            unit_to_add += "<div class=\"semantics\">" + semanticsTextBlock.Text + ": " + unit.semantics + "</div>";
+                            unit_to_add += "<div class=\"contextsAmount\">" + contextsAmountTextBlock.Text + ": " + unit.contextsAmount + "</div>";
+                            unit_to_add += "<div class=\"contexts\">" + contextTextBlock.Text + ":";
                             foreach (Context context in unit.contexts)
                             {
-                                unit_to_add += "<div class=\"link\">" + "<div class=\"context\">" + context.text + "</div><div class=\"source\">[" + context.source + "]</div></div> <br />";
+                                unit_to_add += "<div class=\"link\">" + "<div class=\"context\">" + context.text + "</div><div class=\"source\">[" + context.source + "]</div></div>";
                             }
                             unit_to_add += "</div>";
-                            unit_to_add += "<div class=\"basement\">" + analysisBasementTextBlock.Text + ": " + unit.basement + "</div> <br />";
-                            unit_to_add += "<div class=\"analysis\">" + analysisTextBlock.Text + ": " + unit.analysis + "</div> <br />";
-                            unit_to_add += "</div> <br />";
+                            unit_to_add += "<div class=\"basement\">" + analysisBasementTextBlock.Text + ": " + unit.basement + "</div>";
+                            unit_to_add += "<div class=\"analysis\">" + analysisTextBlock.Text + ": " + unit.analysis + "</div>";
+                            unit_to_add += "</div>";
                             units_from_db.Add(unit_to_add);
                         }  
                     }    
