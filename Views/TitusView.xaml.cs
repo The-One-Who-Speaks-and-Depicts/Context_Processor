@@ -622,12 +622,19 @@ namespace Context_Processor.Views
         {
             var openDialog = new OpenFileDialog();
             openDialog.AllowMultiple = false;
-            openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"*.xml"}});
+            openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"xml"}});
             string[] openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
             if (openDialogResult != null)
             {
                 string filePath = openDialogResult[0];
-                finalField.Text = filePath;
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    string XMLText = sr.ReadToEnd();
+                    XMLText = Regex.Replace(XMLText, @"<database>", "<div class=\"database\">");
+                    XMLText = Regex.Replace(XMLText, @"</database>", "</div>");
+                    XMLText = XMLToHTML(XMLText);
+                    finalField.Text = XMLText;
+                }
             }            
         }        
 
