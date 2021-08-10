@@ -615,6 +615,20 @@ namespace Context_Processor.Views
                     });
             }
             this.IsEnabled = true;
+        }
+
+        // XML to HTML conversion
+        public async void XMLToHTMLConversion(object sender, RoutedEventArgs e)
+        {
+            var openDialog = new OpenFileDialog();
+            openDialog.AllowMultiple = false;
+            openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"*.xml"}});
+            string[] openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
+            if (openDialogResult != null)
+            {
+                string filePath = openDialogResult[0];
+                finalField.Text = filePath;
+            }            
         }        
 
         //insertion of a unit to the
