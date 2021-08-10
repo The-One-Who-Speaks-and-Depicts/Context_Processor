@@ -633,7 +633,82 @@ namespace Context_Processor.Views
                     XMLText = Regex.Replace(XMLText, @"<database>", "<div class=\"database\">");
                     XMLText = Regex.Replace(XMLText, @"</database>", "</div>");
                     XMLText = XMLToHTML(XMLText);
-                    finalField.Text = XMLText;
+                    var SaveFileDialog = new SaveFileDialog();
+                    SaveFileDialog.InitialFileName = "New_Unit.html";
+                    string savingPath = await SaveFileDialog.ShowAsync((Window) this.VisualRoot);
+                    if (!String.IsNullOrEmpty(savingPath))
+                    {
+                        try
+                        {
+                            bool success = false;
+                            if (!savingPath.EndsWith(".html"))
+                            {
+                                savingPath += ".html";
+                            }
+                            if (!File.Exists(savingPath)) 
+                            {                        
+                                XmlDocument doc = new XmlDocument();
+                                doc.LoadXml(XMLText);
+                                doc.Save(savingPath);
+                                success = true;                
+                            }
+                            else 
+                            {                
+                                var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                                ButtonDefinitions = ButtonEnum.YesNo,
+                                ContentTitle = messageLocalized,
+                                ContentMessage = fileChangeLocalized,
+                                Icon = Icon.Plus,
+                                Style = Style.UbuntuLinux
+                                });
+                                var result = await fileFoundWindow.Show();
+                                if (result == ButtonResult.Yes) 
+                                {
+                                    XDocument doc = XDocument.Load(savingPath);
+                                    XMLText = Regex.Replace(XMLText, "<div class=\"database\">", "");
+                                    XMLText = Regex.Replace(XMLText, "</div>$", "");
+                                    XElement el = XElement.Parse(XMLText);
+                                    XElement parentElement = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit").LastOrDefault();
+                                    if (parentElement != null) parentElement.AddAfterSelf(el);
+                                    doc.Save(savingPath);
+                                    success = true;
+                                }
+                            }
+                            if (success)
+                            {
+                                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                                ButtonDefinitions = ButtonEnum.Ok,
+                                ContentTitle = messageLocalized,
+                                ContentMessage = successLocalized,
+                                Icon = Icon.Plus,
+                                Style = Style.UbuntuLinux
+                                });
+                                await successWindow.Show();
+                                RenewForm();
+                            }             
+                        }
+                        catch (XmlException)
+                        {
+                            var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                            ButtonDefinitions = ButtonEnum.Ok,
+                            ContentTitle = messageLocalized,
+                            ContentMessage = XMLErrorLocalized,
+                            Icon = Icon.Plus,
+                            Style = Style.UbuntuLinux
+                            });
+                            await errorWindow.Show();
+                        }
+                    }
+                    else             
+                    {
+                        var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                                        ButtonDefinitions = ButtonEnum.Ok,
+                                        ContentTitle = messageLocalized,
+                                        ContentMessage = failureLocalized,
+                                        Icon = Icon.Plus,
+                                        Style = Style.UbuntuLinux
+                                        });    
+                    }
                 }
             }            
         }        
