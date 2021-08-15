@@ -866,7 +866,6 @@ namespace Context_Processor.Views
         // inserting to RavenDB from .xml file
         public async void XMLToRavenConversion(object sender, RoutedEventArgs e)
         {
-            this.IsEnabled = false;
             var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
@@ -883,6 +882,42 @@ namespace Context_Processor.Views
                 string[] openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
                 if (openDialogResult != null)
                 {
+                    store.Initialize();
+                    using (var session = store.OpenSession())
+                    {
+                        XDocument doc = XDocument.Load(openDialogResult[0]);
+                        var units = doc.Descendants("analyzedUnit");
+                        foreach (var unit in units)
+                        {
+                            var unitName = unit.Descendants("unit").FirstOrDefault().Value;
+                            var unitSemantics = unit.Descendants("semantics").FirstOrDefault().Value;
+                            var contextsAmount = unit.Descendants("contextsAmount").FirstOrDefault().Value;
+                            var separatedContexts = unit.Descendants("link");
+                            var contextsList = new List<Context>();
+                            foreach (var context in separatedContexts)
+                            {
+                                contextsList.Add(new Context() 
+                                {
+                                    source = separatedContexts.Descendants("source").FirstOrDefault().Value,
+                                    text = separatedContexts.Descendants("context").FirstOrDefault().Value,
+                                });
+                            }
+                            var basement = unit.Descendants("basement").FirstOrDefault().Value;
+                            var analysis = unit.Descendants("analysis").FirstOrDefault().Value;
+                            var DBunit = new Unit
+                            {
+                                name = unitName,
+                                semantics = unitSemantics,
+                                contextsAmount = contextsAmount,
+                                contexts = contextsList,
+                                basement = basement,
+                                analysis = analysis,
+                            };
+                            session.Store(DBunit);
+                        }
+                        session.SaveChanges();
+                    }
+                    
                     var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
                         ContentTitle = messageLocalized,
@@ -909,7 +944,6 @@ namespace Context_Processor.Views
             {
                 await failureWindow.Show();
             }
-            this.IsEnabled = true;
         }
 
 
