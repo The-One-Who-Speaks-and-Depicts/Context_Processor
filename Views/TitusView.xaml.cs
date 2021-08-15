@@ -479,6 +479,7 @@ namespace Context_Processor.Views
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                     });
+                await errorWindow.Show();
             }
             this.IsEnabled = true;
         }
@@ -494,7 +495,6 @@ namespace Context_Processor.Views
                 var filePath = openDialogResult[0];
                 var htmlDocument = XDocument.Load(filePath);
                 var xmlDocument = new XDocument();
-                var root = new XElement("database");
                 var HTMLUnits = htmlDocument.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit");
                 var XMLUnits = new List<XElement>();
                 foreach (var unit in HTMLUnits)
@@ -524,8 +524,96 @@ namespace Context_Processor.Views
                     analyzedUnit.Add(analysis);
                     XMLUnits.Add(analyzedUnit);       
                 }
-                root.Add(XMLUnits);
-                finalField.Text += root.ToString();
+                var saveDialog = new SaveFileDialog();
+                saveDialog.InitialFileName = "New_Unit.xml";
+                string savePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
+                if (!String.IsNullOrEmpty(savePath))
+                {
+                    try 
+                    {
+                        bool success = false;
+                        if (!savePath.EndsWith(".xml"))
+                        {
+                            savePath += ".xml";
+                        }                            
+                        if (!File.Exists(savePath)) 
+                        {
+                            var root = new XElement("database");
+                            root.Add(XMLUnits);                        
+                            var doc = new XDocument();
+                            doc.Add(root);
+                            doc.Save(savePath); 
+                            success = true;                
+                        }
+                        else 
+                        {                
+                            var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                            ButtonDefinitions = ButtonEnum.YesNo,
+                            ContentTitle = messageLocalized,
+                            ContentMessage = fileChangeLocalized,
+                            Icon = Icon.Plus,
+                            Style = Style.UbuntuLinux
+                            });
+                            var result = await fileFoundWindow.Show();
+                            if (result == ButtonResult.Yes) 
+                            {
+                                XDocument doc = XDocument.Load(savePath);
+                                XElement parentElement = doc.Descendants("analyzedUnit").LastOrDefault();
+                                foreach (var unit in XMLUnits)
+                                {
+                                    if (parentElement != null) parentElement.AddAfterSelf(unit);
+                                }
+                                doc.Save(savePath);
+                                success = true;
+                            }
+                        }
+                        if (success)
+                        {
+                            var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                            ButtonDefinitions = ButtonEnum.Ok,
+                            ContentTitle = messageLocalized,
+                            ContentMessage = successLocalized,
+                            Icon = Icon.Plus,
+                            Style = Style.UbuntuLinux
+                            });
+                            await successWindow.Show();
+                            RenewForm();
+                        }                    
+                    }
+                    catch (XmlException)
+                    {
+                        var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = XMLErrorLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        await errorWindow.Show();
+                    }
+                    catch (Raven.Client.Exceptions.RavenException)
+                    {                
+                        var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = ravenFailureLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                        await failureWindow.Show();
+                    }
+                }
+                else 
+                {
+                    var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = failureLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                    await errorWindow.Show();
+                }
             }
         }
 
