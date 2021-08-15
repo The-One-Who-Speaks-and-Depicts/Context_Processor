@@ -863,6 +863,56 @@ namespace Context_Processor.Views
         }
 
 
+        // inserting to RavenDB from .xml file
+        public async void XMLToRavenConversion(object sender, RoutedEventArgs e)
+        {
+            this.IsEnabled = false;
+            var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                    ButtonDefinitions = ButtonEnum.Ok,
+                    ContentTitle = messageLocalized,
+                    ContentMessage = ravenFailureLocalized,
+                    Icon = Icon.Plus,
+                    Style = Style.UbuntuLinux
+                });
+            try 
+            {
+                var openDialog = new OpenFileDialog();
+                openDialog.Title = "XML";
+                openDialog.AllowMultiple = false;
+                openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"xml"}});
+                string[] openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
+                if (openDialogResult != null)
+                {
+                    var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
+                        ButtonDefinitions = ButtonEnum.Ok,
+                        ContentTitle = messageLocalized,
+                        ContentMessage = successLocalized,
+                        Icon = Icon.Plus,
+                        Style = Style.UbuntuLinux
+                        });
+                    await successWindow.Show();
+                }                
+            }
+            catch (Raven.Client.Exceptions.RavenException)
+            {         
+                await failureWindow.Show();
+            }
+            catch (NullReferenceException)
+            {
+                await failureWindow.Show();
+            }
+            catch (HttpRequestException)
+            {
+                await failureWindow.Show();
+            }
+            catch (InvalidOperationException)
+            {
+                await failureWindow.Show();
+            }
+            this.IsEnabled = true;
+        }
+
+
         // opening an additional window for deleting, editing, and converting units in RavenDB
         public async void RavenEdit(object sender, RoutedEventArgs e)
         {            
