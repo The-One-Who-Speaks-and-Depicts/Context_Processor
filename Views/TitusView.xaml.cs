@@ -487,94 +487,45 @@ namespace Context_Processor.Views
         {
             var openDialog = new OpenFileDialog();
             openDialog.AllowMultiple = false;
-            openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"xml"}});
-            string[] openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
+            openDialog.Filters.Add(new FileDialogFilter() {Name = "HTML files", Extensions = new List<string>() {"html"}});
+            var openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
             if (openDialogResult != null)
             {
-                string filePath = openDialogResult[0];
-                using (StreamReader sr = new StreamReader(filePath))
+                var filePath = openDialogResult[0];
+                var htmlDocument = XDocument.Load(filePath);
+                var xmlDocument = new XDocument();
+                var root = new XElement("database");
+                var HTMLUnits = htmlDocument.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit");
+                var XMLUnits = new List<XElement>();
+                foreach (var unit in HTMLUnits)
                 {
-                    string XMLText = sr.ReadToEnd();
-                    XMLText = Regex.Replace(XMLText, @"<database>", "<div class=\"database\">");
-                    XMLText = Regex.Replace(XMLText, @"</database>", "</div>");
-                    XMLText = XMLToHTML(XMLText);
-                    var SaveFileDialog = new SaveFileDialog();
-                    SaveFileDialog.InitialFileName = "New_Unit.html";
-                    string savingPath = await SaveFileDialog.ShowAsync((Window) this.VisualRoot);
-                    if (!String.IsNullOrEmpty(savingPath))
+                    var analyzedUnit = new XElement("analyzedUnit");
+                    var unitName = new XElement("unit", Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "unit").FirstOrDefault().Value, "Единица: ", ""), "Unit: ", ""));
+                    analyzedUnit.Add(unitName);
+                    var unitSemantics = new XElement("semantics", Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "semantics").FirstOrDefault().Value, "Семантика: ", ""), "Semantics: ", ""));
+                    analyzedUnit.Add(unitSemantics);
+                    var contextsAmount = new XElement("contextsAmount", Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "contextsAmount").FirstOrDefault().Value, "Количество контекстов: ", ""), "Contexts amount: ", ""));
+                    analyzedUnit.Add(contextsAmount);
+                    var separatedContexts = unit.Descendants("div").Where(x => x.Attribute("class").Value == "link");
+                    var contextsList = new XElement("contexts");
+                    foreach (var context in separatedContexts)
                     {
-                        try
-                        {
-                            bool success = false;
-                            if (!savingPath.EndsWith(".html"))
-                            {
-                                savingPath += ".html";
-                            }
-                            if (!File.Exists(savingPath)) 
-                            {                        
-                                XmlDocument doc = new XmlDocument();
-                                doc.LoadXml(XMLText);
-                                doc.Save(savingPath);
-                                success = true;                
-                            }
-                            else 
-                            {                
-                                var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                                ButtonDefinitions = ButtonEnum.YesNo,
-                                ContentTitle = messageLocalized,
-                                ContentMessage = fileChangeLocalized,
-                                Icon = Icon.Plus,
-                                Style = Style.UbuntuLinux
-                                });
-                                var result = await fileFoundWindow.Show();
-                                if (result == ButtonResult.Yes) 
-                                {
-                                    XDocument doc = XDocument.Load(savingPath);
-                                    XMLText = Regex.Replace(XMLText, "<div class=\"database\">", "");
-                                    XMLText = Regex.Replace(XMLText, "</div>$", "");
-                                    XElement el = XElement.Parse(XMLText);
-                                    XElement parentElement = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit").LastOrDefault();
-                                    if (parentElement != null) parentElement.AddAfterSelf(el);
-                                    doc.Save(savingPath);
-                                    success = true;
-                                }
-                            }
-                            if (success)
-                            {
-                                var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                                ButtonDefinitions = ButtonEnum.Ok,
-                                ContentTitle = messageLocalized,
-                                ContentMessage = successLocalized,
-                                Icon = Icon.Plus,
-                                Style = Style.UbuntuLinux
-                                });
-                                await successWindow.Show();
-                                RenewForm();
-                            }             
-                        }
-                        catch (XmlException)
-                        {
-                            var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                            ButtonDefinitions = ButtonEnum.Ok,
-                            ContentTitle = messageLocalized,
-                            ContentMessage = XMLErrorLocalized,
-                            Icon = Icon.Plus,
-                            Style = Style.UbuntuLinux
-                            });
-                            await errorWindow.Show();
-                        }
+                        var link = new XElement("link");
+                        var source = new XElement("source", context.Descendants("div").Where(x => x.Attribute("class").Value == "source").FirstOrDefault().Value);
+                        link.Add(source);
+                        var text = new XElement("context", context.Descendants("div").Where(x => x.Attribute("class").Value == "context").FirstOrDefault().Value);
+                        link.Add(text);
+                        contextsList.Add(link);
                     }
-                    else             
-                    {
-                        var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                                        ButtonDefinitions = ButtonEnum.Ok,
-                                        ContentTitle = messageLocalized,
-                                        ContentMessage = failureLocalized,
-                                        Icon = Icon.Plus,
-                                        Style = Style.UbuntuLinux
-                                        });    
-                    }
+                    analyzedUnit.Add(contextsList);
+                    var basement = new XElement("basement", Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "basement").FirstOrDefault().Value, "Предмет анализа: ", ""), "Analysis ground: ", ""));
+                    analyzedUnit.Add(basement);
+                    var analysis = new XElement("analysis", Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "analysis").FirstOrDefault().Value, "Анализ: ", ""), "Analysis: ", ""));
+                    analyzedUnit.Add(analysis);
+                    XMLUnits.Add(analyzedUnit);       
                 }
+                root.Add(XMLUnits);
+                finalField.Text += root.ToString();
             }
         }
 
@@ -993,8 +944,8 @@ namespace Context_Processor.Views
                             {
                                 contextsList.Add(new Context() 
                                 {
-                                    source = separatedContexts.Descendants("source").FirstOrDefault().Value,
-                                    text = separatedContexts.Descendants("context").FirstOrDefault().Value,
+                                    source = context.Descendants("source").FirstOrDefault().Value,
+                                    text = context.Descendants("context").FirstOrDefault().Value,
                                 });
                             }
                             var basement = unit.Descendants("basement").FirstOrDefault().Value;
@@ -1076,8 +1027,8 @@ namespace Context_Processor.Views
                             {
                                 contextsList.Add(new Context() 
                                 {
-                                    source = separatedContexts.Descendants("div").Where(x => x.Attribute("class").Value == "source").FirstOrDefault().Value,
-                                    text = separatedContexts.Descendants("div").Where(x => x.Attribute("class").Value == "context").FirstOrDefault().Value,
+                                    source = context.Descendants("div").Where(x => x.Attribute("class").Value == "source").FirstOrDefault().Value,
+                                    text = context.Descendants("div").Where(x => x.Attribute("class").Value == "context").FirstOrDefault().Value,
                                 });
                             }
                             var basement = Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "basement").FirstOrDefault().Value, "Предмет анализа: ", ""), "Analysis ground: ", "");
