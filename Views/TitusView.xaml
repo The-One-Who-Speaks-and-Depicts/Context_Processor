@@ -16,7 +16,7 @@
                   <MenuItem Header="XML > RavenDB" Click="XMLToRavenConversion"/>
                   <Separator />
                   <MenuItem Header="HTML > XML"/>
-                  <MenuItem Header="HTML > RavenDB"/>
+                  <MenuItem Header="HTML > RavenDB" Click="HTMLToRavenConversion"/>
               </MenuItem>
           </Menu>
       </DockPanel>
