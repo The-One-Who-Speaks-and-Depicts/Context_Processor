@@ -206,9 +206,9 @@ namespace Context_Processor.Views
             XML = Regex.Replace(XML, @"<\/context>", "</div>");
             XML = Regex.Replace(XML, @"<source>", "<div class=\"source\">[");
             XML = Regex.Replace(XML, @"<\/source>", "]</div>");
-            XML = Regex.Replace(XML, @"<basement>", "<div class=\"basement\">" + analysisBasementTextBlock.Text);
+            XML = Regex.Replace(XML, @"<basement>", "<div class=\"basement\">" + analysisBasementTextBlock.Text + ": ");
             XML = Regex.Replace(XML, @"<\/basement>", "</div> ");
-            XML = Regex.Replace(XML, @"<analysis>", "<div class=\"analysis\">" + analysisTextBlock.Text);
+            XML = Regex.Replace(XML, @"<analysis>", "<div class=\"analysis\">" + analysisTextBlock.Text + ": ");
             XML = Regex.Replace(XML, @"<\/analysis>", "</div>");
             return XML;
         }
@@ -959,9 +959,9 @@ namespace Context_Processor.Views
             try 
             {
                 var openDialog = new OpenFileDialog();
-                openDialog.Title = "XML";
+                openDialog.Title = "HTML";
                 openDialog.AllowMultiple = false;
-                openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"xml"}});
+                openDialog.Filters.Add(new FileDialogFilter() {Name = "XML files", Extensions = new List<string>() {"html"}});
                 string[] openDialogResult = await openDialog.ShowAsync((Window)this.VisualRoot);
                 if (openDialogResult != null)
                 {
@@ -969,24 +969,24 @@ namespace Context_Processor.Views
                     using (var session = store.OpenSession())
                     {
                         XDocument doc = XDocument.Load(openDialogResult[0]);
-                        var units = doc.Descendants("analyzedUnit");
+                        var units = doc.Descendants("div").Where(x => x.Attribute("class").Value == "analyzedUnit");
                         foreach (var unit in units)
                         {
-                            var unitName = unit.Descendants("unit").FirstOrDefault().Value;
-                            var unitSemantics = unit.Descendants("semantics").FirstOrDefault().Value;
-                            var contextsAmount = unit.Descendants("contextsAmount").FirstOrDefault().Value;
-                            var separatedContexts = unit.Descendants("link");
+                            var unitName = Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "unit").FirstOrDefault().Value, "Единица: ", ""), "Unit: ", "");
+                            var unitSemantics = Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "semantics").FirstOrDefault().Value, "Семантика: ", ""), "Semantics: ", "");
+                            var contextsAmount = Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "contextsAmount").FirstOrDefault().Value, "Количество контекстов: ", ""), "Contexts amount: ", "");
+                            var separatedContexts = unit.Descendants("div").Where(x => x.Attribute("class").Value == "link");
                             var contextsList = new List<Context>();
                             foreach (var context in separatedContexts)
                             {
                                 contextsList.Add(new Context() 
                                 {
-                                    source = separatedContexts.Descendants("source").FirstOrDefault().Value,
-                                    text = separatedContexts.Descendants("context").FirstOrDefault().Value,
+                                    source = separatedContexts.Descendants("div").Where(x => x.Attribute("class").Value == "source").FirstOrDefault().Value,
+                                    text = separatedContexts.Descendants("div").Where(x => x.Attribute("class").Value == "context").FirstOrDefault().Value,
                                 });
                             }
-                            var basement = unit.Descendants("basement").FirstOrDefault().Value;
-                            var analysis = unit.Descendants("analysis").FirstOrDefault().Value;
+                            var basement = Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "basement").FirstOrDefault().Value, "Предмет анализа: ", ""), "Analysis ground: ", "");
+                            var analysis = Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "analysis").FirstOrDefault().Value, "Анализ: ", ""), "Analysis: ", "");
                             var DBunit = new Unit
                             {
                                 name = unitName,
