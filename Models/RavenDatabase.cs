@@ -1,12 +1,4 @@
-using System;
-using Raven.Client;
 using Raven.Client.Documents;
-using Raven.Client.Exceptions;
-using Raven.Client.Exceptions.Database;
-using Raven.Client.Documents.Operations;
-using Raven.Client.ServerWide;
-using Raven.Client.ServerWide.Operations;
-using System.Threading.Tasks;
 
 namespace Context_Processor.Models
 {

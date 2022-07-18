@@ -15,7 +15,6 @@ using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Raven.Client;
 using Raven.Client.Documents;
-using Context_Processor.ServiceFunctions;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
