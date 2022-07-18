@@ -25,7 +25,7 @@ namespace Context_Processor.Views
     {
         //create variables for operating with menu items
         private MenuItem databaseEditingMenu;
-        private MenuItem conversionMenu;        
+        private MenuItem conversionMenu;
 
         //create variables for operating with textblocks
         private TextBlock unitTextBlock;
@@ -74,8 +74,8 @@ namespace Context_Processor.Views
         private string ravenFailureLocalized;
 
         //create database
-        private static IDocumentStore store;
-                
+        private static RavenDatabase store;
+
 
         public TitusView()
         {
@@ -86,7 +86,7 @@ namespace Context_Processor.Views
         public void UnitInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "<analyzedUnit>\n";
-            finalField.Text += "<unit>" + unitField.Text + "</unit>\n"; 
+            finalField.Text += "<unit>" + unitField.Text + "</unit>\n";
             unitField.IsReadOnly = true;
             semanticsField.IsReadOnly = false;
             unitInsertButton.IsEnabled = false;
@@ -94,17 +94,17 @@ namespace Context_Processor.Views
         }
 
         //add analyzed unit sematics to the final field
-        public void SemanticsInsert(object sender, RoutedEventArgs e) 
+        public void SemanticsInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "<semantics>" + semanticsField.Text + "</semantics>\n";
             semanticsField.IsReadOnly = true;
             semanticInsertButton.IsEnabled = false;
             contextsAmountField.IsReadOnly = false;
-            contextsAmountInsertionButton.IsEnabled = true;            
+            contextsAmountInsertionButton.IsEnabled = true;
         }
 
         //add analyzed unit amount of contexts to the final field
-        public void ContextsAmountInsert(object sender, RoutedEventArgs e) 
+        public void ContextsAmountInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "<contextsAmount>" + contextsAmountField.Text + "</contextsAmount>\n";
             contextsAmountField.IsReadOnly = true;
@@ -119,13 +119,13 @@ namespace Context_Processor.Views
         private bool isFirstContextInserted = false;
 
         //react to context addition
-        public async void ContextInsert(object sender, RoutedEventArgs e) 
+        public async void ContextInsert(object sender, RoutedEventArgs e)
         {
-            if (!isFirstContextInserted) 
+            if (!isFirstContextInserted)
             {
                 finalField.Text += "<contexts>\n";
             }
-            finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";                        
+            finalField.Text += "<link>" + "<context>" + contextField.Text + "</context><source>" + sourceField.Text + "</source></link>\n";
             this.IsEnabled = false;
             var contextsAdditionFinalizeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
@@ -135,9 +135,9 @@ namespace Context_Processor.Views
                 Style = Style.UbuntuLinux
                 });
             ButtonResult result = await contextsAdditionFinalizeWindow.Show();
-            if (result == ButtonResult.Yes) 
+            if (result == ButtonResult.Yes)
             {
-                contextField.Text = "";            
+                contextField.Text = "";
                 var sourceChangeWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                 ButtonDefinitions = ButtonEnum.YesNo,
                 ContentTitle = messageLocalized,
@@ -151,12 +151,12 @@ namespace Context_Processor.Views
                     sourceField.Text = "";
                 }
             }
-            else 
+            else
             {
                 finalField.Text += "</contexts>\n";
                 sourceField.IsReadOnly = true;
                 contextField.IsReadOnly = true;
-                contextInsertionButton.IsEnabled = false;                
+                contextInsertionButton.IsEnabled = false;
                 analysisBasementField.IsReadOnly = false;
                 analysisBasementInsertionButton.IsEnabled = true;
             }
@@ -165,7 +165,7 @@ namespace Context_Processor.Views
         }
 
         //add basement for analysis to the final field
-        public void BasementInsert(object sender, RoutedEventArgs e) 
+        public void BasementInsert(object sender, RoutedEventArgs e)
         {
             finalField.Text += "<basement>" + analysisBasementField.Text + "</basement>\n";
             analysisBasementField.IsReadOnly = true;
@@ -185,11 +185,11 @@ namespace Context_Processor.Views
             erasingButton.IsEnabled = true;
             XMLInsertionButton.IsEnabled = true;
             HTMLInsertionButton.IsEnabled = true;
-            databaseInsertionButton.IsEnabled = true;            
+            databaseInsertionButton.IsEnabled = true;
         }
 
         public string XMLToHTML(string XML)
-        {            
+        {
             XML = Regex.Replace(XML, @"<analyzedUnit>", "<div class=\"analyzedUnit\">");
             XML = Regex.Replace(XML, @"<\/analyzedUnit>", "</div>");
             XML = Regex.Replace(XML, @"<unit>", "<div class=\"unit\">" + unitTextBlock.Text + ": ");
@@ -215,18 +215,18 @@ namespace Context_Processor.Views
 
 
         public void SaveDocument(string filePath)
-        { 
+        {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml("<database>" + finalField.Text + "</database>");
-            doc.Save(filePath);           
+            doc.Save(filePath);
         }
 
         public void SaveHTMLDocument(string filePath)
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml("<div class=\"database\">" + XMLToHTML(finalField.Text) + "</div>");
-            doc.Save(filePath); 
-            
+            doc.Save(filePath);
+
         }
 
         public void RewriteDocument(string filePath)
@@ -283,20 +283,20 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                try 
+                try
                 {
                     bool success = false;
                     if (!filePath.EndsWith(".xml"))
                     {
                         filePath += ".xml";
                     }
-                    if (!File.Exists(filePath)) 
-                    {                        
+                    if (!File.Exists(filePath))
+                    {
                         SaveDocument(filePath);
-                        success = true;                
+                        success = true;
                     }
-                    else 
-                    {                
+                    else
+                    {
                         var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.YesNo,
                         ContentTitle = messageLocalized,
@@ -305,7 +305,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         var result = await fileFoundWindow.Show();
-                        if (result == ButtonResult.Yes) 
+                        if (result == ButtonResult.Yes)
                         {
                             RewriteDocument(filePath);
                             success = true;
@@ -322,7 +322,7 @@ namespace Context_Processor.Views
                         });
                         await successWindow.Show();
                         RenewForm();
-                    }                    
+                    }
                 }
                 catch (XmlException)
                 {
@@ -336,7 +336,7 @@ namespace Context_Processor.Views
                     await errorWindow.Show();
                 }
             }
-            else 
+            else
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
@@ -346,7 +346,7 @@ namespace Context_Processor.Views
                     Style = Style.UbuntuLinux
                     });
             }
-            this.IsEnabled = true;            
+            this.IsEnabled = true;
         }
 
         // copying units from RavenDB to the
@@ -360,14 +360,14 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                try 
+                try
                 {
                     bool success = false;
                     if (!filePath.EndsWith(".xml"))
                     {
                         filePath += ".xml";
                     }
-                    var store = new DocumentStore 
+                    var store = new DocumentStore
                     {
                         Urls = new string[]{"http://localhost:8080"},
                         Database = "UnitsDB"
@@ -376,7 +376,7 @@ namespace Context_Processor.Views
                     List<string> units_from_db = new List<string>();
                     using (var session = store.OpenSession())
                     {
-                        List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();                        
+                        List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();
                         foreach (var unit in units)
                         {
                             string unit_to_add = "<analyzedUnit>";
@@ -393,10 +393,10 @@ namespace Context_Processor.Views
                             unit_to_add += "<analysis>" + unit.analysis + "</analysis>\n";
                             unit_to_add += "</analyzedUnit>";
                             units_from_db.Add(unit_to_add);
-                        }  
-                    }    
-                    if (!File.Exists(filePath)) 
-                    {                        
+                        }
+                    }
+                    if (!File.Exists(filePath))
+                    {
                         XmlDocument doc = new XmlDocument();
                         string units_to_parse = "";
                         foreach (var unit in units_from_db)
@@ -404,11 +404,11 @@ namespace Context_Processor.Views
                             units_to_parse += unit;
                         }
                         doc.LoadXml("<database>" + units_to_parse + "</database>");
-                        doc.Save(filePath); 
-                        success = true;                
+                        doc.Save(filePath);
+                        success = true;
                     }
-                    else 
-                    {                
+                    else
+                    {
                         var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.YesNo,
                         ContentTitle = messageLocalized,
@@ -417,7 +417,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         var result = await fileFoundWindow.Show();
-                        if (result == ButtonResult.Yes) 
+                        if (result == ButtonResult.Yes)
                         {
                             XDocument doc = XDocument.Load(filePath);
                             List<XElement> els = new List<XElement>();
@@ -429,7 +429,7 @@ namespace Context_Processor.Views
                             foreach (var element in els)
                             {
                                 if (parentElement != null) parentElement.AddAfterSelf(element);
-                            }                            
+                            }
                             doc.Save(filePath);
                             success = true;
                         }
@@ -445,7 +445,7 @@ namespace Context_Processor.Views
                         });
                         await successWindow.Show();
                         RenewForm();
-                    }                    
+                    }
                 }
                 catch (XmlException)
                 {
@@ -459,7 +459,7 @@ namespace Context_Processor.Views
                     await errorWindow.Show();
                 }
                 catch (Raven.Client.Exceptions.RavenException)
-                {                
+                {
                     var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
@@ -470,7 +470,7 @@ namespace Context_Processor.Views
                     await failureWindow.Show();
                 }
             }
-            else 
+            else
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
@@ -522,31 +522,31 @@ namespace Context_Processor.Views
                     analyzedUnit.Add(basement);
                     var analysis = new XElement("analysis", Regex.Replace(Regex.Replace(unit.Descendants("div").Where(x => x.Attribute("class").Value == "analysis").FirstOrDefault().Value, "Анализ: ", ""), "Analysis: ", ""));
                     analyzedUnit.Add(analysis);
-                    XMLUnits.Add(analyzedUnit);       
+                    XMLUnits.Add(analyzedUnit);
                 }
                 var saveDialog = new SaveFileDialog();
                 saveDialog.InitialFileName = "New_Unit.xml";
                 string savePath = await saveDialog.ShowAsync((Window)this.VisualRoot);
                 if (!String.IsNullOrEmpty(savePath))
                 {
-                    try 
+                    try
                     {
                         bool success = false;
                         if (!savePath.EndsWith(".xml"))
                         {
                             savePath += ".xml";
-                        }                            
-                        if (!File.Exists(savePath)) 
+                        }
+                        if (!File.Exists(savePath))
                         {
                             var root = new XElement("database");
-                            root.Add(XMLUnits);                        
+                            root.Add(XMLUnits);
                             var doc = new XDocument();
                             doc.Add(root);
-                            doc.Save(savePath); 
-                            success = true;                
+                            doc.Save(savePath);
+                            success = true;
                         }
-                        else 
-                        {                
+                        else
+                        {
                             var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                             ButtonDefinitions = ButtonEnum.YesNo,
                             ContentTitle = messageLocalized,
@@ -555,7 +555,7 @@ namespace Context_Processor.Views
                             Style = Style.UbuntuLinux
                             });
                             var result = await fileFoundWindow.Show();
-                            if (result == ButtonResult.Yes) 
+                            if (result == ButtonResult.Yes)
                             {
                                 XDocument doc = XDocument.Load(savePath);
                                 XElement parentElement = doc.Descendants("analyzedUnit").LastOrDefault();
@@ -578,7 +578,7 @@ namespace Context_Processor.Views
                             });
                             await successWindow.Show();
                             RenewForm();
-                        }                    
+                        }
                     }
                     catch (XmlException)
                     {
@@ -592,7 +592,7 @@ namespace Context_Processor.Views
                         await errorWindow.Show();
                     }
                     catch (Raven.Client.Exceptions.RavenException)
-                    {                
+                    {
                         var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
                         ContentTitle = messageLocalized,
@@ -603,7 +603,7 @@ namespace Context_Processor.Views
                         await failureWindow.Show();
                     }
                 }
-                else 
+                else
                 {
                     var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
@@ -628,14 +628,14 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                try 
+                try
                 {
                     bool success = false;
                     if (!filePath.EndsWith(".html"))
                     {
                         filePath += ".html";
                     }
-                    var store = new DocumentStore 
+                    var store = new DocumentStore
                     {
                         Urls = new string[]{"http://localhost:8080"},
                         Database = "UnitsDB"
@@ -644,7 +644,7 @@ namespace Context_Processor.Views
                     List<string> units_from_db = new List<string>();
                     using (var session = store.OpenSession())
                     {
-                        List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();                        
+                        List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();
                         foreach (var unit in units)
                         {
                             string unit_to_add = "<div class=\"analyzedUnit\">";
@@ -661,10 +661,10 @@ namespace Context_Processor.Views
                             unit_to_add += "<div class=\"analysis\">" + analysisTextBlock.Text + ": " + unit.analysis + "</div>";
                             unit_to_add += "</div>";
                             units_from_db.Add(unit_to_add);
-                        }  
-                    }    
-                    if (!File.Exists(filePath)) 
-                    {                        
+                        }
+                    }
+                    if (!File.Exists(filePath))
+                    {
                         XmlDocument doc = new XmlDocument();
                         string units_to_parse = "";
                         foreach (var unit in units_from_db)
@@ -672,11 +672,11 @@ namespace Context_Processor.Views
                             units_to_parse += unit;
                         }
                         doc.LoadXml("<div class=\"database\">" + units_to_parse + "</div>");
-                        doc.Save(filePath); 
-                        success = true;                
+                        doc.Save(filePath);
+                        success = true;
                     }
-                    else 
-                    {                
+                    else
+                    {
                         var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.YesNo,
                         ContentTitle = messageLocalized,
@@ -685,7 +685,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         var result = await fileFoundWindow.Show();
-                        if (result == ButtonResult.Yes) 
+                        if (result == ButtonResult.Yes)
                         {
                             XDocument doc = XDocument.Load(filePath);
                             List<XElement> els = new List<XElement>();
@@ -697,7 +697,7 @@ namespace Context_Processor.Views
                             foreach (var element in els)
                             {
                                 if (parentElement != null) parentElement.AddAfterSelf(element);
-                            }                            
+                            }
                             doc.Save(filePath);
                             success = true;
                         }
@@ -713,7 +713,7 @@ namespace Context_Processor.Views
                         });
                         await successWindow.Show();
                         RenewForm();
-                    }                    
+                    }
                 }
                 catch (XmlException)
                 {
@@ -727,7 +727,7 @@ namespace Context_Processor.Views
                     await errorWindow.Show();
                 }
                 catch (Raven.Client.Exceptions.RavenException)
-                {                
+                {
                     var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
@@ -738,7 +738,7 @@ namespace Context_Processor.Views
                     await failureWindow.Show();
                 }
             }
-            else 
+            else
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
@@ -779,15 +779,15 @@ namespace Context_Processor.Views
                             {
                                 savingPath += ".html";
                             }
-                            if (!File.Exists(savingPath)) 
-                            {                        
+                            if (!File.Exists(savingPath))
+                            {
                                 XmlDocument doc = new XmlDocument();
                                 doc.LoadXml(XMLText);
                                 doc.Save(savingPath);
-                                success = true;                
+                                success = true;
                             }
-                            else 
-                            {                
+                            else
+                            {
                                 var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                                 ButtonDefinitions = ButtonEnum.YesNo,
                                 ContentTitle = messageLocalized,
@@ -796,7 +796,7 @@ namespace Context_Processor.Views
                                 Style = Style.UbuntuLinux
                                 });
                                 var result = await fileFoundWindow.Show();
-                                if (result == ButtonResult.Yes) 
+                                if (result == ButtonResult.Yes)
                                 {
                                     XDocument doc = XDocument.Load(savingPath);
                                     XMLText = Regex.Replace(XMLText, "<div class=\"database\">", "");
@@ -819,7 +819,7 @@ namespace Context_Processor.Views
                                 });
                                 await successWindow.Show();
                                 RenewForm();
-                            }             
+                            }
                         }
                         catch (XmlException)
                         {
@@ -833,7 +833,7 @@ namespace Context_Processor.Views
                             await errorWindow.Show();
                         }
                     }
-                    else             
+                    else
                     {
                         var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                                         ButtonDefinitions = ButtonEnum.Ok,
@@ -841,11 +841,11 @@ namespace Context_Processor.Views
                                         ContentMessage = failureLocalized,
                                         Icon = Icon.Plus,
                                         Style = Style.UbuntuLinux
-                                        });    
+                                        });
                     }
                 }
-            }            
-        }        
+            }
+        }
 
         //insertion of a unit to the
         //user-chosen HTML-file
@@ -857,20 +857,20 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                try 
+                try
                 {
                     bool success = false;
                     if (!filePath.EndsWith(".html"))
                     {
                         filePath += ".html";
                     }
-                    if (!File.Exists(filePath)) 
-                    {                        
+                    if (!File.Exists(filePath))
+                    {
                         SaveHTMLDocument(filePath);
-                        success = true;                
+                        success = true;
                     }
-                    else 
-                    {                
+                    else
+                    {
                         var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.YesNo,
                         ContentTitle = messageLocalized,
@@ -879,7 +879,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         var result = await fileFoundWindow.Show();
-                        if (result == ButtonResult.Yes) 
+                        if (result == ButtonResult.Yes)
                         {
                             RewriteHTMLDocument(filePath);
                             success = true;
@@ -896,7 +896,7 @@ namespace Context_Processor.Views
                         });
                         await successWindow.Show();
                         RenewForm();
-                    }                    
+                    }
                 }
                 catch (XmlException)
                 {
@@ -910,7 +910,7 @@ namespace Context_Processor.Views
                     await errorWindow.Show();
                 }
             }
-            else 
+            else
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
@@ -934,7 +934,7 @@ namespace Context_Processor.Views
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                 });
-            try 
+            try
             {
                 store.Initialize();
                 var unitName = Regex.Replace(Regex.Match(finalField.Text, @"<unit>.*<\/unit>").Value, @"<\/{0,1}unit>", "");
@@ -945,7 +945,7 @@ namespace Context_Processor.Views
                 foreach (Match separatedContext in separatedContexts)
                 {
                     var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
-                    contextList.Add(new Context 
+                    contextList.Add(new Context
                         {
                             source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
                             text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
@@ -978,7 +978,7 @@ namespace Context_Processor.Views
                 RenewForm();
             }
             catch (Raven.Client.Exceptions.RavenException)
-            {         
+            {
                 await failureWindow.Show();
             }
             catch (NullReferenceException)
@@ -993,7 +993,7 @@ namespace Context_Processor.Views
             {
                 await failureWindow.Show();
             }
-            this.IsEnabled = true;                    
+            this.IsEnabled = true;
         }
 
 
@@ -1007,7 +1007,7 @@ namespace Context_Processor.Views
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                 });
-            try 
+            try
             {
                 var openDialog = new OpenFileDialog();
                 openDialog.Title = "XML";
@@ -1030,7 +1030,7 @@ namespace Context_Processor.Views
                             var contextsList = new List<Context>();
                             foreach (var context in separatedContexts)
                             {
-                                contextsList.Add(new Context() 
+                                contextsList.Add(new Context()
                                 {
                                     source = context.Descendants("source").FirstOrDefault().Value,
                                     text = context.Descendants("context").FirstOrDefault().Value,
@@ -1051,7 +1051,7 @@ namespace Context_Processor.Views
                         }
                         session.SaveChanges();
                     }
-                    
+
                     var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
                         ContentTitle = messageLocalized,
@@ -1060,10 +1060,10 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                     await successWindow.Show();
-                }                
+                }
             }
             catch (Raven.Client.Exceptions.RavenException)
-            {         
+            {
                 await failureWindow.Show();
             }
             catch (NullReferenceException)
@@ -1090,7 +1090,7 @@ namespace Context_Processor.Views
                     Icon = Icon.Plus,
                     Style = Style.UbuntuLinux
                 });
-            try 
+            try
             {
                 var openDialog = new OpenFileDialog();
                 openDialog.Title = "HTML";
@@ -1113,7 +1113,7 @@ namespace Context_Processor.Views
                             var contextsList = new List<Context>();
                             foreach (var context in separatedContexts)
                             {
-                                contextsList.Add(new Context() 
+                                contextsList.Add(new Context()
                                 {
                                     source = context.Descendants("div").Where(x => x.Attribute("class").Value == "source").FirstOrDefault().Value,
                                     text = context.Descendants("div").Where(x => x.Attribute("class").Value == "context").FirstOrDefault().Value,
@@ -1134,7 +1134,7 @@ namespace Context_Processor.Views
                         }
                         session.SaveChanges();
                     }
-                    
+
                     var successWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.Ok,
                         ContentTitle = messageLocalized,
@@ -1143,10 +1143,10 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                     await successWindow.Show();
-                }                
+                }
             }
             catch (Raven.Client.Exceptions.RavenException)
-            {         
+            {
                 await failureWindow.Show();
             }
             catch (NullReferenceException)
@@ -1166,7 +1166,7 @@ namespace Context_Processor.Views
 
         // opening an additional window for deleting, editing, and converting units in RavenDB
         public async void RavenEdit(object sender, RoutedEventArgs e)
-        {            
+        {
             var failureWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
                     ContentTitle = messageLocalized,
@@ -1180,7 +1180,7 @@ namespace Context_Processor.Views
                 ravenDepiction.Show();
             }
             catch (InvalidOperationException)
-            {                
+            {
                 await failureWindow.Show();
             }
             catch(HttpRequestException)
@@ -1190,10 +1190,10 @@ namespace Context_Processor.Views
             catch (Raven.Client.Exceptions.RavenException)
             {
                 await failureWindow.Show();
-            }                             
+            }
         }
 
-        public void Localize(object sender, RoutedEventArgs e) 
+        public void Localize(object sender, RoutedEventArgs e)
         {
             if (localization == "en")
             {
@@ -1221,9 +1221,9 @@ namespace Context_Processor.Views
                 XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
                 databaseEditingMenu.Header = "Edit database";
                 ravenFailureLocalized = "Impossible to connect to RavenDB";
-                conversionMenu.Header = "Convert";                
+                conversionMenu.Header = "Convert";
             }
-            else 
+            else
             {
                 localization = "en";
                 unitTextBlock.Text = "Единица";
@@ -1239,7 +1239,7 @@ namespace Context_Processor.Views
                 XMLInsertionButton.Content = "Внести итоговое значение (XML)";
                 HTMLInsertionButton.Content = "Внести итоговое значение (HTML)";
                 databaseInsertionButton.Content = "Внести итоговое значение (RavenDB)";
-                erasingButton.Content = "Стереть все поля";                
+                erasingButton.Content = "Стереть все поля";
                 messageLocalized = "Сообщение программы";
                 addingContextsLocalized = "Хотите ли добавить другие контексты?";
                 changingContextsLocalized = "Хотите ли изменить источник контекста?";
@@ -1249,23 +1249,23 @@ namespace Context_Processor.Views
                 XMLErrorLocalized = "Ошибка записи в XML-файл, рекомендуется проверить правильность постановки тэгов";
                 databaseEditingMenu.Header = "Внести изменения в базу данных";
                 ravenFailureLocalized = "Невозможно соединиться с RavenDB";
-                conversionMenu.Header = "Конвертировать";                               
+                conversionMenu.Header = "Конвертировать";
             }
-                localizationButton.Content = localization;                
+                localizationButton.Content = localization;
                 unitInsertButton.Content = insertionButtonLocalized;
                 semanticInsertButton.Content = insertionButtonLocalized;
                 contextsAmountInsertionButton.Content = insertionButtonLocalized;
                 analysisBasementInsertionButton.Content = insertionButtonLocalized;
-                analysisInsertionButton.Content = insertionButtonLocalized;                
+                analysisInsertionButton.Content = insertionButtonLocalized;
         }
 
 
         private void InitializeComponent()
         {
-            AvaloniaXamlLoader.Load(this); 
+            AvaloniaXamlLoader.Load(this);
 
             //initialize textblocks and default inscriptions
-            unitTextBlock = this.FindControl<TextBlock>("UnitBlock"); 
+            unitTextBlock = this.FindControl<TextBlock>("UnitBlock");
             semanticsTextBlock = this.FindControl<TextBlock>("SemanticsBlock");
             contextsAmountTextBlock = this.FindControl<TextBlock>("AmountBlock");
             sourceTextBlock = this.FindControl<TextBlock>("SourceBlock");
@@ -1305,24 +1305,9 @@ namespace Context_Processor.Views
             Localize(new object(), new RoutedEventArgs());
 
             // Initializing RavenDB store
-            try
-            {
-                store = RavenHelper.EnsureUnitsDBExists();
-            }
-            catch (InvalidOperationException)
-            {
+            store = RavenDatabase.getInstance();
 
-            }
-            catch (HttpRequestException)
-            {
-
-            }
-            catch (Raven.Client.Exceptions.RavenException)
-            {
-
-            }
-            
         }
-        
+
     }
 }

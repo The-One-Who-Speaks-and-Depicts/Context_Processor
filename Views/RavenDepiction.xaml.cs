@@ -15,12 +15,11 @@ using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Raven.Client;
 using Raven.Client.Documents;
-using Context_Processor.Models;
 using Context_Processor.ServiceFunctions;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.DTO;
-
+using Context_Processor.Models;
 
 
 namespace Context_Processor.Views
@@ -55,23 +54,23 @@ namespace Context_Processor.Views
         private string XMLErrorLocalized;
 
         //create database
-        private static IDocumentStore store;
-              
+        private static RavenDatabase store;
+
 
         public RavenDepiction()
-        {            
+        {
             InitializeComponent();
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            store = RavenHelper.EnsureUnitsDBExists(); 
-            // get names for each unit           
+            store = RavenDatabase.getInstance();
+            // get names for each unit
             unitsComboBox = this.FindControl<ComboBox>("UnitsComboBox");
             unitsDB = RavenGet();
             unitsComboBox.Items = unitsDB.Select(unit => unit.name);
-            unitsComboBox.SelectionChanged += ChooseUnit;                  
+            unitsComboBox.SelectionChanged += ChooseUnit;
             // initialize buttons
             deleteButton = this.FindControl<Button>("DeleteBtn");
             localizationButton = this.FindControl<Button>("LocalizationBtn");
@@ -81,26 +80,26 @@ namespace Context_Processor.Views
             //initialize text box
             editTextBox = this.FindControl<TextBox>("EditTextBox");
             // localize
-            Localize(new object(), new RoutedEventArgs());            
+            Localize(new object(), new RoutedEventArgs());
         }
 
         // gets units from RavenDB
         public List<Unit> RavenGet()
         {
-            try 
+            try
             {
                 store.Initialize();
                 using (var session = store.OpenSession())
                 {
                     List<Unit> units = session.Advanced.RawQuery<Unit>("from Units").ToList();
-                    return units;      
+                    return units;
                 }
-            }            
+            }
             catch (Raven.Client.Exceptions.RavenException)
-            {                
+            {
                 this.Close();
                 return new List<Unit>();
-            }            
+            }
         }
 
         // deletes units from RavenDB
@@ -108,7 +107,7 @@ namespace Context_Processor.Views
         {
             store.Initialize();
             using (var session = store.OpenSession())
-            {                
+            {
                 Unit unitForDeletion = session.Advanced.RawQuery<Unit>("from Units where exact(name='" + unitsComboBox.SelectedItem + "')").ToList()[0];
                 session.Delete(unitForDeletion);
                 session.SaveChanges();
@@ -130,10 +129,10 @@ namespace Context_Processor.Views
         {
             editTextBox.Text = "";
             store.Initialize();
-            try 
+            try
             {
                 using (var session = store.OpenSession())
-                {                
+                {
                     Unit unitForEditing = unitsDB.Where(u => u.name == (string) unitsComboBox.SelectedItem).FirstOrDefault();
                     editTextBox.Text += "<unit>" + unitForEditing.name + "</unit>\n";
                     editTextBox.Text += "<semantics>" + unitForEditing.semantics + "</semantics>\n";
@@ -145,13 +144,13 @@ namespace Context_Processor.Views
                     }
                     editTextBox.Text += "</contexts>\n";
                     editTextBox.Text += "<basement>" + unitForEditing.basement + "</basement>\n";
-                    editTextBox.Text += "<analysis>" + unitForEditing.analysis + "</analysis>\n"; 
+                    editTextBox.Text += "<analysis>" + unitForEditing.analysis + "</analysis>\n";
                 }
             }
             catch (NullReferenceException)
             {
 
-            }                        
+            }
         }
 
         // save edited unit in DB
@@ -178,7 +177,7 @@ namespace Context_Processor.Views
                 foreach (Match separatedContext in separatedContexts)
                 {
                     var currentContext = Regex.Replace(separatedContext.Value, @"<\/{0,1}link>", "");
-                    contextList.Add(new Context 
+                    contextList.Add(new Context
                         {
                             source = Regex.Replace(Regex.Match(currentContext, @"<source>.*<\/source>").Value, @"<\/{0,1}source>", ""),
                             text = Regex.Replace(Regex.Match(currentContext, @"<context>.*<\/context>").Value, @"<\/{0,1}context>", ""),
@@ -211,11 +210,11 @@ namespace Context_Processor.Views
         }
 
         public void SaveDocument(string filePath)
-        { 
+        {
             XmlDocument doc = new XmlDocument();
             string unit_for_database = "<analyzedUnit>" + editTextBox.Text + "</analyzedUnit>";
             doc.LoadXml("<database>" + unit_for_database + "</database>");
-            doc.Save(filePath);           
+            doc.Save(filePath);
         }
 
         public void RewriteDocument(string filePath)
@@ -263,8 +262,8 @@ namespace Context_Processor.Views
         {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml("<div class=\"database\"><div class=\"analyzedUnit\">" + XMLToHTML(editTextBox.Text) + "</div></div>");
-            doc.Save(filePath); 
-            
+            doc.Save(filePath);
+
         }
 
         public void RewriteHTMLDocument(string filePath)
@@ -285,20 +284,20 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                try 
+                try
                 {
                     bool success = false;
                     if (!filePath.EndsWith(".xml"))
                     {
                         filePath += ".xml";
                     }
-                    if (!File.Exists(filePath)) 
-                    {                        
+                    if (!File.Exists(filePath))
+                    {
                         SaveDocument(filePath);
-                        success = true;                
+                        success = true;
                     }
-                    else 
-                    {                
+                    else
+                    {
                         var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.YesNo,
                         ContentTitle = messageLocalized,
@@ -306,7 +305,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         var result = await fileFoundWindow.Show();
-                        if (result == ButtonResult.Yes) 
+                        if (result == ButtonResult.Yes)
                         {
                             RewriteDocument(filePath);
                             success = true;
@@ -321,7 +320,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         await successWindow.Show();
-                    }                    
+                    }
                 }
                 catch (XmlException)
                 {
@@ -334,7 +333,7 @@ namespace Context_Processor.Views
                     await errorWindow.Show();
                 }
             }
-            else 
+            else
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
@@ -343,7 +342,7 @@ namespace Context_Processor.Views
                     Style = Style.UbuntuLinux
                     });
             }
-            this.IsEnabled = true;      
+            this.IsEnabled = true;
         }
 
         //save unit as HTML
@@ -355,20 +354,20 @@ namespace Context_Processor.Views
             this.IsEnabled = false;
             if (!String.IsNullOrEmpty(filePath))
             {
-                try 
+                try
                 {
                     bool success = false;
                     if (!filePath.EndsWith(".html"))
                     {
                         filePath += ".html";
                     }
-                    if (!File.Exists(filePath)) 
-                    {                        
+                    if (!File.Exists(filePath))
+                    {
                         SaveHTMLDocument(filePath);
-                        success = true;                
+                        success = true;
                     }
-                    else 
-                    {                
+                    else
+                    {
                         var fileFoundWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                         ButtonDefinitions = ButtonEnum.YesNo,
                         ContentTitle = messageLocalized,
@@ -376,7 +375,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         var result = await fileFoundWindow.Show();
-                        if (result == ButtonResult.Yes) 
+                        if (result == ButtonResult.Yes)
                         {
                             RewriteHTMLDocument(filePath);
                             success = true;
@@ -391,7 +390,7 @@ namespace Context_Processor.Views
                         Style = Style.UbuntuLinux
                         });
                         await successWindow.Show();
-                    }                    
+                    }
                 }
                 catch (XmlException)
                 {
@@ -404,7 +403,7 @@ namespace Context_Processor.Views
                     await errorWindow.Show();
                 }
             }
-            else 
+            else
             {
                 var errorWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams{
                     ButtonDefinitions = ButtonEnum.Ok,
@@ -421,8 +420,8 @@ namespace Context_Processor.Views
         {
             if (localization == "en")
             {
-                localization = "ru";                
-                deleteButton.Content = "Delete";                
+                localization = "ru";
+                deleteButton.Content = "Delete";
                 editButton.Content = "Edit";
                 XMLButton.Content = "Save as XML";
                 HTMLButton.Content = "Save as HTML";
@@ -433,7 +432,7 @@ namespace Context_Processor.Views
                 fileChangeLocalized = "Would you like to add unit into the existing file?";
                 successLocalized = "Unit inserted";
                 failureLocalized = "Void file name, unit may not be inserted";
-                XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";              
+                XMLErrorLocalized = "XML file record error; it is recommended to check, whether tags are opened and closed successfully";
             }
             else
             {
